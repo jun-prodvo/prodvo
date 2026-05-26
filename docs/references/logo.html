@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Prodvo — Logo Animation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800;900&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+:root {
+  --orange:  #f97316;
+  --od:      #ea580c;
+  --odp:     #c2410c;
+  --soft:    #fdba74;
+  --ink:     #18181b;
+  --ink2:    #3f3f46;
+  --ink3:    #71717a;
+  --border:  #e4e4e7;
+  --cool:    #f4f4f5;
+  --surface: #fafafa;
+}
+body {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  background: #fff;
+  color: var(--ink);
+}
+.page { max-width: 960px; margin: 0 auto; padding: 4rem 2rem 6rem; }
+.sec-eyebrow {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.66rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.13em;
+  color: var(--orange); margin-bottom: 0.5rem;
+}
+.sec-heading {
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+  font-weight: 800; letter-spacing: -0.03em;
+  color: var(--ink); margin-bottom: 2rem; line-height: 1.2;
+}
+.divider { height: 1px; background: var(--border); margin: 3.5rem 0; }
+.panel { border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin-bottom: 1.2rem; }
+.panel-bar {
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  padding: 0.6rem 1.4rem;
+  display: flex; align-items: center; justify-content: space-between;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.63rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.09em; color: var(--ink3);
+}
+.panel-body {
+  padding: 3.5rem 2.5rem;
+  display: flex; align-items: center; justify-content: center;
+  gap: 4rem; flex-wrap: wrap;
+}
+.panel-body.dark   { background: var(--ink); }
+.panel-body.orange { background: var(--orange); }
+.replay-btn {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.65rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--orange);
+  border: 1px solid var(--soft); padding: 0.35rem 0.85rem;
+  border-radius: 6px; cursor: pointer; background: none;
+  transition: background 0.15s;
+}
+.replay-btn:hover { background: #fff7ed; }
+.replay-btn.lt { color: var(--soft); border-color: rgba(255,255,255,0.2); }
+.replay-btn.lt:hover { background: rgba(255,255,255,0.08); }
+
+/* ==============================================
+   THE LOGO MARK
+   
+   Structure:
+   [P/] [____gap____] [.]
+   
+   On expand:
+   - gap grows from 0 to full Prodvo width
+   - "Prodvo" text fades in inside the gap
+   - dot translates right with the gap
+   
+   The trick: dot is absolutely positioned, 
+   and we animate its translateX.
+   The text is clipped by overflow:hidden on
+   a width-animating container.
+============================================== */
+
+.prodvo-logo {
+  display: inline-flex;
+  align-items: baseline;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-weight: 900;
+  line-height: 1;
+  white-space: nowrap;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* P/ — always visible, always orange */
+.logo-prefix {
+  color: var(--orange);
+  flex-shrink: 0;
+  letter-spacing: -0.05em;
+}
+
+/* The expanding container that holds "Prodvo" */
+/* Width animates from 0 to auto via max-width trick */
+.logo-word-wrap {
+  overflow: hidden;
+  max-width: 0;
+  /* Slight left padding so text doesn't kiss the slash */
+  padding-left: 0;
+  transition: max-width 0.6s cubic-bezier(0.65, 0, 0.35, 1),
+              padding-left 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.prodvo-logo.expanded .logo-word-wrap {
+  max-width: 600px; /* wider than any Prodvo text */
+  padding-left: 0.22em;
+}
+
+/* "Prodvo" text — fades in slightly delayed */
+.logo-word {
+  display: block;
+  color: var(--ink);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity   0.35s ease 0.2s,
+              transform 0.4s  cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+}
+.prodvo-logo.expanded .logo-word {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* The dot — always visible, slides right as gap opens */
+.logo-dot {
+  color: var(--orange);
+  flex-shrink: 0;
+  /* Base position: tight after P/ */
+  /* It travels right naturally because the word-wrap expands flex */
+  letter-spacing: 0;
+  /* Optical — nudge it down just a hair to sit at true baseline */
+  position: relative;
+  top: 0;
+}
+
+/* Size presets */
+.prodvo-logo.sz-xl  { font-size: 4rem;   letter-spacing: -0.05em; }
+.prodvo-logo.sz-lg  { font-size: 2.8rem; letter-spacing: -0.048em; }
+.prodvo-logo.sz-md  { font-size: 2rem;   letter-spacing: -0.044em; }
+.prodvo-logo.sz-sm  { font-size: 1.3rem; letter-spacing: -0.038em; }
+.prodvo-logo.sz-nav { font-size: 1.25rem; letter-spacing: -0.038em; }
+.prodvo-logo.sz-xs  { font-size: 0.95rem; letter-spacing: -0.03em; }
+
+/* Color variants */
+.prodvo-logo.on-dark .logo-word { color: #fff; }
+.prodvo-logo.on-dark .logo-prefix { color: var(--soft); }
+.prodvo-logo.on-dark .logo-dot { color: var(--soft); }
+
+.prodvo-logo.on-orange .logo-word { color: #fff; }
+.prodvo-logo.on-orange .logo-prefix { color: rgba(255,255,255,0.8); }
+.prodvo-logo.on-orange .logo-dot { color: rgba(255,255,255,0.8); }
+
+/* ==============================================
+   STEP VISUALIZER (for the showcase panel)
+============================================== */
+.step-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  align-items: flex-start;
+}
+.step-row {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+.step-label {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.6rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--ink3); min-width: 40px; text-align: right;
+}
+
+/* Static frozen states for the step visualizer */
+.logo-frozen {
+  display: inline-flex;
+  align-items: baseline;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-weight: 900;
+  white-space: nowrap;
+}
+.frozen-prefix { color: var(--orange); letter-spacing: -0.05em; }
+.frozen-dot    { color: var(--orange); letter-spacing: 0; }
+.frozen-gap {
+  display: inline-block;
+  border-bottom: 1.5px dashed var(--border);
+  vertical-align: baseline;
+  position: relative;
+  top: -0.12em;
+}
+.frozen-word {
+  display: inline-block;
+  overflow: hidden;
+  color: var(--ink);
+  letter-spacing: -0.048em;
+}
+.frozen-word.partial {
+  /* Shows word at half opacity to indicate "emerging" */
+  opacity: 0.3;
+}
+
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- PAGE HEADER -->
+  <div style="margin-bottom:4rem;">
+    <div class="sec-eyebrow">Brand Identity</div>
+    <h1 class="sec-heading" style="margin-bottom:0.35rem;">Prodvo — Logo Animation</h1>
+    <p style="font-size:0.87rem;color:var(--ink3);max-width:480px;line-height:1.65;">
+      The dot <strong style="color:var(--ink);">.</strong> is always present — it slides right as <strong style="color:var(--ink);">Prodvo</strong> grows into the space it vacates.
+    </p>
+  </div>
+
+
+  <!-- ============================================================
+       SECTION 1 — THE ANIMATION CONCEPT VISUALIZED
+  ============================================================ -->
+
+  <div class="sec-eyebrow">01 — How it works</div>
+  <h2 class="sec-heading">The morph — step by step</h2>
+
+  <div class="panel">
+    <div class="panel-bar"><span>Freeze-frame breakdown of the animation</span></div>
+    <div class="panel-body" style="justify-content:flex-start;flex-direction:column;gap:0;padding:3rem 3.5rem;">
+
+      <div class="step-demo">
+
+        <!-- Step A: collapsed P/. -->
+        <div class="step-row">
+          <span class="step-label">Start</span>
+          <div class="logo-frozen" style="font-size:2.8rem;">
+            <span class="frozen-prefix">P/</span><span class="frozen-dot">.</span>
+          </div>
+        </div>
+
+        <!-- Step B: dot begins to move, gap opens, word ghosting in -->
+        <div class="step-row">
+          <span class="step-label" style="color:var(--soft);">→</span>
+          <div class="logo-frozen" style="font-size:2.8rem;">
+            <span class="frozen-prefix">P/</span>
+            <span class="frozen-gap" style="width:2.8rem;margin:0 0.1em;"></span>
+            <span class="frozen-word partial">Prod</span>
+            <span class="frozen-dot">.</span>
+          </div>
+        </div>
+
+        <!-- Step C: mostly expanded -->
+        <div class="step-row">
+          <span class="step-label" style="color:var(--soft);">→</span>
+          <div class="logo-frozen" style="font-size:2.8rem;">
+            <span class="frozen-prefix">P/</span>
+            <span class="frozen-gap" style="width:0.22em;margin:0;"></span>
+            <span class="frozen-word" style="opacity:0.7;">Prodvo</span>
+            <span class="frozen-dot">.</span>
+          </div>
+        </div>
+
+        <!-- Step D: fully expanded -->
+        <div class="step-row">
+          <span class="step-label">End</span>
+          <div class="logo-frozen" style="font-size:2.8rem;letter-spacing:-0.048em;">
+            <span class="frozen-prefix">P/</span>
+            <span style="display:inline-block;width:0.22em;"></span>
+            <span class="frozen-word">Prodvo</span>
+            <span class="frozen-dot">.</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       SECTION 2 — LIVE ANIMATION
+  ============================================================ -->
+
+  <div class="sec-eyebrow" style="margin-top:3.5rem;">02 — Live</div>
+  <h2 class="sec-heading">Click to trigger · click to collapse</h2>
+
+  <!-- WHITE BG -->
+  <div class="panel">
+    <div class="panel-bar">
+      <span>On white — primary</span>
+      <span>Click to toggle</span>
+    </div>
+    <div class="panel-body" style="flex-direction:column;gap:2.5rem;padding:4rem 3rem;">
+
+      <div class="prodvo-logo sz-xl" id="logo-a">
+        <span class="logo-prefix">P/</span>
+        <div class="logo-word-wrap"><span class="logo-word">Prodvo</span></div>
+        <span class="logo-dot">.</span>
+      </div>
+
+      <div style="display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;">
+        <button class="replay-btn" data-target="logo-a" data-action="expand">Expand →</button>
+        <button class="replay-btn" data-target="logo-a" data-action="collapse">← Collapse</button>
+        <button class="replay-btn" data-target="logo-a" data-action="morph">↺ Morph</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DARK BG -->
+  <div class="panel">
+    <div class="panel-bar"><span>On dark</span></div>
+    <div class="panel-body dark" style="flex-direction:column;gap:2.5rem;padding:4rem 3rem;">
+
+      <div class="prodvo-logo sz-xl on-dark" id="logo-b">
+        <span class="logo-prefix">P/</span>
+        <div class="logo-word-wrap"><span class="logo-word">Prodvo</span></div>
+        <span class="logo-dot">.</span>
+      </div>
+
+      <div style="display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;">
+        <button class="replay-btn lt" data-target="logo-b" data-action="expand">Expand →</button>
+        <button class="replay-btn lt" data-target="logo-b" data-action="collapse">← Collapse</button>
+        <button class="replay-btn lt" data-target="logo-b" data-action="morph">↺ Morph</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ORANGE BG -->
+  <div class="panel">
+    <div class="panel-bar"><span>On orange</span></div>
+    <div class="panel-body orange" style="flex-direction:column;gap:2.5rem;padding:4rem 3rem;">
+
+      <div class="prodvo-logo sz-xl on-orange" id="logo-c">
+        <span class="logo-prefix">P/</span>
+        <div class="logo-word-wrap"><span class="logo-word">Prodvo</span></div>
+        <span class="logo-dot">.</span>
+      </div>
+
+      <div style="display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;">
+        <button class="replay-btn lt" data-target="logo-c" data-action="expand">Expand →</button>
+        <button class="replay-btn lt" data-target="logo-c" data-action="collapse">← Collapse</button>
+        <button class="replay-btn lt" data-target="logo-c" data-action="morph">↺ Morph</button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <div class="divider"></div>
+
+
+  <!-- ============================================================
+       SECTION 3 — ALL SIZES ANIMATED
+  ============================================================ -->
+
+  <div class="sec-eyebrow">03 — All sizes</div>
+  <h2 class="sec-heading">From nav to hero</h2>
+
+  <div class="panel">
+    <div class="panel-bar">
+      <span>Click any logo to toggle</span>
+    </div>
+    <div class="panel-body" style="flex-direction:column;align-items:flex-start;gap:2.2rem;padding:3rem 3.5rem;">
+
+      <div>
+        <div class="prodvo-logo sz-xl expanded" id="sz-xl">
+          <span class="logo-prefix">P/</span>
+          <div class="logo-word-wrap"><span class="logo-word">Prodvo</span></div>
+          <span class="logo-dot">.</span>
+        </div>
+        <span style="display:block;margin-top:0.5rem;font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:var(--ink3);text-transform:uppercase;letter-spacing:0.09em;">Hero · 64px</span>
+      </div>
+
+      <div>
+        <div class="prodvo-logo sz-lg expanded" id="sz-lg">
+          <span class="logo-prefix">P/</span>
+          <div class="logo-word-wrap"><span class="logo-word">Prodvo</span></div>
+          <span class="logo-dot">.</span>
+        </div>
+        <span style="display:block;margin-top:0.5rem;font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:var(--ink3);text-transform:uppercase;letter-spacing:0.09em;">Section · 45px</span>
+      </div>
+
+      <div>
+        <div class="prodvo-logo sz-md expanded" id="sz-md">
+          <span class="logo-prefix">P/</span>
+          <div class="logo-word-wrap"><span class="logo-word">Prodvo</span></div>
+          <span class="logo-dot">.</span>
+        </div>
+        <span style="display:block;margin-top:0.5rem;font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:var(--ink3);text-transform:uppercase;letter-spacing:0.09em;">Card · 32px</span>
+      </div>
+
+      <div>
+        <div class="prodvo-logo sz-nav expanded" id="sz-nav">
+          <span class="logo-prefix">P/</span>
+          <div class="logo-word-wrap"><span class="logo-word">Prodvo</span></div>
+          <span class="logo-dot">.</span>
+        </div>
+        <span style="display:block;margin-top:0.5rem;font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:var(--ink3);text-transform:uppercase;letter-spacing:0.09em;">Nav · 20px</span>
+      </div>
+
+      <div>
+        <div class="prodvo-logo sz-xs expanded" id="sz-xs">
+          <span class="logo-prefix">P/</span>
+          <div class="logo-word-wrap"><span class="logo-word">Prodvo</span></div>
+          <span class="logo-dot">.</span>
+        </div>
+        <span style="display:block;margin-top:0.5rem;font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:var(--ink3);text-transform:uppercase;letter-spacing:0.09em;">Footer · 15px</span>
+      </div>
+
+    </div>
+  </div>
+
+
+  <div class="divider"></div>
+
+
+  <!-- ============================================================
+       SECTION 4 — NAV BAR DEMO
+       Shows the real use-case: on scroll, collapse to P/.
+       Unscroll / click to expand back to P/ Prodvo.
+  ============================================================ -->
+
+  <div class="sec-eyebrow">04 — In context</div>
+  <h2 class="sec-heading">Nav bar — scroll to collapse</h2>
+
+  <div class="panel" style="overflow:visible;">
+    <div class="panel-bar">
+      <span>Scroll down on the demo viewport · logo collapses as nav scrolls</span>
+    </div>
+
+    <!-- Sticky nav preview -->
+    <div style="position:relative;height:320px;overflow:hidden;background:var(--surface);border-top:1px solid var(--border);">
+
+      <!-- The sticky nav itself -->
+      <div id="demo-nav" style="
+        position:sticky;top:0;z-index:10;
+        background:rgba(255,255,255,0.96);
+        backdrop-filter:blur(14px);
+        border-bottom:1px solid transparent;
+        padding:0 2rem;
+        display:flex;align-items:center;justify-content:space-between;
+        height:60px;
+        transition:border-color 0.3s;
+      ">
+        <div class="prodvo-logo sz-nav expanded" id="logo-nav">
+          <span class="logo-prefix">P/</span>
+          <div class="logo-word-wrap"><span class="logo-word">Prodvo</span></div>
+          <span class="logo-dot">.</span>
+        </div>
+        <div style="display:flex;gap:2rem;">
+          <span style="font-size:0.84rem;font-weight:500;color:var(--ink3);">Features</span>
+          <span style="font-size:0.84rem;font-weight:500;color:var(--ink3);">Pricing</span>
+          <span style="font-size:0.84rem;font-weight:500;color:var(--ink3);">Docs</span>
+        </div>
+        <div style="font-size:0.85rem;font-weight:700;color:#fff;background:var(--orange);padding:0.45rem 1.1rem;border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;">Start building →</div>
+      </div>
+
+      <!-- Scrollable content inside demo -->
+      <div id="demo-scroll" style="height:320px;overflow-y:auto;padding:2rem;">
+        <div style="height:600px;display:flex;flex-direction:column;gap:1rem;padding-top:1rem;">
+          <p style="font-size:0.88rem;color:var(--ink3);font-family:'JetBrains Mono',monospace;">↕ Scroll here to trigger the logo collapse</p>
+          <div style="height:1px;background:var(--border);"></div>
+          <p style="font-size:0.88rem;color:var(--ink3);line-height:1.65;">When the page scrolls past ~40px, the logo collapses from <strong style="color:var(--ink);">P/ Prodvo.</strong> to <strong style="color:var(--ink);">P/.</strong></p>
+          <p style="font-size:0.88rem;color:var(--ink3);line-height:1.65;">Scroll back up and it expands again.</p>
+          <p style="font-size:0.88rem;color:var(--ink3);line-height:1.65;">The dot never disappears — it just travels.</p>
+          <div style="height:400px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Instructions -->
+    <div style="padding:0.85rem 1.4rem;background:var(--surface);border-top:1px solid var(--border);">
+      <p style="font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:var(--ink3);letter-spacing:0.04em;">
+        Scroll the viewport above · logo collapses at 40px scroll depth · expands on return
+      </p>
+    </div>
+
+  </div>
+
+
+  <div class="divider"></div>
+
+
+  <!-- ============================================================
+       SECTION 5 — TIMING REFERENCE
+  ============================================================ -->
+
+  <div class="sec-eyebrow">05 — Timing</div>
+  <h2 class="sec-heading">Animation spec</h2>
+
+  <div class="panel">
+    <div class="panel-bar"><span>Duration and easing values</span></div>
+    <div style="padding:0;">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--border);">
+        <div style="padding:1.4rem;border-right:1px solid var(--border);">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.62rem;font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--orange);margin-bottom:0.5rem;">Container expand</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;font-weight:600;color:var(--ink);margin-bottom:0.25rem;">0.6s</div>
+          <div style="font-size:0.8rem;color:var(--ink3);">cubic-bezier(0.65, 0, 0.35, 1)</div>
+          <div style="font-size:0.75rem;color:var(--ink3);margin-top:0.3rem;font-style:italic;">Ease in-out, slightly heavy end</div>
+        </div>
+        <div style="padding:1.4rem;border-right:1px solid var(--border);">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.62rem;font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--orange);margin-bottom:0.5rem;">Text fade + slide</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;font-weight:600;color:var(--ink);margin-bottom:0.25rem;">0.35–0.4s · delay 0.2s</div>
+          <div style="font-size:0.8rem;color:var(--ink3);">ease + cubic-bezier(0.4, 0, 0.2, 1)</div>
+          <div style="font-size:0.75rem;color:var(--ink3);margin-top:0.3rem;font-style:italic;">Starts after container is 1/3 open</div>
+        </div>
+        <div style="padding:1.4rem;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.62rem;font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--orange);margin-bottom:0.5rem;">Collapse</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;font-weight:600;color:var(--ink);margin-bottom:0.25rem;">0.45s</div>
+          <div style="font-size:0.8rem;color:var(--ink3);">cubic-bezier(0.65, 0, 0.35, 1)</div>
+          <div style="font-size:0.75rem;color:var(--ink3);margin-top:0.3rem;font-style:italic;">Slightly faster than expand</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<script>
+// ============================================================
+//  Core animation controller
+// ============================================================
+
+function expandLogo(el) {
+  el.classList.add('expanded');
+}
+function collapseLogo(el) {
+  el.classList.remove('expanded');
+}
+function morphLogo(el) {
+  // Collapse instantly (no transition), then expand with animation
+  el.style.transition = 'none';
+  el.querySelectorAll('.logo-word-wrap').forEach(w => {
+    w.style.transition = 'none';
+    w.style.maxWidth = '0';
+    w.style.paddingLeft = '0';
+  });
+  el.querySelectorAll('.logo-word').forEach(w => {
+    w.style.transition = 'none';
+    w.style.opacity = '0';
+    w.style.transform = 'translateX(-6px)';
+  });
+  el.classList.remove('expanded');
+
+  // Re-enable transitions after next frame
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      el.querySelectorAll('.logo-word-wrap').forEach(w => {
+        w.style.transition = '';
+        w.style.maxWidth = '';
+        w.style.paddingLeft = '';
+      });
+      el.querySelectorAll('.logo-word').forEach(w => {
+        w.style.transition = '';
+        w.style.opacity = '';
+        w.style.transform = '';
+      });
+      el.style.transition = '';
+      el.classList.add('expanded');
+    });
+  });
+}
+
+// ---- Wire up control buttons ----
+document.querySelectorAll('[data-target]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = document.getElementById(btn.dataset.target);
+    const action = btn.dataset.action;
+    if (!target) return;
+    if (action === 'expand')   expandLogo(target);
+    if (action === 'collapse') collapseLogo(target);
+    if (action === 'morph')    morphLogo(target);
+  });
+});
+
+// ---- Click-to-toggle on all logos ----
+document.querySelectorAll('.prodvo-logo').forEach(logo => {
+  // Skip buttons handled above
+  if (['logo-a','logo-b','logo-c'].includes(logo.id)) return;
+  logo.addEventListener('click', () => {
+    if (logo.classList.contains('expanded')) {
+      collapseLogo(logo);
+    } else {
+      expandLogo(logo);
+    }
+  });
+});
+
+// ---- Auto-expand main logos on load with stagger ----
+const mainLogos = ['logo-a','logo-b','logo-c'];
+mainLogos.forEach((id, i) => {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.remove('expanded');
+  setTimeout(() => morphLogo(el), 400 + i * 180);
+});
+
+// ---- Nav scroll demo ----
+const demoScroll = document.getElementById('demo-scroll');
+const logoNav    = document.getElementById('logo-nav');
+const demoNav    = document.getElementById('demo-nav');
+
+if (demoScroll && logoNav) {
+  let navCollapsed = false;
+  demoScroll.addEventListener('scroll', () => {
+    const scrolled = demoScroll.scrollTop > 40;
+    if (scrolled && !navCollapsed) {
+      collapseLogo(logoNav);
+      demoNav.style.borderBottomColor = '#e4e4e7';
+      navCollapsed = true;
+    } else if (!scrolled && navCollapsed) {
+      expandLogo(logoNav);
+      demoNav.style.borderBottomColor = 'transparent';
+      navCollapsed = false;
+    }
+  }, { passive: true });
+}
+
+// ---- Reduced motion: disable all transitions ----
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  document.querySelectorAll('.logo-word-wrap, .logo-word').forEach(el => {
+    el.style.transition = 'none';
+  });
+}
+</script>
+
+</body>
+</html>

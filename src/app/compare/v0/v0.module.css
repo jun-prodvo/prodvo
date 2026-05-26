@@ -1,0 +1,755 @@
+/* ==========================================================================
+   PRODVO vs V0 COMPARISON PAGE - REVAMPED
+   - Dual-path visual in hero
+   - Workflow timeline like Lovable
+   - Strength cards with winner badges
+   - Scenario cards like Replit
+   - Visual bar chart for team scaling
+   - Stats block in bottom line
+   ========================================================================== */
+
+/* ─────────────────────────────────────────────────────────────────────────
+   HERO
+   ───────────────────────────────────────────────────────────────────────── */
+.hero {
+  padding: 8rem 1.5rem 5rem;
+  background: linear-gradient(180deg, #fafafa 0%, #fff 100%);
+}
+
+.heroInner {
+  max-width: 48rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.35rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #f97316;
+  background: #fff7ed;
+  border-radius: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.heroTitle {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: #0a0a0a;
+  margin-bottom: 1.5rem;
+}
+
+.heroSub {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: #525252;
+  max-width: 36rem;
+  margin: 0 auto 2.5rem;
+}
+
+.heroCtas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 4rem;
+}
+
+/* Dual-path visual */
+.dualVisual {
+  max-width: 56rem;
+  margin: 0 auto;
+  display: flex;
+  align-items: stretch;
+  gap: 1.5rem;
+}
+
+.pathCard {
+  flex: 1;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.pathCardHighlight {
+  border-color: #f97316;
+  box-shadow: 0 0 0 1px #f97316;
+}
+
+.pathHeader {
+  margin-bottom: 1rem;
+}
+
+.pathLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #737373;
+}
+
+.pathCardHighlight .pathLabel {
+  color: #f97316;
+}
+
+.pathSteps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.pathStep {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #404040;
+  background: #f5f5f5;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.375rem;
+}
+
+.pathCardHighlight .pathStep {
+  background: #fff7ed;
+  color: #ea580c;
+}
+
+.pathArrow {
+  color: #d4d4d4;
+  font-size: 0.875rem;
+}
+
+.pathNote {
+  font-size: 0.75rem;
+  color: #737373;
+}
+
+.pathCardHighlight .pathNote {
+  color: #f97316;
+  font-weight: 500;
+}
+
+.pathDivider {
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem;
+}
+
+.pathDivider span {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #a3a3a3;
+}
+
+@media (max-width: 640px) {
+  .dualVisual {
+    flex-direction: column;
+  }
+  
+  .pathDivider {
+    justify-content: center;
+    padding: 0.5rem 0;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   SECTIONS
+   ───────────────────────────────────────────────────────────────────────── */
+.section {
+  padding: 5rem 1.5rem;
+}
+
+.sectionAlt {
+  padding: 5rem 1.5rem;
+  background: #fafafa;
+}
+
+.container {
+  max-width: 72rem;
+  margin: 0 auto;
+}
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+.label {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #f97316;
+  margin-bottom: 0.75rem;
+}
+
+.sectionTitle {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 700;
+  color: #0a0a0a;
+  margin-bottom: 1rem;
+}
+
+.sectionSub {
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: #525252;
+  max-width: 36rem;
+  margin: 0 auto;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   WORKFLOW TIMELINE (like Lovable)
+   ───────────────────────────────────────────────────────────────────────── */
+.workflowTimeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.workflowItem {
+  display: flex;
+  gap: 2rem;
+}
+
+.workflowMarker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 3rem;
+  flex-shrink: 0;
+}
+
+.workflowPhase {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #f97316;
+  background: #fff7ed;
+  border-radius: 50%;
+  border: 2px solid #f97316;
+}
+
+.workflowLine {
+  width: 2px;
+  flex: 1;
+  min-height: 2rem;
+  background: linear-gradient(180deg, #f97316 0%, #e5e5e5 100%);
+}
+
+.workflowContent {
+  flex: 1;
+  padding-bottom: 2.5rem;
+}
+
+.workflowItem:last-child .workflowContent {
+  padding-bottom: 0;
+}
+
+.workflowName {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0a0a0a;
+  margin-bottom: 1rem;
+}
+
+.workflowCompare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.workflowBox {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  position: relative;
+}
+
+.workflowBox.leads {
+  border-color: #f97316;
+  box-shadow: 0 0 0 1px rgba(249, 115, 22, 0.1);
+}
+
+.workflowBrand {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #a3a3a3;
+  margin-bottom: 0.5rem;
+}
+
+.workflowBox strong {
+  display: block;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #0a0a0a;
+  margin-bottom: 0.375rem;
+}
+
+.workflowBox p {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #525252;
+  margin: 0;
+}
+
+.leadsBadge,
+.leadsBadgeProdvo {
+  position: absolute;
+  top: -0.5rem;
+  right: 0.75rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.leadsBadge {
+  background: #f5f5f5;
+  color: #525252;
+}
+
+.leadsBadgeProdvo {
+  background: #fff7ed;
+  color: #f97316;
+}
+
+@media (max-width: 768px) {
+  .workflowItem {
+    gap: 1rem;
+  }
+  
+  .workflowCompare {
+    grid-template-columns: 1fr;
+  }
+  
+  .workflowMarker {
+    width: 2.5rem;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   STRENGTH CARDS (like Lovable safety cards)
+   ───────────────────────────────────────────────────────────────────────── */
+.strengthGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: 1.5rem;
+}
+
+.strengthCard {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 1rem;
+  padding: 1.75rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.strengthCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.strengthCard.prodvoWins {
+  border-color: #f97316;
+}
+
+.strengthCard.v0Wins {
+  border-color: #a3a3a3;
+}
+
+.strengthHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.strengthHeader h3 {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: #0a0a0a;
+  margin: 0;
+}
+
+.winnerTagProdvo,
+.winnerTagV0 {
+  flex-shrink: 0;
+  font-size: 0.625rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.25rem 0.625rem;
+  border-radius: 1rem;
+}
+
+.winnerTagProdvo {
+  background: #fff7ed;
+  color: #f97316;
+}
+
+.winnerTagV0 {
+  background: #f5f5f5;
+  color: #525252;
+}
+
+.strengthBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.strengthRow {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.strengthLabel {
+  flex-shrink: 0;
+  width: 4rem;
+  font-weight: 600;
+  color: #737373;
+}
+
+.strengthRow span:last-child {
+  color: #404040;
+}
+
+.strengthDetail {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: #737373;
+  margin: 0;
+  padding-top: 0.75rem;
+  border-top: 1px solid #f0f0f0;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   SCENARIO CARDS (like Replit)
+   ───────────────────────────────────────────────────────────────────────── */
+.scenarioGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1.5rem;
+}
+
+.scenarioCard {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 1rem;
+  padding: 1.75rem;
+}
+
+.scenarioCard.scenarioProdvo {
+  border-color: #f97316;
+}
+
+.scenarioCard.scenarioV0 {
+  border-color: #a3a3a3;
+}
+
+.scenarioTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0a0a0a;
+  margin: 0 0 1.25rem;
+}
+
+.scenarioTimes {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.scenarioTime {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.timeLabel {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #a3a3a3;
+}
+
+.timeValue {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #0a0a0a;
+}
+
+.scenarioWinner {
+  margin-bottom: 0.75rem;
+}
+
+.winnerProdvo,
+.winnerV0 {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.25rem 0.625rem;
+  border-radius: 1rem;
+}
+
+.winnerProdvo {
+  background: #fff7ed;
+  color: #f97316;
+}
+
+.winnerV0 {
+  background: #f5f5f5;
+  color: #525252;
+}
+
+.scenarioWhy {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #525252;
+  margin: 0;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   TEAM SCALING BAR CHART
+   ───────────────────────────────────────────────────────────────────────── */
+.scalingChart {
+  max-width: 48rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.scalingRow {
+  display: grid;
+  grid-template-columns: 6rem 1fr 12rem;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.scalingSize {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #0a0a0a;
+}
+
+.scalingBars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.barGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.bar {
+  height: 1.5rem;
+  border-radius: 0.375rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 0.75rem;
+  min-width: 3rem;
+  transition: width 0.3s ease;
+}
+
+.bar span {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.barProdvo {
+  background: #fdba74;
+}
+
+.barProdvo.barWinner {
+  background: #f97316;
+}
+
+.barV0 {
+  background: #d4d4d4;
+}
+
+.barV0.barWinner {
+  background: #737373;
+}
+
+.barLabel {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: #737373;
+  width: 3.5rem;
+}
+
+.scalingNote {
+  font-size: 0.8125rem;
+  color: #525252;
+  line-height: 1.4;
+}
+
+.scalingInsight {
+  max-width: 36rem;
+  margin: 2rem auto 0;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: #525252;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .scalingRow {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  
+  .scalingNote {
+    text-align: center;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   BOTTOM LINE (with stats like Replit)
+   ───────────────────────────────────────────────────────────────────────── */
+.bottomLine {
+  max-width: 56rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.bottomTitle {
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  font-weight: 700;
+  color: #0a0a0a;
+  margin-bottom: 1rem;
+}
+
+.bottomBody {
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: #525252;
+  max-width: 40rem;
+  margin: 0 auto 2.5rem;
+}
+
+.bottomGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+  text-align: left;
+}
+
+.bottomCard {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 1rem;
+  padding: 2rem;
+}
+
+.bottomCardHighlight {
+  border-color: #f97316;
+  box-shadow: 0 0 0 1px #f97316;
+}
+
+.bottomCard h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #0a0a0a;
+  margin: 0 0 1.25rem;
+}
+
+.bottomCardHighlight h3 {
+  color: #f97316;
+}
+
+.bottomCard ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.bottomCard li {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: #525252;
+  padding-left: 1.25rem;
+  position: relative;
+}
+
+.bottomCard li::before {
+  content: "-";
+  position: absolute;
+  left: 0;
+  color: #d4d4d4;
+}
+
+.bottomCardHighlight li::before {
+  color: #f97316;
+}
+
+.bottomStats {
+  display: flex;
+  justify-content: center;
+  gap: 4rem;
+  flex-wrap: wrap;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.statValue {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #f97316;
+}
+
+.statLabel {
+  font-size: 0.8125rem;
+  color: #737373;
+}
+
+@media (max-width: 768px) {
+  .bottomGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .bottomStats {
+    gap: 2rem;
+  }
+}

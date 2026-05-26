@@ -1,0 +1,1737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>How Prodvo Works — Workflow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700;1,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+
+/* ============================================================
+   ROOT & RESET
+============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+
+:root {
+  --white:              #ffffff;
+  --fire-orange:        #f97316;
+  --fire-orange-dark:   #ea580c;
+  --fire-orange-deep:   #c2410c;
+  --fire-orange-darker: #9a3412;
+  --fire-orange-soft:   #fdba74;
+  --fire-orange-pale:   #fff7ed;
+
+  --ink:        #18181b;
+  --ink-2:      #3f3f46;
+  --ink-3:      #71717a;
+  --border:     #e4e4e7;
+  --surface:    #fafafa;
+  --cool:       #f4f4f5;
+
+  --font-brand: "Plus Jakarta Sans", "Inter", sans-serif;
+  --font-body:  "Inter", -apple-system, sans-serif;
+  --font-mono:  "JetBrains Mono", monospace;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--white);
+  color: var(--ink);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; font-family: inherit; border: none; background: none; padding: 0; }
+
+.container {
+  width: min(1120px, calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+/* ============================================================
+   ACCESSIBILITY
+============================================================ */
+.skip-link {
+  position: absolute; top: -48px; left: 0;
+  background: var(--fire-orange); color: #fff;
+  padding: 10px 18px; z-index: 9999;
+  font-size: 0.875rem; font-weight: 600; transition: top 0.2s;
+}
+.skip-link:focus { top: 0; }
+:focus-visible { outline: 2px solid var(--fire-orange); outline-offset: 3px; border-radius: 4px; }
+:focus:not(:focus-visible) { outline: none; }
+
+/* ============================================================
+   ANNOUNCE
+============================================================ */
+.announce {
+  background: var(--fire-orange); text-align: center;
+  padding: 0.55rem 1rem;
+  font-family: var(--font-brand); font-size: 0.8rem; font-weight: 700;
+  color: var(--white);
+}
+.announce a { text-decoration: underline; color: var(--white); opacity: 0.82; margin-left: 0.5rem; }
+.announce a:hover { opacity: 1; }
+
+/* ============================================================
+   NAV
+============================================================ */
+.nav {
+  position: sticky; top: 0; z-index: 200;
+  background: rgba(255,255,255,0.93);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s;
+}
+.nav.scrolled { border-color: var(--border); }
+.nav-inner {
+  display: flex; align-items: center;
+  justify-content: space-between; height: 62px;
+}
+.nav-logo {
+  font-family: var(--font-brand); font-weight: 900;
+  font-size: 1.3rem; letter-spacing: -0.04em;
+}
+.nav-logo em { color: var(--fire-orange); font-style: normal; }
+.nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+.nav-links a { font-size: 0.875rem; font-weight: 500; color: var(--ink-2); transition: color 0.2s; }
+.nav-links a:hover { color: var(--ink); }
+.nav-links a.active { color: var(--fire-orange); font-weight: 600; }
+.nav-right { display: flex; align-items: center; gap: 0.75rem; }
+.btn-ghost { font-size: 0.875rem; font-weight: 600; color: var(--ink-2); padding: 0.45rem 1rem; border-radius: 8px; transition: background 0.2s; }
+.btn-ghost:hover { background: var(--cool); }
+.btn-nav { font-family: var(--font-brand); font-size: 0.875rem; font-weight: 700; color: var(--white); background: var(--fire-orange); padding: 0.5rem 1.15rem; border-radius: 8px; transition: background 0.2s, transform 0.15s; }
+.btn-nav:hover { background: var(--fire-orange-dark); transform: translateY(-1px); }
+.nav-burger { display: none; flex-direction: column; gap: 4px; padding: 6px; }
+.nav-burger span { display: block; width: 22px; height: 2px; background: var(--ink); border-radius: 2px; }
+
+/* ============================================================
+   HERO — PROMPT ↔ RESPONSE VISUALIZATION
+============================================================ */
+.hero {
+  padding: clamp(4.5rem, 8vw, 7.5rem) 0 0;
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+  position: relative;
+}
+
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(var(--border) 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.hero-top {
+  position: relative; z-index: 1;
+  max-width: 780px;
+  margin-bottom: 3.5rem;
+}
+
+.hero-eyebrow {
+  font-family: var(--font-mono); font-size: 0.72rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--fire-orange); margin-bottom: 1.4rem;
+}
+
+.hero-h1 {
+  font-family: var(--font-brand);
+  font-size: clamp(2.8rem, 6vw, 5.5rem);
+  font-weight: 900; line-height: 1.01;
+  letter-spacing: -0.047em; color: var(--ink);
+  margin-bottom: 1.4rem;
+}
+.hero-h1 .accent { color: var(--fire-orange); }
+
+.hero-sub {
+  font-size: 1.05rem; color: var(--ink-3);
+  line-height: 1.7; max-width: 520px;
+}
+
+/* Hero bottom: the prompt/response visualization */
+.hero-visual {
+  position: relative; z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-bottom: none;
+  border-radius: 18px 18px 0 0;
+  overflow: hidden;
+  margin-top: 1rem;
+}
+
+.hv-col {
+  padding: 2rem;
+}
+.hv-col.prompt-col {
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+}
+.hv-col.response-col {
+  background: var(--white);
+}
+
+.hv-divider {
+  width: 1px; background: var(--border);
+  display: flex; align-items: center; justify-content: center;
+}
+.hv-divider-badge {
+  background: var(--fire-orange);
+  color: var(--white);
+  font-family: var(--font-brand); font-size: 0.68rem; font-weight: 800;
+  padding: 0.35rem 0.6rem; border-radius: 100px;
+  white-space: nowrap; letter-spacing: 0.05em;
+  writing-mode: horizontal-tb;
+  box-shadow: 0 2px 8px rgba(249,115,22,0.3);
+}
+
+.hv-label {
+  font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  margin-bottom: 1.2rem;
+}
+.prompt-col .hv-label { color: var(--ink-3); }
+.response-col .hv-label { color: var(--fire-orange); }
+
+/* Prompt lines */
+.prompt-line {
+  font-family: var(--font-brand); font-size: 1.05rem; font-weight: 700;
+  color: var(--ink); line-height: 1.4;
+  padding: 0.9rem 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  background: var(--white);
+  margin-bottom: 0.75rem;
+  transition: border-color 0.2s;
+}
+.prompt-line.active {
+  border-color: var(--fire-orange);
+  box-shadow: 0 0 0 3px rgba(249,115,22,0.1);
+}
+.prompt-line:last-child { margin-bottom: 0; }
+
+/* Response items */
+.resp-item {
+  display: flex; align-items: flex-start; gap: 0.75rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.resp-item:last-child { border-bottom: none; }
+.resp-marker {
+  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600;
+  color: var(--fire-orange); flex-shrink: 0; line-height: 1.8;
+}
+.resp-text {
+  font-size: 0.875rem; font-weight: 500; color: var(--ink-2); line-height: 1.55;
+}
+.resp-text strong { color: var(--ink); font-weight: 700; display: block; }
+
+/* ============================================================
+   THE LOOP — CSS orbital diagram
+============================================================ */
+.the-loop {
+  padding: clamp(5rem, 8vw, 8rem) 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.loop-inner {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 5rem;
+  align-items: center;
+}
+
+.loop-text {}
+.loop-eyebrow {
+  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--fire-orange); margin-bottom: 0.8rem;
+}
+.loop-title {
+  font-family: var(--font-brand);
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 800; line-height: 1.1;
+  letter-spacing: -0.035em; color: var(--ink);
+  margin-bottom: 1.2rem;
+}
+.loop-sub {
+  font-size: 1rem; color: var(--ink-3); line-height: 1.68;
+  margin-bottom: 2rem; max-width: 420px;
+}
+
+.loop-phase-list { display: flex; flex-direction: column; gap: 0; }
+.lp-item {
+  display: grid;
+  grid-template-columns: 2.2rem 1fr;
+  gap: 0.75rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.lp-item:last-child { border-bottom: none; }
+.lp-item:hover .lp-num { color: var(--fire-orange); }
+.lp-item.active .lp-num { color: var(--fire-orange); }
+.lp-item.active .lp-name { color: var(--fire-orange-dark); }
+
+.lp-num {
+  font-family: var(--font-mono); font-size: 0.72rem; font-weight: 600;
+  color: var(--ink-3); line-height: 1.9;
+  transition: color 0.2s;
+}
+.lp-body {}
+.lp-name {
+  font-family: var(--font-brand); font-size: 0.95rem; font-weight: 800;
+  color: var(--ink); line-height: 1.3; margin-bottom: 0.2rem;
+  transition: color 0.2s;
+}
+.lp-desc {
+  font-size: 0.82rem; color: var(--ink-3); line-height: 1.55;
+}
+
+/* Orbital diagram — pure CSS */
+.loop-diagram {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  max-width: 480px;
+  justify-self: center;
+}
+
+.orbit-ring {
+  position: absolute;
+  inset: 10%;
+  border-radius: 50%;
+  border: 1.5px dashed var(--border);
+}
+
+/* Center core */
+.orbit-core {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: var(--fire-orange);
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column;
+  box-shadow: 0 0 0 8px rgba(249,115,22,0.12), 0 0 0 16px rgba(249,115,22,0.05);
+  z-index: 5;
+}
+.orbit-core-label {
+  font-family: var(--font-brand); font-size: 0.68rem; font-weight: 800;
+  color: var(--white); text-align: center; text-transform: uppercase;
+  letter-spacing: 0.06em; line-height: 1.2;
+}
+
+/* Orbital nodes — positioned around the ring */
+.orbit-node {
+  position: absolute;
+  width: 80px; height: 80px;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  z-index: 4;
+}
+
+/* Node positions — 5 evenly spaced (72° apart), starting at top */
+/* top: 50% + r*sin(angle), left: 50% + r*cos(angle), r=40% from center */
+.orbit-node[data-phase="start"]    { top: 10%;  left: 50%;  }
+.orbit-node[data-phase="build"]    { top: 35%;  left: 88%;  }
+.orbit-node[data-phase="iterate"]  { top: 78%;  left: 75%;  }
+.orbit-node[data-phase="deploy"]   { top: 78%;  left: 25%;  }
+.orbit-node[data-phase="maintain"] { top: 35%;  left: 12%;  }
+
+.orbit-node-inner {
+  width: 100%; height: 100%; border-radius: 50%;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 2px;
+  transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+.orbit-node:hover .orbit-node-inner,
+.orbit-node.active .orbit-node-inner {
+  border-color: var(--fire-orange);
+  background: var(--fire-orange-pale);
+  box-shadow: 0 0 0 4px rgba(249,115,22,0.1), 0 4px 16px rgba(249,115,22,0.15);
+}
+
+.orbit-node-num {
+  font-family: var(--font-mono); font-size: 0.58rem; font-weight: 600;
+  color: var(--ink-3); line-height: 1;
+}
+.orbit-node.active .orbit-node-num { color: var(--fire-orange); }
+
+.orbit-node-label {
+  font-family: var(--font-brand); font-size: 0.62rem; font-weight: 800;
+  color: var(--ink); text-align: center; text-transform: uppercase;
+  letter-spacing: 0.04em; line-height: 1.1;
+}
+.orbit-node.active .orbit-node-label { color: var(--fire-orange-deep); }
+
+/* Connector lines from core to nodes — SVG overlay */
+.orbit-svg {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none; z-index: 1;
+}
+.orbit-line {
+  stroke: var(--border); stroke-width: 1;
+  stroke-dasharray: 4 4;
+  fill: none;
+  transition: stroke 0.3s;
+}
+.orbit-line.active { stroke: var(--fire-orange-soft); }
+
+/* ============================================================
+   PHASE 01 — START
+   Layout: Prompt input mock + annotated scaffold output
+============================================================ */
+.phase-section {
+  padding: clamp(5rem, 8vw, 8rem) 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.phase-label-row {
+  display: flex; align-items: center; gap: 1rem;
+  margin-bottom: 3rem;
+}
+.phase-num {
+  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.12em; color: var(--fire-orange);
+}
+.phase-divider-line {
+  flex: 1; height: 1px; background: var(--border); max-width: 60px;
+}
+.phase-title-row {
+  font-family: var(--font-brand);
+  font-size: clamp(1.7rem, 3.5vw, 2.8rem);
+  font-weight: 800; letter-spacing: -0.035em; line-height: 1.1; color: var(--ink);
+}
+
+.ph-start-inner {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+/* Prompt composer mock */
+.prompt-composer {
+  border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
+}
+.pc-bar {
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  padding: 0.7rem 1rem; display: flex; align-items: center; gap: 0.5rem;
+}
+.pc-bar-dot { width: 9px; height: 9px; border-radius: 50%; }
+.pc-bar-dot.r { background: #ff5f57; } .pc-bar-dot.y { background: #febc2e; } .pc-bar-dot.g { background: #28c840; }
+.pc-file { font-family: var(--font-mono); font-size: 0.68rem; color: var(--ink-3); margin-left: 0.4rem; }
+
+.pc-body { padding: 1.5rem; }
+.pc-prompt-text {
+  font-family: var(--font-brand); font-size: 0.95rem; font-weight: 600;
+  color: var(--ink); line-height: 1.6; margin-bottom: 1rem;
+}
+.pc-prompt-cursor {
+  display: inline-block; width: 2px; height: 1em;
+  background: var(--fire-orange); border-radius: 1px;
+  animation: pc-blink 1s step-end infinite; vertical-align: text-bottom;
+}
+@keyframes pc-blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
+
+.pc-meta {
+  display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;
+  padding-top: 1rem; border-top: 1px solid var(--border);
+}
+.pc-tag {
+  font-family: var(--font-mono); font-size: 0.67rem; font-weight: 500;
+  color: var(--fire-orange-dark); background: var(--fire-orange-pale);
+  border: 1px solid var(--fire-orange-soft); padding: 0.2rem 0.55rem; border-radius: 100px;
+}
+.pc-submit {
+  margin-left: auto;
+  font-family: var(--font-brand); font-size: 0.8rem; font-weight: 800;
+  color: var(--white); background: var(--fire-orange);
+  padding: 0.4rem 1rem; border-radius: 8px;
+  transition: background 0.2s;
+}
+.pc-submit:hover { background: var(--fire-orange-dark); }
+
+/* Annotated scaffold output */
+.scaffold-out {
+  border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
+}
+.scaffold-bar {
+  background: var(--fire-orange); padding: 0.7rem 1rem;
+  font-family: var(--font-mono); font-size: 0.68rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.09em; color: var(--white);
+}
+.scaffold-body { padding: 0; }
+.scaffold-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.8rem 1.2rem;
+  border-bottom: 1px solid var(--border);
+}
+.scaffold-row:last-child { border-bottom: none; }
+.scaffold-path {
+  font-family: var(--font-mono); font-size: 0.75rem; font-weight: 500;
+  color: var(--ink-2);
+}
+.scaffold-path .dir { color: var(--ink-3); }
+.scaffold-badge {
+  font-family: var(--font-mono); font-size: 0.62rem; font-weight: 600;
+  padding: 0.15rem 0.5rem; border-radius: 4px;
+  white-space: nowrap; letter-spacing: 0.04em;
+}
+.badge-new { background: var(--fire-orange-pale); color: var(--fire-orange-deep); border: 1px solid var(--fire-orange-soft); }
+.badge-cfg { background: var(--cool); color: var(--ink-3); border: 1px solid var(--border); }
+.badge-gen { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+
+/* Phase description block */
+.phase-desc-block {
+  margin-top: 2.5rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.pdb-item {}
+.pdb-num {
+  font-family: var(--font-brand); font-size: 1.6rem; font-weight: 900;
+  letter-spacing: -0.05em; color: var(--fire-orange); line-height: 1; margin-bottom: 0.3rem;
+}
+.pdb-label {
+  font-family: var(--font-brand); font-size: 0.85rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem;
+}
+.pdb-desc { font-size: 0.78rem; color: var(--ink-3); line-height: 1.5; }
+
+/* ============================================================
+   PHASE 02 — BUILD
+   Layout: Conversation thread (horizontal scroll on mobile)
+============================================================ */
+.ph-build-inner {}
+
+.build-thread {
+  margin-top: 2.5rem;
+}
+
+.thread-turn {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+.thread-turn:last-child { margin-bottom: 0; }
+
+.turn-you {
+  padding: 1.4rem 1.6rem;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+}
+.turn-prodvo {
+  padding: 1.4rem 1.6rem;
+  background: var(--white);
+}
+
+.turn-from {
+  font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  margin-bottom: 0.6rem;
+}
+.turn-you .turn-from { color: var(--ink-3); }
+.turn-prodvo .turn-from { color: var(--fire-orange); }
+
+.turn-msg {
+  font-family: var(--font-brand); font-size: 0.9rem; font-weight: 600;
+  color: var(--ink); line-height: 1.55;
+}
+.turn-prodvo .turn-msg { color: var(--ink-2); font-weight: 500; }
+
+.turn-action {
+  margin-top: 0.8rem;
+  display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+}
+.turn-chip {
+  font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600;
+  color: var(--fire-orange-dark); background: var(--fire-orange-pale);
+  border: 1px solid var(--fire-orange-soft);
+  padding: 0.18rem 0.55rem; border-radius: 4px;
+}
+
+/* ============================================================
+   PHASE 03 — ITERATE
+   Layout: Diff view (before/after code panel)
+============================================================ */
+.ph-iter-inner {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 3.5rem;
+  align-items: start;
+}
+
+.diff-panel {
+  border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
+}
+.diff-bar {
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  padding: 0.7rem 1rem; display: flex; align-items: center; gap: 0.5rem;
+}
+.diff-bar-dot { width: 9px; height: 9px; border-radius: 50%; }
+.diff-bar-dot.r { background: #ff5f57; } .diff-bar-dot.y { background: #febc2e; } .diff-bar-dot.g { background: #28c840; }
+.diff-file { font-family: var(--font-mono); font-size: 0.68rem; color: var(--ink-3); margin-left: 0.4rem; }
+.diff-tabs {
+  margin-left: auto; display: flex; gap: 0;
+}
+.diff-tab {
+  font-family: var(--font-mono); font-size: 0.63rem; font-weight: 600;
+  padding: 0.2rem 0.6rem; border-radius: 4px;
+  letter-spacing: 0.04em; text-transform: uppercase; border: none; background: none;
+}
+.diff-tab.before { color: var(--ink-3); }
+.diff-tab.after  { color: var(--fire-orange); background: var(--fire-orange-pale); }
+
+.diff-body { font-family: var(--font-mono); font-size: 0.74rem; line-height: 1.9; }
+.diff-line {
+  display: flex; align-items: flex-start;
+  padding: 0 1rem; min-height: 28px;
+}
+.diff-line.neutral { color: var(--ink-2); }
+.diff-line.removed { background: #fff0f0; color: #b91c1c; }
+.diff-line.added   { background: #f0fdf4; color: #15803d; }
+.diff-marker {
+  width: 16px; flex-shrink: 0; font-weight: 700; color: inherit; opacity: 0.6;
+  margin-right: 0.5rem; line-height: inherit;
+}
+.diff-code { color: inherit; white-space: pre; overflow: hidden; text-overflow: ellipsis; }
+
+.diff-separator {
+  border: none; border-top: 1px solid var(--border);
+  margin: 0; height: 1px;
+}
+
+/* Iter right — request + result */
+.iter-right {}
+.iter-request {
+  border: 1px solid var(--fire-orange-soft);
+  background: var(--fire-orange-pale);
+  border-radius: 12px; padding: 1.2rem 1.4rem;
+  margin-bottom: 1.5rem;
+}
+.ir-label {
+  font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.09em; color: var(--fire-orange-dark); margin-bottom: 0.5rem;
+}
+.ir-text {
+  font-family: var(--font-brand); font-size: 0.95rem; font-weight: 700; color: var(--ink); line-height: 1.5;
+}
+
+.iter-result-list { display: flex; flex-direction: column; gap: 0.75rem; }
+.ir-result {
+  display: flex; align-items: flex-start; gap: 0.75rem;
+}
+.ir-result-mark {
+  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600;
+  color: var(--fire-orange); flex-shrink: 0; line-height: 1.8;
+}
+.ir-result-text {
+  font-size: 0.875rem; font-weight: 500; color: var(--ink-2); line-height: 1.55;
+}
+.ir-result-text strong { color: var(--ink); font-weight: 700; display: block; }
+
+/* ============================================================
+   PHASE 04 — DEPLOY
+   Layout: CI/CD status board
+============================================================ */
+.ph-deploy-inner {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 3.5rem;
+  align-items: start;
+}
+
+.deploy-board {
+  border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
+}
+.deploy-board-head {
+  background: var(--fire-orange); padding: 0.85rem 1.2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem;
+}
+.dbh-title {
+  font-family: var(--font-brand); font-size: 0.8rem; font-weight: 800;
+  color: var(--white); text-transform: uppercase; letter-spacing: 0.06em;
+}
+.dbh-live {
+  display: flex; align-items: center; gap: 0.4rem;
+  font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600;
+  color: rgba(255,255,255,0.8);
+}
+.dbh-live-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #4ade80;
+  animation: pulse-live 1.8s ease infinite;
+}
+@keyframes pulse-live {
+  0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(74,222,128,0);} 50%{box-shadow:0 0 0 4px rgba(74,222,128,0.3);}
+}
+
+.deploy-step {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1rem;
+  padding: 1rem 1.2rem;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+}
+.deploy-step:last-child { border-bottom: none; }
+
+.ds-status {
+  width: 22px; height: 22px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.65rem; font-weight: 700; flex-shrink: 0;
+}
+.ds-status.done    { background: #dcfce7; color: #16a34a; }
+.ds-status.running { background: var(--fire-orange-pale); color: var(--fire-orange-deep); animation: spin-pulse 2s linear infinite; }
+.ds-status.queued  { background: var(--cool); color: var(--ink-3); }
+
+@keyframes spin-pulse { 0%,100%{opacity:1;} 50%{opacity:0.5;} }
+
+.ds-name { font-family: var(--font-brand); font-size: 0.875rem; font-weight: 700; color: var(--ink); }
+.ds-detail { font-size: 0.75rem; color: var(--ink-3); margin-top: 0.1rem; }
+.ds-time { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600; color: var(--ink-3); white-space: nowrap; }
+.ds-time.active { color: var(--fire-orange); }
+
+/* URL reveal */
+.deploy-url-reveal {
+  background: var(--surface); border-top: 1px solid var(--border);
+  padding: 1rem 1.2rem;
+  display: flex; align-items: center; gap: 0.75rem;
+}
+.dur-label { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-3); }
+.dur-url { font-family: var(--font-mono); font-size: 0.82rem; font-weight: 600; color: var(--fire-orange); }
+
+/* Deploy right: features list */
+.deploy-features { margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1.3rem; }
+.df-item {}
+.df-title { font-family: var(--font-brand); font-size: 0.95rem; font-weight: 800; color: var(--ink); margin-bottom: 0.3rem; letter-spacing: -0.01em; }
+.df-desc { font-size: 0.875rem; color: var(--ink-3); line-height: 1.6; }
+.df-chip {
+  display: inline-block; margin-top: 0.4rem;
+  font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600;
+  color: var(--fire-orange-deeper); border: 1px solid var(--fire-orange-soft);
+  padding: 0.15rem 0.55rem; border-radius: 4px; letter-spacing: 0.04em;
+}
+
+/* ============================================================
+   PHASE 05 — MAINTAIN
+   Layout: Observability log strip + metric cards
+============================================================ */
+.ph-maintain-inner {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 3.5rem;
+  align-items: start;
+}
+
+.obs-log {
+  border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
+}
+.obs-log-head {
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  padding: 0.75rem 1.2rem;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.olh-title { font-family: var(--font-mono); font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em; color: var(--ink-3); }
+.olh-status { display: flex; align-items: center; gap: 0.35rem; font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; color: var(--fire-orange); }
+.olh-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--fire-orange); animation: pulse-live 1.8s ease infinite; }
+
+.log-row {
+  display: grid;
+  grid-template-columns: 4.5rem auto 1fr;
+  gap: 0.75rem;
+  padding: 0.65rem 1.2rem;
+  border-bottom: 1px solid var(--border);
+  align-items: baseline;
+}
+.log-row:last-child { border-bottom: none; }
+
+.log-time { font-family: var(--font-mono); font-size: 0.68rem; font-weight: 500; color: var(--ink-3); }
+.log-level {
+  font-family: var(--font-mono); font-size: 0.62rem; font-weight: 700;
+  padding: 0.08rem 0.45rem; border-radius: 3px;
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+.log-level.info  { background: var(--cool); color: var(--ink-3); }
+.log-level.ok    { background: #dcfce7; color: #15803d; }
+.log-level.warn  { background: var(--fire-orange-pale); color: var(--fire-orange-deep); }
+.log-level.err   { background: #fef2f2; color: #b91c1c; }
+
+.log-msg { font-family: var(--font-mono); font-size: 0.73rem; color: var(--ink-2); line-height: 1.5; }
+.log-highlight { color: var(--fire-orange); }
+
+/* Metric cards */
+.maintain-metrics { display: flex; flex-direction: column; gap: 1rem; }
+.mm-card {
+  border: 1px solid var(--border); border-radius: 12px;
+  padding: 1.2rem 1.4rem;
+  background: var(--white);
+}
+.mmc-label { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em; color: var(--ink-3); margin-bottom: 0.4rem; }
+.mmc-val { font-family: var(--font-brand); font-size: 1.8rem; font-weight: 900; letter-spacing: -0.05em; color: var(--ink); line-height: 1; margin-bottom: 0.15rem; }
+.mmc-val em { color: var(--fire-orange); font-style: normal; }
+.mmc-sub { font-size: 0.75rem; color: var(--ink-3); font-weight: 500; }
+
+/* Sparkline (pure CSS bars) */
+.mmc-spark { display: flex; align-items: flex-end; gap: 3px; height: 28px; margin-top: 0.5rem; }
+.spark-bar { flex: 1; border-radius: 2px 2px 0 0; background: var(--fire-orange-soft); transition: background 0.2s; }
+.spark-bar:hover { background: var(--fire-orange); }
+.spark-bar.hi { background: var(--fire-orange); }
+
+/* ============================================================
+   SPEED STRIP
+============================================================ */
+.speed-strip {
+  padding: clamp(4rem, 7vw, 6rem) 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.speed-header {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 3rem; align-items: end; margin-bottom: 3rem;
+}
+
+.speed-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.speed-cell {
+  background: var(--white);
+  padding: 1.6rem 1.4rem;
+  transition: background 0.2s;
+}
+.speed-cell:hover { background: var(--fire-orange-pale); }
+
+.sc-phase {
+  font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.09em; color: var(--fire-orange);
+  margin-bottom: 0.6rem;
+}
+.sc-time {
+  font-family: var(--font-brand); font-size: 1.5rem; font-weight: 900;
+  letter-spacing: -0.05em; color: var(--ink); line-height: 1;
+  margin-bottom: 0.2rem;
+}
+.sc-unit { font-size: 0.8rem; color: var(--ink-3); font-weight: 600; margin-bottom: 0.6rem; }
+.sc-desc { font-size: 0.78rem; color: var(--ink-3); line-height: 1.5; }
+
+/* ============================================================
+   CTA
+============================================================ */
+.cta-final {
+  background: var(--fire-orange);
+  padding: clamp(5rem, 9vw, 8rem) 0;
+  position: relative; overflow: hidden;
+}
+.cta-final::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+}
+.cta-inner {
+  position: relative;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 4rem; align-items: center;
+}
+.cta-eyebrow { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.6); margin-bottom: 1rem; }
+.cta-title { font-family: var(--font-brand); font-size: clamp(2rem, 4.5vw, 3.8rem); font-weight: 900; line-height: 1.05; letter-spacing: -0.04em; color: var(--white); margin-bottom: 1rem; }
+.cta-sub { font-size: 1rem; color: rgba(255,255,255,0.72); line-height: 1.65; }
+.cta-right { display: flex; flex-direction: column; gap: 1rem; align-items: flex-start; }
+.btn-cta-w { font-family: var(--font-brand); font-size: 1.05rem; font-weight: 800; color: var(--fire-orange-deep); background: var(--white); padding: 0.9rem 2.2rem; border-radius: 10px; box-shadow: 0 4px 18px rgba(0,0,0,0.14); transition: transform 0.15s, box-shadow 0.2s; display: inline-block; }
+.btn-cta-w:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.2); }
+.btn-cta-ghost { font-family: var(--font-brand); font-size: 0.95rem; font-weight: 600; color: var(--white); padding: 0.8rem 2rem; border-radius: 10px; border: 1.5px solid rgba(255,255,255,0.35); transition: border-color 0.2s, background 0.2s; display: inline-block; }
+.btn-cta-ghost:hover { border-color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.08); }
+.cta-trust { font-size: 0.78rem; color: rgba(255,255,255,0.45); font-weight: 500; margin-top: 0.5rem; }
+
+/* ============================================================
+   FOOTER
+============================================================ */
+.footer { background: var(--white); border-top: 1px solid var(--border); padding: 4rem 0 2rem; }
+.footer-top { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 3rem; padding-bottom: 3rem; border-bottom: 1px solid var(--border); }
+.footer-logo { font-family: var(--font-brand); font-weight: 900; font-size: 1.3rem; letter-spacing: -0.04em; margin-bottom: 0.7rem; }
+.footer-logo em { color: var(--fire-orange); font-style: normal; }
+.footer-tagline { font-size: 0.84rem; color: var(--ink-3); line-height: 1.65; max-width: 220px; margin-bottom: 1.4rem; }
+.footer-social { display: flex; gap: 0.5rem; }
+.fsoc { width: 34px; height: 34px; border-radius: 8px; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.78rem; color: var(--ink-3); font-family: var(--font-brand); font-weight: 700; transition: all 0.2s; }
+.fsoc:hover { border-color: var(--fire-orange-soft); color: var(--fire-orange-dark); background: var(--fire-orange-pale); }
+.f-col-title { font-family: var(--font-brand); font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink); margin-bottom: 1rem; }
+.f-links { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+.f-links a { font-size: 0.84rem; color: var(--ink-3); font-weight: 500; transition: color 0.2s; }
+.f-links a:hover { color: var(--ink); }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 2rem; gap: 1rem; flex-wrap: wrap; }
+.footer-copy { font-size: 0.8rem; color: var(--ink-3); font-weight: 500; }
+.footer-copy a { color: var(--ink-2); }
+.f-bottom-links { display: flex; gap: 1.5rem; list-style: none; }
+.f-bottom-links a { font-size: 0.78rem; color: var(--ink-3); font-weight: 500; transition: color 0.2s; }
+.f-bottom-links a:hover { color: var(--ink); }
+
+/* ============================================================
+   REVEAL
+============================================================ */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+.d1 { transition-delay: 0.07s; } .d2 { transition-delay: 0.14s; } .d3 { transition-delay: 0.21s; } .d4 { transition-delay: 0.28s; }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity:1; transform:none; transition:none; } }
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width: 980px) {
+  .nav-links, .nav-right { display: none; }
+  .nav-burger { display: flex; }
+
+  .hero-visual { grid-template-columns: 1fr; border-radius: 16px 16px 0 0; }
+  .hv-col.prompt-col { border-right: none; border-bottom: 1px solid var(--border); }
+  .hv-divider { display: none; }
+
+  .loop-inner { grid-template-columns: 1fr; gap: 3rem; }
+  .loop-diagram { max-width: 360px; }
+
+  .ph-start-inner { grid-template-columns: 1fr; }
+  .phase-desc-block { grid-template-columns: 1fr 1fr; }
+
+  .thread-turn { grid-template-columns: 1fr; }
+  .turn-you { border-right: none; border-bottom: 1px solid var(--border); }
+
+  .ph-iter-inner { grid-template-columns: 1fr; }
+  .ph-deploy-inner { grid-template-columns: 1fr; }
+  .ph-maintain-inner { grid-template-columns: 1fr; }
+
+  .speed-grid { grid-template-columns: repeat(3, 1fr); }
+  .speed-header { grid-template-columns: 1fr; gap: 1rem; }
+
+  .cta-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+}
+
+@media (max-width: 700px) {
+  .hero-visual { border-radius: 12px 12px 0 0; }
+  .speed-grid { grid-template-columns: 1fr 1fr; }
+  .phase-desc-block { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; text-align: center; }
+  .f-bottom-links { justify-content: center; }
+  .cta-right { align-items: stretch; }
+}
+
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<div class="announce">
+  Early access is open — limited seats. <a href="#">Claim yours →</a>
+</div>
+
+<nav class="nav" id="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">Prodvo<em>.</em></a>
+      <ul class="nav-links">
+        <li><a href="#">Features</a></li>
+        <li><a href="#">Use Cases</a></li>
+        <li><a href="#" class="active">Workflow</a></li>
+        <li><a href="#">Pricing</a></li>
+        <li><a href="#">Docs</a></li>
+      </ul>
+      <div class="nav-right">
+        <a href="#" class="btn-ghost">Sign in</a>
+        <a href="#" class="btn-nav">Start building →</a>
+      </div>
+      <button class="nav-burger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+
+<!-- ============================================================
+     HERO
+============================================================ -->
+<section class="hero">
+  <div class="container">
+
+    <div class="hero-top">
+      <div class="hero-eyebrow">Workflow</div>
+      <h1 class="hero-h1">
+        Describe it.<br>
+        Prodvo <span class="accent">builds it.</span><br>
+        You ship it.
+      </h1>
+      <p class="hero-sub">Every product starts as a thought. Prodvo turns that thought into a running, deployed application — through a tight loop of prompts, builds, and iterations that never breaks your flow.</p>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hv-divider">
+        <div class="hv-divider-badge">→</div>
+      </div>
+
+      <div class="hv-col prompt-col">
+        <div class="hv-label">You say</div>
+        <div class="prompt-line active">"Build a SaaS with user auth, a subscription dashboard, and Stripe billing."</div>
+        <div class="prompt-line">"Add a team invite system — each team can have up to 5 members."</div>
+        <div class="prompt-line">"Make the pricing page mobile-friendly and add a free tier."</div>
+      </div>
+
+      <div class="hv-col response-col">
+        <div class="hv-label">Prodvo does</div>
+        <div class="resp-item">
+          <span class="resp-marker">✓</span>
+          <span class="resp-text"><strong>Project scaffolded</strong>Next.js + TypeScript, Prisma ORM, Tailwind — full stack in 40 seconds</span>
+        </div>
+        <div class="resp-item">
+          <span class="resp-marker">✓</span>
+          <span class="resp-text"><strong>Auth configured</strong>Email + OAuth (Google/GitHub), session middleware, protected routes</span>
+        </div>
+        <div class="resp-item">
+          <span class="resp-marker">✓</span>
+          <span class="resp-text"><strong>Database ready</strong>Schema generated, migrations run, Postgres live</span>
+        </div>
+        <div class="resp-item">
+          <span class="resp-marker">✓</span>
+          <span class="resp-text"><strong>Stripe integrated</strong>Subscription logic, webhook handlers, billing portal wired</span>
+        </div>
+        <div class="resp-item">
+          <span class="resp-marker">→</span>
+          <span class="resp-text"><strong>Deployed to production</strong>Live at your domain · SSL · CDN · ready for real users</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     THE LOOP
+============================================================ -->
+<section class="the-loop" id="loop">
+  <div class="container">
+    <div class="loop-inner">
+
+      <div class="loop-text">
+        <div class="loop-eyebrow reveal">The workflow loop</div>
+        <h2 class="loop-title reveal d1">Five phases.<br>One tight loop.<br>Infinite iterations.</h2>
+        <p class="loop-sub reveal d2">Prodvo's workflow isn't linear — it's a loop. You can re-enter at any phase, at any time, without breaking what already works. Each phase hands off cleanly to the next.</p>
+
+        <div class="loop-phase-list reveal d3" id="phaseList">
+          <div class="lp-item active" data-phase="start" onclick="setPhase('start')">
+            <span class="lp-num">01</span>
+            <div class="lp-body">
+              <div class="lp-name">Start — Describe your product</div>
+              <div class="lp-desc">One prompt scaffolds the entire codebase, database, and auth layer.</div>
+            </div>
+          </div>
+          <div class="lp-item" data-phase="build" onclick="setPhase('build')">
+            <span class="lp-num">02</span>
+            <div class="lp-body">
+              <div class="lp-name">Build — Agent writes the code</div>
+              <div class="lp-desc">The AI agent executes each feature, tests it, and fixes its own bugs.</div>
+            </div>
+          </div>
+          <div class="lp-item" data-phase="iterate" onclick="setPhase('iterate')">
+            <span class="lp-num">03</span>
+            <div class="lp-body">
+              <div class="lp-name">Iterate — Talk to change it</div>
+              <div class="lp-desc">Request changes in plain language. Prodvo applies them without breaking existing features.</div>
+            </div>
+          </div>
+          <div class="lp-item" data-phase="deploy" onclick="setPhase('deploy')">
+            <span class="lp-num">04</span>
+            <div class="lp-body">
+              <div class="lp-name">Deploy — One click to production</div>
+              <div class="lp-desc">SSL, CDN, custom domain — live in seconds. Preview environments per branch.</div>
+            </div>
+          </div>
+          <div class="lp-item" data-phase="maintain" onclick="setPhase('maintain')">
+            <span class="lp-num">05</span>
+            <div class="lp-body">
+              <div class="lp-name">Maintain — Prodvo watches it</div>
+              <div class="lp-desc">Logs, errors, performance metrics — all in one view. Prodvo alerts you before users notice.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Orbital diagram -->
+      <div class="loop-diagram reveal d2">
+        <div class="orbit-ring"></div>
+
+        <svg class="orbit-svg" viewBox="0 0 480 480" id="orbitSvg">
+          <!-- Lines from center(240,240) to each node center -->
+          <!-- start: top 10% left 50%  → (240, 48) -->
+          <line class="orbit-line" id="line-start"    x1="240" y1="240" x2="240" y2="88"  />
+          <!-- build: top 35% left 88% → (422, 168) -->
+          <line class="orbit-line" id="line-build"    x1="240" y1="240" x2="384" y2="208" />
+          <!-- iterate: top 78% left 75% → (360, 374) -->
+          <line class="orbit-line" id="line-iterate"  x1="240" y1="240" x2="320" y2="374" />
+          <!-- deploy: top 78% left 25% → (120, 374) -->
+          <line class="orbit-line" id="line-deploy"   x1="240" y1="240" x2="160" y2="374" />
+          <!-- maintain: top 35% left 12% → (57, 168) -->
+          <line class="orbit-line" id="line-maintain" x1="240" y1="240" x2="96"  y2="208" />
+        </svg>
+
+        <div class="orbit-core">
+          <div class="orbit-core-label">Prodvo<br>Agent</div>
+        </div>
+
+        <div class="orbit-node active" data-phase="start" onclick="setPhase('start')">
+          <div class="orbit-node-inner">
+            <span class="orbit-node-num">01</span>
+            <span class="orbit-node-label">Start</span>
+          </div>
+        </div>
+        <div class="orbit-node" data-phase="build" onclick="setPhase('build')">
+          <div class="orbit-node-inner">
+            <span class="orbit-node-num">02</span>
+            <span class="orbit-node-label">Build</span>
+          </div>
+        </div>
+        <div class="orbit-node" data-phase="iterate" onclick="setPhase('iterate')">
+          <div class="orbit-node-inner">
+            <span class="orbit-node-num">03</span>
+            <span class="orbit-node-label">Iterate</span>
+          </div>
+        </div>
+        <div class="orbit-node" data-phase="deploy" onclick="setPhase('deploy')">
+          <div class="orbit-node-inner">
+            <span class="orbit-node-num">04</span>
+            <span class="orbit-node-label">Deploy</span>
+          </div>
+        </div>
+        <div class="orbit-node" data-phase="maintain" onclick="setPhase('maintain')">
+          <div class="orbit-node-inner">
+            <span class="orbit-node-num">05</span>
+            <span class="orbit-node-label">Maintain</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PHASE 01 — START
+============================================================ -->
+<section class="phase-section" id="start">
+  <div class="container">
+
+    <div class="phase-label-row reveal">
+      <span class="phase-num">Phase 01</span>
+      <div class="phase-divider-line"></div>
+    </div>
+    <h2 class="phase-title-row reveal d1" style="margin-bottom:2.5rem;">Start — One prompt.<br>A full project, live.</h2>
+
+    <div class="ph-start-inner">
+      <div>
+        <div class="prompt-composer reveal">
+          <div class="pc-bar">
+            <div class="pc-bar-dot r"></div>
+            <div class="pc-bar-dot y"></div>
+            <div class="pc-bar-dot g"></div>
+            <span class="pc-file">prodvo · new project</span>
+          </div>
+          <div class="pc-body">
+            <p class="pc-prompt-text">Build a SaaS for tracking freelance invoices. Users sign up, create clients, log invoices with line items, and mark them paid. Export to PDF. Stripe for subscription billing.<span class="pc-prompt-cursor"></span></p>
+            <div class="pc-meta">
+              <span class="pc-tag">Next.js</span>
+              <span class="pc-tag">Postgres</span>
+              <span class="pc-tag">Stripe</span>
+              <span class="pc-tag">Auth</span>
+              <button class="pc-submit">Build this →</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:1.5rem; padding:1.2rem 1.4rem; border:1px solid var(--border); border-radius:12px; background:var(--surface);">
+          <div style="font-family:var(--font-mono);font-size:0.65rem;font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--ink-3);margin-bottom:0.6rem;">What Prodvo understands</div>
+          <div style="display:flex;flex-direction:column;gap:0.4rem;">
+            <div style="font-size:0.82rem;color:var(--ink-2);font-weight:500;">→ <strong style="color:var(--ink);">Data model</strong> — users, clients, invoices, line items</div>
+            <div style="font-size:0.82rem;color:var(--ink-2);font-weight:500;">→ <strong style="color:var(--ink);">Auth requirement</strong> — sign up, protected routes</div>
+            <div style="font-size:0.82rem;color:var(--ink-2);font-weight:500;">→ <strong style="color:var(--ink);">Monetisation</strong> — Stripe subscription layer</div>
+            <div style="font-size:0.82rem;color:var(--ink-2);font-weight:500;">→ <strong style="color:var(--ink);">Export feature</strong> — PDF generation pipeline</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scaffold-out reveal d1">
+        <div class="scaffold-bar">Scaffold output — generated in 43s</div>
+        <div class="scaffold-body">
+          <div class="scaffold-row"><span class="scaffold-path"><span class="dir">app/</span>page.tsx</span><span class="scaffold-badge badge-new">new</span></div>
+          <div class="scaffold-row"><span class="scaffold-path"><span class="dir">app/</span>dashboard/page.tsx</span><span class="scaffold-badge badge-new">new</span></div>
+          <div class="scaffold-row"><span class="scaffold-path"><span class="dir">app/</span>invoices/[id]/page.tsx</span><span class="scaffold-badge badge-new">new</span></div>
+          <div class="scaffold-row"><span class="scaffold-path"><span class="dir">lib/</span>auth.ts</span><span class="scaffold-badge badge-cfg">configured</span></div>
+          <div class="scaffold-row"><span class="scaffold-path"><span class="dir">lib/</span>stripe.ts</span><span class="scaffold-badge badge-cfg">configured</span></div>
+          <div class="scaffold-row"><span class="scaffold-path"><span class="dir">prisma/</span>schema.prisma</span><span class="scaffold-badge badge-gen">generated</span></div>
+          <div class="scaffold-row"><span class="scaffold-path"><span class="dir">api/</span>webhooks/stripe.ts</span><span class="scaffold-badge badge-new">new</span></div>
+          <div class="scaffold-row"><span class="scaffold-path"><span class="dir">api/</span>invoices/export.ts</span><span class="scaffold-badge badge-new">new</span></div>
+          <div class="scaffold-row"><span class="scaffold-path">.env.local</span><span class="scaffold-badge badge-cfg">configured</span></div>
+          <div class="scaffold-row"><span class="scaffold-path">next.config.ts</span><span class="scaffold-badge badge-cfg">configured</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-desc-block reveal">
+      <div class="pdb-item">
+        <div class="pdb-num">43s</div>
+        <div class="pdb-label">Full scaffold time</div>
+        <div class="pdb-desc">From prompt submission to complete project structure, ready to run</div>
+      </div>
+      <div class="pdb-item">
+        <div class="pdb-num">0</div>
+        <div class="pdb-label">Config files to touch</div>
+        <div class="pdb-desc">Auth, DB, env vars, Stripe — all pre-configured and connected</div>
+      </div>
+      <div class="pdb-item">
+        <div class="pdb-num">100%</div>
+        <div class="pdb-label">Prompt-to-code fidelity</div>
+        <div class="pdb-desc">Every feature you described is present in the generated codebase</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     PHASE 02 — BUILD
+============================================================ -->
+<section class="phase-section" id="build">
+  <div class="container">
+
+    <div class="phase-label-row reveal">
+      <span class="phase-num">Phase 02</span>
+      <div class="phase-divider-line"></div>
+    </div>
+    <h2 class="phase-title-row reveal d1" style="margin-bottom:0.75rem;">Build — The agent<br>codes while you watch.</h2>
+    <p class="section-sub reveal d2" style="margin-bottom:2.5rem;max-width:600px;">You're not writing code — you're directing it. Every message becomes a concrete action the agent takes immediately, explains, and commits.</p>
+
+    <div class="ph-build-inner">
+      <div class="build-thread">
+
+        <div class="thread-turn reveal">
+          <div class="turn-you">
+            <div class="turn-from">You</div>
+            <div class="turn-msg">Add a client portal where clients can view their invoices and download PDFs without logging in — just a magic link.</div>
+          </div>
+          <div class="turn-prodvo">
+            <div class="turn-from">Prodvo</div>
+            <div class="turn-msg">Built. I created a <code style="font-family:var(--font-mono);font-size:0.85em;color:var(--fire-orange);">portal_token</code> field on Invoice, a magic link generator, and a public route at <code style="font-family:var(--font-mono);font-size:0.85em;color:var(--fire-orange);">/portal/[token]</code>. PDF download is wired to the existing export endpoint — no auth required for this route.</div>
+            <div class="turn-action">
+              <span class="turn-chip">prisma migration</span>
+              <span class="turn-chip">2 new routes</span>
+              <span class="turn-chip">email template updated</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="thread-turn reveal d1">
+          <div class="turn-you">
+            <div class="turn-from">You</div>
+            <div class="turn-msg">The invoice total isn't calculating tax correctly — it's showing pre-tax as the total. Fix it and add a tax breakdown line on the PDF.</div>
+          </div>
+          <div class="turn-prodvo">
+            <div class="turn-from">Prodvo</div>
+            <div class="turn-msg">Found it — the <code style="font-family:var(--font-mono);font-size:0.85em;color:var(--fire-orange);">calculateTotal()</code> helper was summing line items before applying the tax rate. Fixed the calculation, updated the stored value on save, and added a subtotal + tax + total breakdown in the PDF template.</div>
+            <div class="turn-action">
+              <span class="turn-chip">bug fixed</span>
+              <span class="turn-chip">pdf layout updated</span>
+              <span class="turn-chip">migration: recalculate existing</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="thread-turn reveal d2">
+          <div class="turn-you">
+            <div class="turn-from">You</div>
+            <div class="turn-msg">Add recurring invoice support — user sets a billing cycle (monthly/quarterly) and it auto-generates the next invoice on the due date.</div>
+          </div>
+          <div class="turn-prodvo">
+            <div class="turn-from">Prodvo</div>
+            <div class="turn-msg">Done. Added <code style="font-family:var(--font-mono);font-size:0.85em;color:var(--fire-orange);">recurring_interval</code> to the Invoice schema, a cron job via Vercel scheduled functions, and a duplication utility that creates the next invoice and sends the client an email. You can toggle recurrence per invoice from the dashboard.</div>
+            <div class="turn-action">
+              <span class="turn-chip">schema updated</span>
+              <span class="turn-chip">cron job created</span>
+              <span class="turn-chip">dashboard UI updated</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     PHASE 03 — ITERATE
+============================================================ -->
+<section class="phase-section" id="iterate">
+  <div class="container">
+
+    <div class="phase-label-row reveal">
+      <span class="phase-num">Phase 03</span>
+      <div class="phase-divider-line"></div>
+    </div>
+    <h2 class="phase-title-row reveal d1" style="margin-bottom:0.75rem;">Iterate — Change anything.<br>Break nothing.</h2>
+    <p class="section-sub reveal d2" style="margin-bottom:2.5rem;max-width:600px;">Prodvo understands the full context of what it built. When you ask for a change, it modifies the right file, updates the right schema, and keeps everything else intact.</p>
+
+    <div class="ph-iter-inner">
+
+      <div class="diff-panel reveal">
+        <div class="diff-bar">
+          <div class="diff-bar-dot r"></div>
+          <div class="diff-bar-dot y"></div>
+          <div class="diff-bar-dot g"></div>
+          <span class="diff-file">lib/invoices/calculate.ts</span>
+          <div class="diff-tabs">
+            <button class="diff-tab before">before</button>
+            <button class="diff-tab after">after</button>
+          </div>
+        </div>
+        <div class="diff-body">
+          <div class="diff-line neutral"><span class="diff-marker"> </span><span class="diff-code">export function calculateTotal(items: LineItem[], taxRate: number) {</span></div>
+          <div class="diff-line removed"><span class="diff-marker">-</span><span class="diff-code">  const subtotal = items.reduce((s, i) => s + i.amount, 0)</span></div>
+          <div class="diff-line removed"><span class="diff-marker">-</span><span class="diff-code">  return subtotal * (1 + taxRate)</span></div>
+          <div class="diff-line added"><span class="diff-marker">+</span><span class="diff-code">  const subtotal = items.reduce((s, i) => s + (i.qty * i.unitPrice), 0)</span></div>
+          <div class="diff-line added"><span class="diff-marker">+</span><span class="diff-code">  const tax = parseFloat((subtotal * taxRate).toFixed(2))</span></div>
+          <div class="diff-line added"><span class="diff-marker">+</span><span class="diff-code">  return { subtotal, tax, total: subtotal + tax }</span></div>
+          <div class="diff-line neutral"><span class="diff-marker"> </span><span class="diff-code">}</span></div>
+          <hr class="diff-separator" />
+          <div class="diff-line neutral"><span class="diff-marker"> </span><span class="diff-code">// PDF template — invoice-template.tsx</span></div>
+          <div class="diff-line removed"><span class="diff-marker">-</span><span class="diff-code">  &lt;Total&gt;{fmt(invoice.total)}&lt;/Total&gt;</span></div>
+          <div class="diff-line added"><span class="diff-marker">+</span><span class="diff-code">  &lt;Row label="Subtotal" value={fmt(totals.subtotal)} /&gt;</span></div>
+          <div class="diff-line added"><span class="diff-marker">+</span><span class="diff-code">  &lt;Row label="Tax ({rate}%)" value={fmt(totals.tax)} /&gt;</span></div>
+          <div class="diff-line added"><span class="diff-marker">+</span><span class="diff-code">  &lt;Total bold&gt;{fmt(totals.total)}&lt;/Total&gt;</span></div>
+          <div class="diff-line neutral"><span class="diff-marker"> </span><span class="diff-code"></span></div>
+        </div>
+      </div>
+
+      <div class="iter-right reveal d1">
+        <div class="iter-request">
+          <div class="ir-label">Your request</div>
+          <div class="ir-text">"The invoice total is wrong — it's showing pre-tax. Fix the calculation and show a proper breakdown on the PDF."</div>
+        </div>
+
+        <div class="iter-result-list">
+          <div class="ir-result">
+            <span class="ir-result-mark">01</span>
+            <span class="ir-result-text">
+              <strong>Root cause identified</strong>
+              <code style="font-family:var(--font-mono);font-size:0.82em;color:var(--fire-orange);">calculateTotal()</code> was summing raw amounts before tax multiplication
+            </span>
+          </div>
+          <div class="ir-result">
+            <span class="ir-result-mark">02</span>
+            <span class="ir-result-text">
+              <strong>Fix applied + return type updated</strong>
+              Function now returns structured <code style="font-family:var(--font-mono);font-size:0.82em;color:var(--fire-orange);">{subtotal, tax, total}</code> — all callsites updated automatically
+            </span>
+          </div>
+          <div class="ir-result">
+            <span class="ir-result-mark">03</span>
+            <span class="ir-result-text">
+              <strong>PDF template updated</strong>
+              Three-line breakdown added: subtotal, tax row with %, bold total
+            </span>
+          </div>
+          <div class="ir-result">
+            <span class="ir-result-mark">04</span>
+            <span class="ir-result-text">
+              <strong>Existing records handled</strong>
+              Migration script re-calculates stored totals on all existing invoices
+            </span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PHASE 04 — DEPLOY
+============================================================ -->
+<section class="phase-section" id="deploy">
+  <div class="container">
+
+    <div class="phase-label-row reveal">
+      <span class="phase-num">Phase 04</span>
+      <div class="phase-divider-line"></div>
+    </div>
+    <h2 class="phase-title-row reveal d1" style="margin-bottom:0.75rem;">Deploy — Live in seconds.<br>No ops required.</h2>
+    <p class="section-sub reveal d2" style="margin-bottom:2.5rem;max-width:600px;">When you're ready, one click puts your app in front of real users. Prodvo handles the entire deployment pipeline — including the parts most teams forget about.</p>
+
+    <div class="ph-deploy-inner">
+
+      <div>
+        <div class="deploy-board reveal">
+          <div class="deploy-board-head">
+            <span class="dbh-title">Deployment pipeline</span>
+            <div class="dbh-live"><div class="dbh-live-dot"></div>Running</div>
+          </div>
+
+          <div class="deploy-step">
+            <div class="ds-status done">✓</div>
+            <div><div class="ds-name">Build</div><div class="ds-detail">Next.js production build · 0 errors</div></div>
+            <div class="ds-time">14s</div>
+          </div>
+          <div class="deploy-step">
+            <div class="ds-status done">✓</div>
+            <div><div class="ds-name">Database migration</div><div class="ds-detail">3 migrations applied · 0 conflicts</div></div>
+            <div class="ds-time">3s</div>
+          </div>
+          <div class="deploy-step">
+            <div class="ds-status done">✓</div>
+            <div><div class="ds-name">Environment variables</div><div class="ds-detail">12 vars synced · Stripe keys verified</div></div>
+            <div class="ds-time">1s</div>
+          </div>
+          <div class="deploy-step">
+            <div class="ds-status running">↻</div>
+            <div><div class="ds-name">Edge network propagation</div><div class="ds-detail">Distributing to 40 PoPs globally</div></div>
+            <div class="ds-time active">12s…</div>
+          </div>
+          <div class="deploy-step">
+            <div class="ds-status queued">○</div>
+            <div><div class="ds-name">SSL certificate</div><div class="ds-detail">Auto-renewal via Let's Encrypt</div></div>
+            <div class="ds-time">—</div>
+          </div>
+          <div class="deploy-step">
+            <div class="ds-status queued">○</div>
+            <div><div class="ds-name">Health check</div><div class="ds-detail">Smoke test against production URL</div></div>
+            <div class="ds-time">—</div>
+          </div>
+
+          <div class="deploy-url-reveal">
+            <span class="dur-label">Live →</span>
+            <span class="dur-url">invoicetrack.prodvo.app</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="reveal">
+          <div style="font-family:var(--font-mono);font-size:0.68rem;font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--fire-orange);margin-bottom:1.2rem;">What deploy includes</div>
+        </div>
+        <div class="deploy-features">
+          <div class="df-item reveal d1">
+            <div class="df-title">Custom domain + automatic SSL</div>
+            <div class="df-desc">Connect your domain in one step. HTTPS is configured and auto-renewed — no Certbot, no cron jobs, no expiry surprises.</div>
+            <span class="df-chip">zero config</span>
+          </div>
+          <div class="df-item reveal d2">
+            <div class="df-title">Global edge network</div>
+            <div class="df-desc">Your app is served from 40+ edge locations. Static assets cached, dynamic routes at the edge, sub-50ms latency worldwide.</div>
+            <span class="df-chip">40 PoPs</span>
+          </div>
+          <div class="df-item reveal d3">
+            <div class="df-title">Preview environments per branch</div>
+            <div class="df-desc">Every push to a feature branch gets its own live preview URL. Share with clients or teammates before merging to production.</div>
+            <span class="df-chip">auto per branch</span>
+          </div>
+          <div class="df-item reveal d4">
+            <div class="df-title">Zero-downtime deploys</div>
+            <div class="df-desc">Traffic shifts atomically. If a deploy fails its health check, Prodvo rolls back automatically — your users never see an outage.</div>
+            <span class="df-chip">instant rollback</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PHASE 05 — MAINTAIN
+============================================================ -->
+<section class="phase-section" id="maintain">
+  <div class="container">
+
+    <div class="phase-label-row reveal">
+      <span class="phase-num">Phase 05</span>
+      <div class="phase-divider-line"></div>
+    </div>
+    <h2 class="phase-title-row reveal d1" style="margin-bottom:0.75rem;">Maintain — Prodvo<br>watches so you don't have to.</h2>
+    <p class="section-sub reveal d2" style="margin-bottom:2.5rem;max-width:600px;">Real-time logs, error tracking, and performance data — all in one view. Prodvo surfaces the signal from the noise and tells you what matters.</p>
+
+    <div class="ph-maintain-inner">
+
+      <div class="obs-log reveal">
+        <div class="obs-log-head">
+          <span class="olh-title">Live log stream · production</span>
+          <div class="olh-status"><div class="olh-dot"></div>streaming</div>
+        </div>
+        <div class="log-row"><span class="log-time">14:03:22</span><span class="log-level ok">OK</span><span class="log-msg">GET /dashboard 200 · <span class="log-highlight">38ms</span></span></div>
+        <div class="log-row"><span class="log-time">14:03:24</span><span class="log-level ok">OK</span><span class="log-msg">POST /api/invoices · created invoice_019sk3 · 204ms</span></div>
+        <div class="log-row"><span class="log-time">14:03:29</span><span class="log-level warn">WARN</span><span class="log-msg">Stripe webhook retry #2 · event <span class="log-highlight">invoice.payment_failed</span></span></div>
+        <div class="log-row"><span class="log-time">14:03:31</span><span class="log-level ok">OK</span><span class="log-msg">Webhook processed · user notified via email · 112ms</span></div>
+        <div class="log-row"><span class="log-time">14:03:38</span><span class="log-level info">INFO</span><span class="log-msg">Cron: recurring invoice job triggered · 3 invoices queued</span></div>
+        <div class="log-row"><span class="log-time">14:03:39</span><span class="log-level ok">OK</span><span class="log-msg">invoice_020 generated · magic link sent to client · 89ms</span></div>
+        <div class="log-row"><span class="log-time">14:03:41</span><span class="log-level err">ERR</span><span class="log-msg">PDF export timeout · user_id: usr_88a2 · retrying…</span></div>
+        <div class="log-row"><span class="log-time">14:03:42</span><span class="log-level ok">OK</span><span class="log-msg">PDF export retry succeeded · <span class="log-highlight">delivered in 1.8s</span></span></div>
+        <div class="log-row"><span class="log-time">14:03:45</span><span class="log-level ok">OK</span><span class="log-msg">GET /portal/tok_9xk2p3 200 · public invoice view · 29ms</span></div>
+        <div class="log-row"><span class="log-time">14:03:48</span><span class="log-level info">INFO</span><span class="log-msg">Session created · user_id: usr_09bk · login via Google OAuth</span></div>
+      </div>
+
+      <div>
+        <div class="maintain-metrics reveal d1">
+          <div class="mm-card">
+            <div class="mmc-label">Avg. response time</div>
+            <div class="mmc-val">62<em>ms</em></div>
+            <div class="mmc-sub">Last 24 hours · p50</div>
+            <div class="mmc-spark">
+              <div class="spark-bar" style="height:40%"></div>
+              <div class="spark-bar" style="height:55%"></div>
+              <div class="spark-bar" style="height:50%"></div>
+              <div class="spark-bar" style="height:70%"></div>
+              <div class="spark-bar" style="height:45%"></div>
+              <div class="spark-bar hi" style="height:60%"></div>
+              <div class="spark-bar" style="height:52%"></div>
+            </div>
+          </div>
+          <div class="mm-card">
+            <div class="mmc-label">Uptime</div>
+            <div class="mmc-val">99.<em>98%</em></div>
+            <div class="mmc-sub">Last 30 days</div>
+          </div>
+          <div class="mm-card">
+            <div class="mmc-label">Error rate</div>
+            <div class="mmc-val">0.<em>04%</em></div>
+            <div class="mmc-sub">Auto-retried: 100% resolved</div>
+          </div>
+          <div class="mm-card">
+            <div class="mmc-label">Active sessions</div>
+            <div class="mmc-val">218<em>/hr</em></div>
+            <div class="mmc-sub">Peak: 340 at 11:00 UTC</div>
+            <div class="mmc-spark" style="margin-top:0.5rem;">
+              <div class="spark-bar" style="height:30%"></div>
+              <div class="spark-bar" style="height:50%"></div>
+              <div class="spark-bar hi" style="height:100%"></div>
+              <div class="spark-bar" style="height:80%"></div>
+              <div class="spark-bar" style="height:64%"></div>
+              <div class="spark-bar" style="height:55%"></div>
+              <div class="spark-bar" style="height:60%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SPEED STRIP
+============================================================ -->
+<section class="speed-strip">
+  <div class="container">
+
+    <div class="speed-header">
+      <div>
+        <div style="font-family:var(--font-mono);font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--fire-orange);margin-bottom:0.8rem;" class="reveal">By the numbers</div>
+        <h2 style="font-family:var(--font-brand);font-size:clamp(1.7rem,3.5vw,2.8rem);font-weight:800;letter-spacing:-0.035em;line-height:1.1;color:var(--ink);" class="reveal d1">How fast is<br>each phase?</h2>
+      </div>
+      <p style="font-size:1rem;color:var(--ink-3);line-height:1.68;margin-top:0.5rem;" class="reveal d2">Average times reported across Prodvo users, across all project types and complexity levels. Complex projects take longer — but they all start in the same 43 seconds.</p>
+    </div>
+
+    <div class="speed-grid reveal">
+      <div class="speed-cell">
+        <div class="sc-phase">01 · Start</div>
+        <div class="sc-time">43</div>
+        <div class="sc-unit">seconds</div>
+        <div class="sc-desc">From prompt to full scaffolded, runnable project</div>
+      </div>
+      <div class="speed-cell">
+        <div class="sc-phase">02 · Build</div>
+        <div class="sc-time">~3</div>
+        <div class="sc-unit">min per feature</div>
+        <div class="sc-desc">Average time from feature request to working, committed code</div>
+      </div>
+      <div class="speed-cell">
+        <div class="sc-phase">03 · Iterate</div>
+        <div class="sc-time">&lt;60</div>
+        <div class="sc-unit">seconds</div>
+        <div class="sc-desc">Average time to apply a change, update callsites, and confirm</div>
+      </div>
+      <div class="speed-cell">
+        <div class="sc-phase">04 · Deploy</div>
+        <div class="sc-time">28</div>
+        <div class="sc-unit">seconds</div>
+        <div class="sc-desc">Build → migrate → propagate → SSL → health check → live</div>
+      </div>
+      <div class="speed-cell">
+        <div class="sc-phase">05 · Maintain</div>
+        <div class="sc-time">0</div>
+        <div class="sc-unit">manual work</div>
+        <div class="sc-desc">Observability runs automatically. You get alerted. That's it.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     CTA
+============================================================ -->
+<section class="cta-final">
+  <div class="container">
+    <div class="cta-inner">
+      <div>
+        <div class="cta-eyebrow">Start your loop</div>
+        <h2 class="cta-title">Prompt one.<br>Ship everything.</h2>
+        <p class="cta-sub">The loop starts the moment you type your first prompt. No setup, no config, no waiting on infra. Your first project is live in under 2 minutes.</p>
+      </div>
+      <div class="cta-right">
+        <a href="#" class="btn-cta-w">Start building free →</a>
+        <a href="#" class="btn-cta-ghost">See all use cases</a>
+        <p class="cta-trust">Free tier available · No credit card required</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">Prodvo<em>.</em></div>
+        <p class="footer-tagline">The AI coding agent for builders who want to ship — not configure.</p>
+        <div class="footer-social">
+          <a href="#" class="fsoc" aria-label="Twitter">𝕏</a>
+          <a href="#" class="fsoc" aria-label="GitHub">GH</a>
+          <a href="#" class="fsoc" aria-label="Discord">DC</a>
+        </div>
+      </div>
+      <div>
+        <div class="f-col-title">Product</div>
+        <ul class="f-links">
+          <li><a href="#">Features</a></li>
+          <li><a href="#">Use Cases</a></li>
+          <li><a href="#">Workflow</a></li>
+          <li><a href="#">Pricing</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="f-col-title">Developers</div>
+        <ul class="f-links">
+          <li><a href="#">Docs</a></li>
+          <li><a href="#">API Reference</a></li>
+          <li><a href="#">Templates</a></li>
+          <li><a href="#">GitHub</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="f-col-title">Company</div>
+        <ul class="f-links">
+          <li><a href="#">About</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 Prodvo, Inc. · <a href="#">prodvo.studio</a></div>
+      <ul class="f-bottom-links">
+        <li><a href="#">Privacy</a></li>
+        <li><a href="#">Terms</a></li>
+        <li><a href="#">Cookies</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+</main>
+
+<script>
+// Nav scroll
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 8);
+}, { passive: true });
+
+// Reveal
+const revealEls = document.querySelectorAll('.reveal');
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); }
+  });
+}, { threshold: 0.07, rootMargin: '0px 0px -28px 0px' });
+revealEls.forEach(el => ro.observe(el));
+
+// Phase switcher — syncs list and orbital diagram
+function setPhase(phase) {
+  // Update list items
+  document.querySelectorAll('.lp-item').forEach(el => {
+    el.classList.toggle('active', el.dataset.phase === phase);
+  });
+  // Update orbital nodes
+  document.querySelectorAll('.orbit-node').forEach(el => {
+    el.classList.toggle('active', el.dataset.phase === phase);
+  });
+  // Update orbital lines
+  document.querySelectorAll('.orbit-line').forEach(el => {
+    el.classList.toggle('active', el.id === 'line-' + phase);
+  });
+}
+
+// Auto-cycle phases every 2.5s
+const phases = ['start', 'build', 'iterate', 'deploy', 'maintain'];
+let phaseIdx = 0;
+let autoCycle = setInterval(() => {
+  phaseIdx = (phaseIdx + 1) % phases.length;
+  setPhase(phases[phaseIdx]);
+}, 2500);
+
+// Stop auto-cycle on manual interaction
+document.querySelectorAll('.orbit-node, .lp-item').forEach(el => {
+  el.addEventListener('click', () => {
+    clearInterval(autoCycle);
+  });
+});
+
+// Reduced motion
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  clearInterval(autoCycle);
+}
+</script>
+
+</body>
+</html>

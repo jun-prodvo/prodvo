@@ -1,0 +1,1886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Use Cases — Prodvo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+
+/* ============================================================
+   ROOT & RESET
+============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+
+:root {
+  --white:              #ffffff;
+  --fire-orange:        #f97316;
+  --fire-orange-dark:   #ea580c;
+  --fire-orange-deep:   #c2410c;
+  --fire-orange-darker: #9a3412;
+  --fire-orange-soft:   #fdba74;
+
+  /* text / neutral */
+  --ink:        #18181b;
+  --ink-2:      #3f3f46;
+  --ink-3:      #71717a;
+  --border:     #e4e4e7;
+  --border-soft: #f4f4f5;
+  --surface:    #fafafa;
+
+  --font-brand: "Plus Jakarta Sans", "Inter", sans-serif;
+  --font-body:  "Inter", -apple-system, sans-serif;
+  --font-mono:  "JetBrains Mono", monospace;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--white);
+  color: var(--ink);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; font-family: inherit; border: none; background: none; padding: 0; }
+img { display: block; max-width: 100%; }
+
+.container {
+  width: min(1120px, calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+/* ============================================================
+   ACCESSIBILITY
+============================================================ */
+.skip-link {
+  position: absolute; top: -48px; left: 0;
+  background: var(--fire-orange); color: #fff;
+  padding: 10px 18px; z-index: 9999;
+  font-size: 0.875rem; font-weight: 600;
+  transition: top 0.2s;
+}
+.skip-link:focus { top: 0; }
+:focus-visible { outline: 2px solid var(--fire-orange); outline-offset: 3px; border-radius: 4px; }
+:focus:not(:focus-visible) { outline: none; }
+
+/* ============================================================
+   ANNOUNCE STRIP
+============================================================ */
+.announce {
+  background: var(--fire-orange);
+  text-align: center;
+  padding: 0.55rem 1rem;
+  font-family: var(--font-brand);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: 0.01em;
+}
+.announce a {
+  text-decoration: underline;
+  color: var(--white);
+  opacity: 0.85;
+  margin-left: 0.5rem;
+  font-weight: 600;
+}
+.announce a:hover { opacity: 1; }
+
+/* ============================================================
+   NAV
+============================================================ */
+.nav {
+  position: sticky; top: 0; z-index: 200;
+  background: rgba(255,255,255,0.93);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s;
+}
+.nav.scrolled { border-color: var(--border); }
+
+.nav-inner {
+  display: flex; align-items: center;
+  justify-content: space-between; height: 62px;
+}
+
+.nav-logo {
+  font-family: var(--font-brand); font-weight: 900;
+  font-size: 1.3rem; letter-spacing: -0.04em; color: var(--ink);
+}
+.nav-logo em { color: var(--fire-orange); font-style: normal; }
+
+.nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+.nav-links a {
+  font-size: 0.875rem; font-weight: 500; color: var(--ink-2);
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--ink); }
+.nav-links a.active { color: var(--fire-orange); font-weight: 600; }
+
+.nav-right { display: flex; align-items: center; gap: 0.75rem; }
+.btn-ghost {
+  font-size: 0.875rem; font-weight: 600; color: var(--ink-2);
+  padding: 0.45rem 1rem; border-radius: 8px;
+  transition: background 0.2s;
+}
+.btn-ghost:hover { background: var(--border-soft); }
+
+.btn-nav {
+  font-family: var(--font-brand); font-size: 0.875rem; font-weight: 700;
+  color: var(--white); background: var(--fire-orange);
+  padding: 0.5rem 1.15rem; border-radius: 8px;
+  transition: background 0.2s, transform 0.15s;
+}
+.btn-nav:hover { background: var(--fire-orange-dark); transform: translateY(-1px); }
+
+.nav-burger { display: none; flex-direction: column; gap: 4px; padding: 6px; }
+.nav-burger span { display: block; width: 22px; height: 2px; background: var(--ink); border-radius: 2px; }
+
+/* ============================================================
+   HERO — PERSONA SWITCHER
+============================================================ */
+.hero {
+  padding: clamp(4.5rem, 8vw, 7.5rem) 0 clamp(3rem, 5vw, 5rem);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Fine dot grid */
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(var(--border) 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.hero-inner { position: relative; z-index: 1; }
+
+.hero-eyebrow {
+  font-family: var(--font-mono); font-size: 0.72rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--fire-orange);
+  margin-bottom: 2rem;
+}
+
+/* The big statement with swappable word */
+.hero-statement {
+  font-family: var(--font-brand);
+  font-size: clamp(2.6rem, 6.5vw, 5.8rem);
+  font-weight: 900;
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+  color: var(--ink);
+  margin-bottom: 2.5rem;
+  max-width: 900px;
+}
+.hero-statement .static-line { display: block; }
+.hero-statement .swap-wrap {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+.hero-statement .swap-word {
+  display: block;
+  color: var(--fire-orange);
+  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.35s;
+}
+.hero-statement .swap-word.exit {
+  transform: translateY(-110%);
+  opacity: 0;
+  position: absolute; top: 0; left: 0;
+}
+.hero-statement .swap-word.enter {
+  transform: translateY(110%);
+  opacity: 0;
+}
+.hero-statement .swap-word.active {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Persona tabs */
+.persona-tabs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.persona-tab {
+  font-family: var(--font-brand); font-size: 0.875rem; font-weight: 700;
+  color: var(--ink-3);
+  padding: 0.5rem 1.1rem; border-radius: 100px;
+  border: 1.5px solid var(--border);
+  background: var(--white);
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.persona-tab:hover { border-color: var(--fire-orange-soft); color: var(--fire-orange-dark); }
+.persona-tab.active {
+  border-color: var(--fire-orange);
+  background: var(--fire-orange);
+  color: var(--white);
+}
+
+.hero-sub-wrap {
+  max-width: 560px;
+}
+.hero-sub {
+  font-size: 1.05rem; color: var(--ink-3); line-height: 1.7;
+  transition: opacity 0.3s;
+}
+
+.hero-ctas {
+  display: flex; align-items: center; gap: 1rem;
+  margin-top: 2rem; flex-wrap: wrap;
+}
+.btn-primary-lg {
+  font-family: var(--font-brand); font-size: 1rem; font-weight: 800;
+  color: var(--white); background: var(--fire-orange-deep);
+  padding: 0.85rem 2rem; border-radius: 10px;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 4px 16px rgba(194,65,12,0.2);
+}
+.btn-primary-lg:hover {
+  background: var(--fire-orange-darker);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(194,65,12,0.28);
+}
+.btn-outline-lg {
+  font-family: var(--font-brand); font-size: 0.95rem; font-weight: 600;
+  color: var(--ink); background: transparent;
+  padding: 0.8rem 1.7rem; border-radius: 10px;
+  border: 1.5px solid var(--border);
+  transition: border-color 0.2s, background 0.2s;
+}
+.btn-outline-lg:hover { border-color: var(--ink); background: var(--border-soft); }
+
+/* ============================================================
+   SHARED SECTION PARTS
+============================================================ */
+.eyebrow {
+  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--fire-orange); margin-bottom: 0.8rem;
+}
+.section-title {
+  font-family: var(--font-brand);
+  font-size: clamp(1.7rem, 3.5vw, 2.8rem);
+  font-weight: 800; line-height: 1.1;
+  letter-spacing: -0.035em; color: var(--ink);
+}
+.section-sub {
+  font-size: 1rem; color: var(--ink-3); line-height: 1.65;
+}
+
+/* ============================================================
+   SEGMENT 01 — SOLO FOUNDERS
+   Layout: Oversized stat left + narrative right
+============================================================ */
+.seg-solo {
+  padding: clamp(5rem, 8vw, 8rem) 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.seg-solo-inner {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 5rem;
+  align-items: center;
+}
+
+.seg-solo-left {
+  position: relative;
+}
+
+/* Large rotated label */
+.seg-number-label {
+  font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.14em;
+  color: var(--fire-orange-soft);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  position: absolute;
+  top: 0; left: -1.5rem;
+  line-height: 1;
+}
+
+.seg-big-stat {
+  font-family: var(--font-brand);
+  font-size: clamp(5rem, 10vw, 9rem);
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  line-height: 0.9;
+  color: var(--fire-orange);
+  margin-bottom: 0.5rem;
+}
+.seg-big-stat sub {
+  font-size: 0.3em;
+  vertical-align: super;
+  color: var(--fire-orange-dark);
+  letter-spacing: -0.02em;
+  font-weight: 800;
+}
+
+.seg-stat-caption {
+  font-family: var(--font-brand); font-size: 1.05rem; font-weight: 700;
+  color: var(--ink-2); line-height: 1.3;
+  border-left: 3px solid var(--fire-orange-soft);
+  padding-left: 1rem; margin-top: 1.2rem;
+  max-width: 260px;
+}
+
+.seg-solo-right {}
+
+.seg-persona-badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-family: var(--font-mono); font-size: 0.68rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--fire-orange-dark);
+  border: 1px solid var(--fire-orange-soft);
+  padding: 0.28rem 0.75rem; border-radius: 100px;
+  margin-bottom: 1.2rem;
+}
+.seg-persona-badge::before {
+  content: '';
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--fire-orange);
+  flex-shrink: 0;
+}
+
+.seg-solo-right .section-title { margin-bottom: 1.2rem; }
+.seg-solo-right .section-sub { margin-bottom: 1.8rem; max-width: 480px; }
+
+/* Proof list — no icons, typographic only */
+.proof-list {
+  display: flex; flex-direction: column; gap: 1.1rem;
+  list-style: none;
+}
+.proof-list li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.9rem;
+  align-items: start;
+}
+.proof-list .proof-num {
+  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600;
+  color: var(--fire-orange); line-height: 1.8;
+  letter-spacing: 0.04em;
+}
+.proof-list .proof-text {
+  font-size: 0.9rem; color: var(--ink-2); line-height: 1.6; font-weight: 500;
+}
+.proof-list .proof-text strong {
+  color: var(--ink); font-weight: 700;
+  display: block; margin-bottom: 0.1rem;
+}
+
+/* ============================================================
+   SEGMENT 02 — AGENCIES
+   Layout: Full-width horizontal "before/after" timeline
+============================================================ */
+.seg-agency {
+  padding: clamp(5rem, 8vw, 8rem) 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--white);
+}
+
+.seg-agency-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: end;
+  margin-bottom: 4rem;
+}
+
+.seg-agency-header .section-title { margin-bottom: 0; }
+
+/* Before/After horizontal comparison */
+.ba-track {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.ba-col {
+  padding: 2.2rem 2rem;
+}
+.ba-col.before { background: var(--surface); }
+.ba-col.after  { background: var(--white); }
+
+.ba-divider {
+  width: 1px; background: var(--border);
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.ba-divider-label {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-family: var(--font-brand); font-size: 0.72rem; font-weight: 800;
+  color: var(--ink-3); padding: 0.3rem 0.7rem;
+  writing-mode: horizontal-tb;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  position: sticky; top: 50%;
+}
+
+.ba-head {
+  font-family: var(--font-mono); font-size: 0.68rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  margin-bottom: 1.5rem;
+}
+.ba-col.before .ba-head { color: var(--ink-3); }
+.ba-col.after  .ba-head { color: var(--fire-orange); }
+
+.ba-items { display: flex; flex-direction: column; gap: 0.85rem; }
+.ba-item {
+  display: flex; align-items: flex-start; gap: 0.8rem;
+}
+.ba-item-marker {
+  font-family: var(--font-mono); font-size: 0.72rem; font-weight: 600;
+  flex-shrink: 0; line-height: 1.6; padding-top: 0.04rem;
+}
+.ba-col.before .ba-item-marker { color: var(--ink-3); }
+.ba-col.after  .ba-item-marker { color: var(--fire-orange); }
+
+.ba-item-text {
+  font-size: 0.875rem; font-weight: 500; color: var(--ink-2); line-height: 1.55;
+}
+.ba-col.after .ba-item-text { color: var(--ink); font-weight: 600; }
+
+/* Time saved badge */
+.ba-time-badge {
+  margin-top: 2rem; padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; gap: 0.75rem;
+}
+.ba-time-num {
+  font-family: var(--font-brand); font-size: 2.2rem; font-weight: 900;
+  letter-spacing: -0.05em; color: var(--fire-orange); line-height: 1;
+}
+.ba-time-label {
+  font-size: 0.82rem; color: var(--ink-3); font-weight: 500; line-height: 1.4;
+  max-width: 110px;
+}
+
+/* ============================================================
+   SEGMENT 03 — NON-TECHNICAL FOUNDERS
+   Layout: Wide pull-quote + supporting proof grid
+============================================================ */
+.seg-nontechnical {
+  padding: clamp(5rem, 8vw, 8rem) 0;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Massive pull quote, full bleed style */
+.pull-quote-wrap {
+  border-top: 2px solid var(--fire-orange);
+  border-bottom: 2px solid var(--fire-orange);
+  padding: 3rem 0 2.8rem;
+  margin-bottom: 4rem;
+}
+
+.pull-quote {
+  font-family: var(--font-brand);
+  font-size: clamp(1.6rem, 3.5vw, 3rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  max-width: 920px;
+}
+.pull-quote em {
+  font-style: italic;
+  color: var(--fire-orange);
+}
+
+/* Three-column proof grid */
+.proof-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.proof-cell {
+  background: var(--white);
+  padding: 2rem 1.8rem;
+}
+
+.proof-cell-num {
+  font-family: var(--font-brand);
+  font-size: 2.8rem; font-weight: 900;
+  letter-spacing: -0.055em; line-height: 1;
+  color: var(--fire-orange); margin-bottom: 0.4rem;
+}
+.proof-cell-num span { font-size: 1.5rem; color: var(--fire-orange-dark); }
+
+.proof-cell-title {
+  font-family: var(--font-brand); font-size: 0.95rem; font-weight: 800;
+  color: var(--ink); margin-bottom: 0.4rem; letter-spacing: -0.01em;
+}
+.proof-cell-desc {
+  font-size: 0.83rem; color: var(--ink-3); line-height: 1.6;
+}
+
+/* ============================================================
+   SEGMENT 04 — INTERNAL TOOLS TEAMS
+   Layout: Two-column, left is timeline of a typical day, right is benefits
+============================================================ */
+.seg-internal {
+  padding: clamp(5rem, 8vw, 8rem) 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.seg-internal-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: start;
+}
+
+/* "A day in the life" — compact timeline */
+.day-timeline {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.day-timeline-head {
+  background: var(--fire-orange);
+  padding: 1rem 1.5rem;
+  font-family: var(--font-brand); font-size: 0.8rem; font-weight: 800;
+  color: var(--white); text-transform: uppercase; letter-spacing: 0.07em;
+}
+
+.day-row {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+}
+.day-row:last-child { border-bottom: none; }
+
+.day-time {
+  font-family: var(--font-mono); font-size: 0.68rem; font-weight: 600;
+  color: var(--ink-3); padding: 1rem;
+  border-right: 1px solid var(--border);
+  display: flex; align-items: flex-start;
+  writing-mode: horizontal-tb;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+}
+
+.day-content { padding: 1rem 1.2rem; }
+.day-task {
+  font-family: var(--font-brand); font-size: 0.88rem; font-weight: 700;
+  color: var(--ink); margin-bottom: 0.2rem;
+}
+.day-detail {
+  font-size: 0.78rem; color: var(--ink-3); line-height: 1.5;
+}
+
+.day-row.highlight .day-time { color: var(--fire-orange); }
+.day-row.highlight .day-task { color: var(--fire-orange-dark); }
+.day-row.highlight { background: #fff8f5; }
+
+/* Right: benefit list with metric chips */
+.benefit-list {
+  display: flex; flex-direction: column; gap: 1.6rem;
+  margin-top: 1.5rem;
+}
+.benefit-item {}
+.benefit-title {
+  font-family: var(--font-brand); font-size: 1rem; font-weight: 800;
+  color: var(--ink); margin-bottom: 0.35rem; letter-spacing: -0.015em;
+}
+.benefit-desc {
+  font-size: 0.875rem; color: var(--ink-3); line-height: 1.6; margin-bottom: 0.5rem;
+}
+.metric-chip {
+  display: inline-block;
+  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600;
+  color: var(--fire-orange-darker); background: transparent;
+  border: 1px solid var(--fire-orange-soft);
+  padding: 0.2rem 0.6rem; border-radius: 4px;
+  letter-spacing: 0.04em;
+}
+
+/* ============================================================
+   SEGMENT 05 — HACKATHON BUILDERS
+   Layout: Asymmetric, large clock countdown visual on right
+============================================================ */
+.seg-hackathon {
+  padding: clamp(5rem, 8vw, 8rem) 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.seg-hackathon-inner {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+/* Build timeline — a mini Gantt-style strip */
+.build-strip {
+  margin-top: 2.2rem;
+  display: flex; flex-direction: column; gap: 0.6rem;
+}
+
+.build-strip-head {
+  display: grid;
+  grid-template-columns: 7rem 1fr;
+  gap: 0.75rem;
+  font-family: var(--font-mono); font-size: 0.62rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-3);
+  margin-bottom: 0.2rem;
+}
+
+.build-row {
+  display: grid;
+  grid-template-columns: 7rem 1fr;
+  gap: 0.75rem;
+  align-items: center;
+}
+.build-label {
+  font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500;
+  color: var(--ink-3); text-align: right;
+}
+.build-bar-track {
+  height: 22px; background: var(--border-soft);
+  border-radius: 4px; overflow: hidden;
+  border: 1px solid var(--border);
+  position: relative;
+}
+.build-bar {
+  height: 100%; border-radius: 3px;
+  display: flex; align-items: center; padding: 0 0.5rem;
+  font-family: var(--font-mono); font-size: 0.63rem; font-weight: 600;
+  color: var(--white); letter-spacing: 0.02em;
+  transition: width 0.8s ease;
+}
+.build-bar.type-setup    { background: var(--fire-orange-soft); width: 8%; color: transparent; }
+.build-bar.type-db       { background: var(--fire-orange); width: 12%; }
+.build-bar.type-auth     { background: var(--fire-orange); width: 10%; margin-left: 12%; }
+.build-bar.type-feature  { background: var(--fire-orange-dark); width: 45%; margin-left: 22%; }
+.build-bar.type-deploy   { background: var(--fire-orange-deeper); width: 5%; margin-left: 90%; }
+
+/* Right side: big clock display */
+.clock-block {
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+}
+.clock-head {
+  background: var(--fire-orange);
+  padding: 0.85rem 1.5rem;
+  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.1em; color: var(--white);
+}
+.clock-body { padding: 2rem 1.5rem; }
+
+.clock-display {
+  font-family: var(--font-brand); font-size: 3.5rem; font-weight: 900;
+  letter-spacing: -0.06em; line-height: 1; color: var(--fire-orange);
+  margin-bottom: 0.3rem;
+  font-variant-numeric: tabular-nums;
+}
+.clock-sub {
+  font-family: var(--font-mono); font-size: 0.68rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-3);
+  margin-bottom: 2rem;
+}
+
+.clock-tasks { display: flex; flex-direction: column; gap: 0; }
+.clock-task {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.clock-task:last-child { border-bottom: none; }
+.clock-task-name {
+  font-size: 0.83rem; font-weight: 600; color: var(--ink-2);
+}
+.clock-task-time {
+  font-family: var(--font-mono); font-size: 0.72rem; font-weight: 600;
+  color: var(--fire-orange);
+  white-space: nowrap;
+}
+.clock-task.done .clock-task-name {
+  color: var(--ink-3); text-decoration: line-through;
+}
+.clock-task.done .clock-task-time { color: var(--ink-3); }
+.clock-task.active .clock-task-name { color: var(--fire-orange-dark); font-weight: 700; }
+
+/* ============================================================
+   SHIP TIME COMPARISON — horizontal bar data strip
+============================================================ */
+.ship-time {
+  padding: clamp(4rem, 7vw, 6rem) 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.ship-time-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: end;
+  margin-bottom: 3rem;
+}
+
+.ship-bars { display: flex; flex-direction: column; gap: 0; }
+
+.ship-bar-row {
+  display: grid;
+  grid-template-columns: 160px 1fr auto;
+  gap: 1.2rem;
+  align-items: center;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.ship-bar-row:last-child { border-bottom: none; }
+
+.ship-bar-label {
+  font-family: var(--font-brand); font-size: 0.875rem; font-weight: 700;
+  color: var(--ink);
+}
+.ship-bar-sub {
+  font-size: 0.72rem; color: var(--ink-3); font-weight: 500;
+  display: block; margin-top: 0.1rem;
+}
+
+.ship-bar-track {
+  height: 10px; background: var(--border);
+  border-radius: 100px; overflow: visible; position: relative;
+}
+.ship-bar-fill {
+  height: 100%; border-radius: 100px;
+  background: var(--fire-orange);
+  position: relative;
+  transition: width 1s ease;
+}
+/* "without" bar — muted */
+.ship-bar-row .without-fill {
+  background: var(--border); height: 4px; margin-top: -7px;
+  border-radius: 100px; opacity: 0.7;
+}
+
+.ship-bar-num {
+  font-family: var(--font-brand); font-size: 0.95rem; font-weight: 800;
+  color: var(--fire-orange); white-space: nowrap; min-width: 60px; text-align: right;
+}
+.ship-bar-num em { font-style: normal; font-size: 0.7rem; color: var(--ink-3); font-weight: 500; }
+
+.ship-legend {
+  display: flex; gap: 1.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;
+}
+.ship-legend-item {
+  display: flex; align-items: center; gap: 0.45rem;
+  font-size: 0.78rem; font-weight: 600; color: var(--ink-3);
+}
+.ship-legend-dot {
+  width: 10px; height: 10px; border-radius: 2px;
+}
+
+/* ============================================================
+   CAPABILITY MATRIX
+============================================================ */
+.capability {
+  padding: clamp(4rem, 7vw, 6rem) 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.cap-header { margin-bottom: 3rem; }
+
+.cap-table-wrap {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.cap-table { width: 100%; border-collapse: collapse; }
+
+.cap-table th {
+  background: var(--surface);
+  padding: 0.9rem 1.2rem;
+  font-family: var(--font-mono); font-size: 0.67rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.09em;
+  color: var(--ink-3);
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  white-space: nowrap;
+}
+.cap-table th:first-child {
+  color: var(--ink-2); font-size: 0.7rem;
+}
+.cap-table th.highlight-col { background: #fff8f5; color: var(--fire-orange-dark); }
+
+.cap-table td {
+  padding: 0.95rem 1.2rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.875rem;
+  vertical-align: middle;
+}
+.cap-table tr:last-child td { border-bottom: none; }
+.cap-table td:first-child {
+  font-family: var(--font-brand); font-weight: 700; color: var(--ink);
+  font-size: 0.875rem;
+}
+.cap-table td.highlight-col { background: #fffcfa; }
+
+.cap-check {
+  display: inline-block;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--fire-orange);
+  color: var(--white);
+  font-size: 0.65rem; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  line-height: 1;
+}
+.cap-dot {
+  display: inline-block;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--border);
+  margin: 0 6px;
+}
+
+/* ============================================================
+   CTA — SOLID ORANGE, NO GRADIENT
+============================================================ */
+.cta-final {
+  background: var(--fire-orange);
+  padding: clamp(5rem, 9vw, 8rem) 0;
+  position: relative; overflow: hidden;
+}
+
+/* Grid texture */
+.cta-final::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+}
+
+.cta-inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.cta-left {}
+.cta-eyebrow {
+  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.6); margin-bottom: 1rem;
+}
+.cta-title {
+  font-family: var(--font-brand);
+  font-size: clamp(2rem, 4.5vw, 3.8rem);
+  font-weight: 900; line-height: 1.05;
+  letter-spacing: -0.04em; color: var(--white);
+  margin-bottom: 1rem;
+}
+.cta-sub {
+  font-size: 1rem; color: rgba(255,255,255,0.72);
+  line-height: 1.65;
+}
+
+.cta-right {
+  display: flex; flex-direction: column; gap: 1rem;
+  align-items: flex-start;
+}
+
+.btn-cta-w {
+  font-family: var(--font-brand); font-size: 1.05rem; font-weight: 800;
+  color: var(--fire-orange-deep); background: var(--white);
+  padding: 0.9rem 2.2rem; border-radius: 10px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.14);
+  transition: transform 0.15s, box-shadow 0.2s;
+  display: inline-block;
+}
+.btn-cta-w:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.2); }
+
+.btn-cta-ghost {
+  font-family: var(--font-brand); font-size: 0.95rem; font-weight: 600;
+  color: var(--white); background: transparent;
+  padding: 0.8rem 2rem; border-radius: 10px;
+  border: 1.5px solid rgba(255,255,255,0.35);
+  transition: border-color 0.2s, background 0.2s;
+  display: inline-block;
+}
+.btn-cta-ghost:hover { border-color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.08); }
+
+.cta-trust {
+  font-size: 0.78rem; color: rgba(255,255,255,0.48); font-weight: 500;
+  margin-top: 0.5rem;
+}
+
+/* ============================================================
+   FOOTER
+============================================================ */
+.footer {
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  padding: 4rem 0 2rem;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr;
+  gap: 3rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.footer-logo {
+  font-family: var(--font-brand); font-weight: 900;
+  font-size: 1.3rem; letter-spacing: -0.04em; margin-bottom: 0.7rem;
+}
+.footer-logo em { color: var(--fire-orange); font-style: normal; }
+
+.footer-tagline {
+  font-size: 0.84rem; color: var(--ink-3);
+  line-height: 1.65; max-width: 220px; margin-bottom: 1.4rem;
+}
+.footer-social { display: flex; gap: 0.5rem; }
+.fsoc {
+  width: 34px; height: 34px; border-radius: 8px;
+  background: var(--surface); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.78rem; color: var(--ink-3);
+  font-family: var(--font-brand); font-weight: 700;
+  transition: all 0.2s;
+}
+.fsoc:hover { border-color: var(--fire-orange-soft); color: var(--fire-orange-dark); background: #fff8f5; }
+
+.f-col-title {
+  font-family: var(--font-brand); font-size: 0.78rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--ink); margin-bottom: 1rem;
+}
+.f-links { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+.f-links a { font-size: 0.84rem; color: var(--ink-3); font-weight: 500; transition: color 0.2s; }
+.f-links a:hover { color: var(--ink); }
+
+.footer-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 2rem; gap: 1rem; flex-wrap: wrap;
+}
+.footer-copy { font-size: 0.8rem; color: var(--ink-3); font-weight: 500; }
+.footer-copy a { color: var(--ink-2); }
+.f-bottom-links { display: flex; gap: 1.5rem; list-style: none; }
+.f-bottom-links a { font-size: 0.78rem; color: var(--ink-3); font-weight: 500; transition: color 0.2s; }
+.f-bottom-links a:hover { color: var(--ink); }
+
+/* ============================================================
+   REVEAL SYSTEM
+============================================================ */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+.d1 { transition-delay: 0.07s; }
+.d2 { transition-delay: 0.14s; }
+.d3 { transition-delay: 0.21s; }
+.d4 { transition-delay: 0.28s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .swap-word { transition: none; }
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width: 980px) {
+  .nav-links, .nav-right { display: none; }
+  .nav-burger { display: flex; }
+
+  .seg-solo-inner { grid-template-columns: 1fr; gap: 3rem; }
+  .seg-number-label { display: none; }
+
+  .seg-agency-header { grid-template-columns: 1fr; gap: 1.5rem; }
+  .ba-track { grid-template-columns: 1fr; }
+  .ba-divider { width: 100%; height: 1px; flex-direction: row; }
+  .ba-divider-label { writing-mode: horizontal-tb; }
+  .ba-col.before { border-bottom: 1px solid var(--border); }
+
+  .proof-grid-3 { grid-template-columns: 1fr 1fr; }
+
+  .seg-internal-inner { grid-template-columns: 1fr; gap: 3rem; }
+
+  .seg-hackathon-inner { grid-template-columns: 1fr; gap: 3rem; }
+
+  .ship-time-header { grid-template-columns: 1fr; gap: 1rem; }
+  .ship-bar-row { grid-template-columns: 120px 1fr auto; }
+
+  .cta-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .cap-table { font-size: 0.8rem; }
+}
+
+@media (max-width: 700px) {
+  .hero-statement { font-size: clamp(2.2rem, 10vw, 3.5rem); }
+  .proof-grid-3 { grid-template-columns: 1fr; }
+  .ship-bar-row { grid-template-columns: 90px 1fr auto; gap: 0.75rem; }
+  .cap-table td, .cap-table th { padding: 0.7rem 0.75rem; }
+  .footer-top { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; text-align: center; }
+  .f-bottom-links { justify-content: center; }
+  .hero-ctas { flex-direction: column; align-items: flex-start; }
+  .cta-right { align-items: stretch; }
+  .build-strip-head, .build-row { grid-template-columns: 5rem 1fr; }
+}
+
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<!-- ANNOUNCE -->
+<div class="announce">
+  Early access is open — limited seats. <a href="#">Claim yours →</a>
+</div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">Prodvo<em>.</em></a>
+      <ul class="nav-links">
+        <li><a href="#">Features</a></li>
+        <li><a href="#" class="active">Use Cases</a></li>
+        <li><a href="#">Stack</a></li>
+        <li><a href="#">Pricing</a></li>
+        <li><a href="#">Docs</a></li>
+      </ul>
+      <div class="nav-right">
+        <a href="#" class="btn-ghost">Sign in</a>
+        <a href="#" class="btn-nav">Start building →</a>
+      </div>
+      <button class="nav-burger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+
+<!-- ============================================================
+     HERO — PERSONA SWITCHER
+============================================================ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-inner">
+
+      <div class="hero-eyebrow">Use Cases</div>
+
+      <h1 class="hero-statement">
+        <span class="static-line">Built for how</span>
+        <span class="static-line">
+          <span class="swap-wrap" aria-live="polite">
+            <span class="swap-word active" data-persona="solo">founders</span>
+          </span>
+          &nbsp;actually work.
+        </span>
+      </h1>
+
+      <div class="persona-tabs" role="tablist" aria-label="Select your role">
+        <button class="persona-tab active" role="tab" aria-selected="true"
+          data-word="founders"
+          data-sub="You have one shot to validate fast. Prodvo gets you from idea to live product in a weekend — auth, database, and deploy included."
+          data-cta="Build your MVP today">
+          Solo Founders
+        </button>
+        <button class="persona-tab" role="tab" aria-selected="false"
+          data-word="agencies"
+          data-sub="Client deadlines don't care about your setup time. Prodvo means less config, faster handoffs, and more margin per project."
+          data-cta="See how agencies use it">
+          Agencies
+        </button>
+        <button class="persona-tab" role="tab" aria-selected="false"
+          data-word="non-devs"
+          data-sub="You don't need to hire a developer. Describe what you want to build and Prodvo builds it — no technical background required."
+          data-cta="Build without coding">
+          Non-Technical Founders
+        </button>
+        <button class="persona-tab" role="tab" aria-selected="false"
+          data-word="teams"
+          data-sub="Internal tools shouldn't take 3 sprints. Prodvo lets your team ship ops tooling fast, without blocking your core product roadmap."
+          data-cta="See internal tool use cases">
+          Internal Tools Teams
+        </button>
+        <button class="persona-tab" role="tab" aria-selected="false"
+          data-word="hackers"
+          data-sub="48 hours. One idea. Prodvo gets you to a working demo in hours, not days. Stop fighting infra. Start winning."
+          data-cta="Hackathon mode →">
+          Hackathon Builders
+        </button>
+      </div>
+
+      <div class="hero-sub-wrap">
+        <p class="hero-sub" id="heroSub">You have one shot to validate fast. Prodvo gets you from idea to live product in a weekend — auth, database, and deploy included.</p>
+      </div>
+
+      <div class="hero-ctas">
+        <a href="#" class="btn-primary-lg" id="heroCta">Build your MVP today →</a>
+        <a href="#solo" class="btn-outline-lg">Explore use cases ↓</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SEGMENT 01 — SOLO FOUNDERS
+============================================================ -->
+<section class="seg-solo" id="solo">
+  <div class="container">
+    <div class="seg-solo-inner">
+
+      <div class="seg-solo-left reveal">
+        <div class="seg-number-label">time-to-ship</div>
+        <div class="seg-big-stat">48<sub>hrs</sub></div>
+        <div class="seg-stat-caption">From first prompt to a fully-deployed product that's ready for real users</div>
+      </div>
+
+      <div class="seg-solo-right">
+        <div class="seg-persona-badge reveal">Solo Founders &amp; Indie Hackers</div>
+        <h2 class="section-title reveal d1">Stop rebuilding the same boilerplate. Start validating the idea.</h2>
+        <p class="section-sub reveal d2" style="margin-bottom:1.8rem;">Every solo founder burns the same 2 weeks on setup: auth, database, deployment pipelines. That's 2 weeks not talking to users. Prodvo removes the setup entirely so you can spend every hour on what actually matters — finding product-market fit.</p>
+
+        <ul class="proof-list reveal d3">
+          <li>
+            <span class="proof-num">01</span>
+            <span class="proof-text">
+              <strong>Ship before you lose momentum</strong>
+              Describe your product. Prodvo scaffolds the full codebase — backend, frontend, database schema — in under 5 minutes.
+            </span>
+          </li>
+          <li>
+            <span class="proof-num">02</span>
+            <span class="proof-text">
+              <strong>Iterate without a co-founder</strong>
+              Change the pricing model. Add a new feature. Pivot the core flow. Say it, and Prodvo builds it. No PR reviews needed.
+            </span>
+          </li>
+          <li>
+            <span class="proof-num">03</span>
+            <span class="proof-text">
+              <strong>One subscription replaces five</strong>
+              Vercel, Supabase, Auth0, Resend, GitHub CI — all replaced. One monthly bill instead of five, and one less thing to context-switch between.
+            </span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SEGMENT 02 — AGENCIES
+============================================================ -->
+<section class="seg-agency" id="agencies">
+  <div class="container">
+
+    <div class="seg-agency-header">
+      <div>
+        <div class="eyebrow reveal">Agencies &amp; Freelancers</div>
+        <h2 class="section-title reveal d1">More projects. Same team.<br>Better margins.</h2>
+      </div>
+      <div>
+        <p class="section-sub reveal d2">Every hour your developers spend on boilerplate is an hour you're not billing for. Prodvo compresses setup time to near-zero so your team works on the parts clients actually pay for.</p>
+      </div>
+    </div>
+
+    <div class="ba-track reveal">
+      <div class="ba-col before">
+        <div class="ba-head">Before Prodvo</div>
+        <div class="ba-items">
+          <div class="ba-item">
+            <span class="ba-item-marker">—</span>
+            <span class="ba-item-text">Day 1–3: environment setup, repo scaffolding, CI/CD pipeline configuration</span>
+          </div>
+          <div class="ba-item">
+            <span class="ba-item-marker">—</span>
+            <span class="ba-item-text">Day 4–6: integrate auth provider, configure database, wire API layer</span>
+          </div>
+          <div class="ba-item">
+            <span class="ba-item-marker">—</span>
+            <span class="ba-item-text">Day 7+: start building actual client-facing features</span>
+          </div>
+          <div class="ba-item">
+            <span class="ba-item-marker">—</span>
+            <span class="ba-item-text">Scope creep hits → extend timeline → erode margin</span>
+          </div>
+          <div class="ba-item">
+            <span class="ba-item-marker">—</span>
+            <span class="ba-item-text">Handoff requires documentation of 5+ separate service configs</span>
+          </div>
+        </div>
+        <div class="ba-time-badge">
+          <div class="ba-time-num">7+</div>
+          <div class="ba-time-label">days before first real feature ships</div>
+        </div>
+      </div>
+
+      <div class="ba-divider">
+        <div class="ba-divider-label">vs.</div>
+      </div>
+
+      <div class="ba-col after">
+        <div class="ba-head">With Prodvo</div>
+        <div class="ba-items">
+          <div class="ba-item">
+            <span class="ba-item-marker">✓</span>
+            <span class="ba-item-text">Day 1, hour 1: full project environment live — auth, DB, deploy, CI all configured</span>
+          </div>
+          <div class="ba-item">
+            <span class="ba-item-marker">✓</span>
+            <span class="ba-item-text">Day 1 afternoon: start building client features immediately</span>
+          </div>
+          <div class="ba-item">
+            <span class="ba-item-marker">✓</span>
+            <span class="ba-item-text">Scope changes handled via conversation — no sprint replanning</span>
+          </div>
+          <div class="ba-item">
+            <span class="ba-item-marker">✓</span>
+            <span class="ba-item-text">Client previews on every push — no extra deployment config</span>
+          </div>
+          <div class="ba-item">
+            <span class="ba-item-marker">✓</span>
+            <span class="ba-item-text">Handoff is clean: one platform, one login, full export anytime</span>
+          </div>
+        </div>
+        <div class="ba-time-badge">
+          <div class="ba-time-num">2h</div>
+          <div class="ba-time-label">to first client-facing feature shipped</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     SEGMENT 03 — NON-TECHNICAL FOUNDERS
+============================================================ -->
+<section class="seg-nontechnical" id="nontechnical">
+  <div class="container">
+
+    <div class="eyebrow reveal">Non-Technical Founders</div>
+
+    <div class="pull-quote-wrap reveal d1">
+      <p class="pull-quote">
+        "You don't need to learn to code.<br>
+        You need to <em>build</em> — and those<br>are two very different things."
+      </p>
+    </div>
+
+    <div style="margin-bottom:3rem;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start;">
+        <div>
+          <p class="section-sub reveal" style="margin-bottom:1.5rem;">Most AI tools for non-technical founders still require you to understand deployment, environment variables, and database migrations. Prodvo abstracts all of it. You describe your product in plain language. Prodvo handles the technical execution end-to-end — including the parts you don't even know exist yet.</p>
+          <a href="#" class="btn-primary-lg reveal d1" style="display:inline-block;">Try it without coding →</a>
+        </div>
+        <div>
+          <p class="section-sub reveal d1" style="margin-bottom:1.5rem;">You're not outsourcing the thinking. You're offloading the implementation. Prodvo lets you stay in the product decisions — what it does, for whom, and how — while it handles the database schemas, API routes, and deployment pipelines that would otherwise require hiring a developer.</p>
+          <p class="section-sub reveal d2"><strong style="color:var(--ink);">No developer needed. No technical co-founder required.</strong> Just a product idea and the clarity to describe it.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="proof-grid-3 reveal">
+      <div class="proof-cell">
+        <div class="proof-cell-num">0<span>hrs</span></div>
+        <div class="proof-cell-title">Time spent on setup</div>
+        <div class="proof-cell-desc">Prodvo handles every technical configuration automatically. You never see an env file.</div>
+      </div>
+      <div class="proof-cell">
+        <div class="proof-cell-num">1<span>day</span></div>
+        <div class="proof-cell-title">From idea to testable MVP</div>
+        <div class="proof-cell-desc">Describe your product. Prodvo builds it. Share the link with real users before lunch.</div>
+      </div>
+      <div class="proof-cell">
+        <div class="proof-cell-num">5×</div>
+        <div class="proof-cell-title">Cheaper than hiring a dev</div>
+        <div class="proof-cell-desc">A freelance developer costs $3–8K to build what Prodvo ships in days, for the cost of a subscription.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     SEGMENT 04 — INTERNAL TOOLS TEAMS
+============================================================ -->
+<section class="seg-internal" id="internal">
+  <div class="container">
+    <div class="seg-internal-inner">
+
+      <div>
+        <div class="day-timeline reveal">
+          <div class="day-timeline-head">A typical internal tools request — without Prodvo</div>
+          <div class="day-row">
+            <div class="day-time">Wk 1</div>
+            <div class="day-content">
+              <div class="day-task">Ticket filed, backlog prioritized</div>
+              <div class="day-detail">Engineering reviews scope, estimates 3 sprints</div>
+            </div>
+          </div>
+          <div class="day-row">
+            <div class="day-time">Wk 3</div>
+            <div class="day-content">
+              <div class="day-task">Development starts</div>
+              <div class="day-detail">Dev assigned, environment configured, API integration begins</div>
+            </div>
+          </div>
+          <div class="day-row">
+            <div class="day-time">Wk 5</div>
+            <div class="day-content">
+              <div class="day-task">First internal review</div>
+              <div class="day-detail">Ops team reviews, requests 12 changes</div>
+            </div>
+          </div>
+          <div class="day-row">
+            <div class="day-time">Wk 7</div>
+            <div class="day-content">
+              <div class="day-task">Revisions, testing, staging deploy</div>
+              <div class="day-detail">QA cycle, security review, approval chain</div>
+            </div>
+          </div>
+          <div class="day-row highlight">
+            <div class="day-time">Wk 9</div>
+            <div class="day-content">
+              <div class="day-task">Finally live</div>
+              <div class="day-detail">9 weeks. One internal tool. The ops team already wants 3 more.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="eyebrow reveal">Internal Tools Teams</div>
+        <h2 class="section-title reveal d1" style="margin-bottom:1rem;">Your backlog is killing your ops team's velocity.</h2>
+        <p class="section-sub reveal d2" style="margin-bottom:0;">Internal tools shouldn't compete with your product roadmap for engineering time. Prodvo lets you build and ship ops dashboards, admin panels, and workflow automations independently — without touching the core product codebase.</p>
+
+        <div class="benefit-list">
+          <div class="benefit-item reveal d1">
+            <div class="benefit-title">Ship internal tools in days, not sprints</div>
+            <div class="benefit-desc">Describe the dashboard, the data model, the permissions. Prodvo builds it. Your engineers stay focused on core product.</div>
+            <span class="metric-chip">3 days avg. vs 9 weeks</span>
+          </div>
+          <div class="benefit-item reveal d2">
+            <div class="benefit-title">Non-technical ops can make small changes</div>
+            <div class="benefit-desc">When the ops team wants a new filter or an export button, they can ask Prodvo directly. No ticket required.</div>
+            <span class="metric-chip">Zero engineering tickets for minor changes</span>
+          </div>
+          <div class="benefit-item reveal d3">
+            <div class="benefit-title">One platform, all your internal tooling</div>
+            <div class="benefit-desc">Every internal tool lives in one place, with shared auth, one database, and consistent access controls.</div>
+            <span class="metric-chip">Unified RBAC across all tools</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SEGMENT 05 — HACKATHON BUILDERS
+============================================================ -->
+<section class="seg-hackathon" id="hackathon">
+  <div class="container">
+    <div class="seg-hackathon-inner">
+
+      <div>
+        <div class="eyebrow reveal">Hackathon Builders</div>
+        <h2 class="section-title reveal d1" style="margin-bottom:1rem;">48 hours. The clock is running.</h2>
+        <p class="section-sub reveal d2" style="margin-bottom:0;">Most hackathon teams waste the first 8–12 hours on setup. Prodvo compresses that to under 30 minutes so you spend 47.5 hours building — and 30 minutes winning.</p>
+
+        <div class="build-strip reveal d2">
+          <div class="build-strip-head">
+            <span>Task</span>
+            <span>Time allocation (48hr hackathon)</span>
+          </div>
+          <div class="build-row">
+            <span class="build-label">Environment</span>
+            <div class="build-bar-track">
+              <div class="build-bar type-setup">·</div>
+            </div>
+          </div>
+          <div class="build-row">
+            <span class="build-label">Database</span>
+            <div class="build-bar-track">
+              <div class="build-bar type-db">DB</div>
+            </div>
+          </div>
+          <div class="build-row">
+            <span class="build-label">Auth</span>
+            <div class="build-bar-track">
+              <div class="build-bar type-auth">Auth</div>
+            </div>
+          </div>
+          <div class="build-row">
+            <span class="build-label">Features</span>
+            <div class="build-bar-track">
+              <div class="build-bar type-feature">Your actual product</div>
+            </div>
+          </div>
+          <div class="build-row">
+            <span class="build-label">Deploy</span>
+            <div class="build-bar-track">
+              <div class="build-bar type-deploy">↑</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="clock-block reveal d1">
+        <div class="clock-head">Prodvo hackathon timeline</div>
+        <div class="clock-body">
+          <div class="clock-display" id="hackClock">47:32</div>
+          <div class="clock-sub">hours left to build features</div>
+          <div class="clock-tasks">
+            <div class="clock-task done">
+              <span class="clock-task-name">Environment setup</span>
+              <span class="clock-task-time">:04 min</span>
+            </div>
+            <div class="clock-task done">
+              <span class="clock-task-name">Auth configured</span>
+              <span class="clock-task-time">:08 min</span>
+            </div>
+            <div class="clock-task done">
+              <span class="clock-task-name">Database ready</span>
+              <span class="clock-task-time">:12 min</span>
+            </div>
+            <div class="clock-task done">
+              <span class="clock-task-name">First deploy live</span>
+              <span class="clock-task-time">:16 min</span>
+            </div>
+            <div class="clock-task active">
+              <span class="clock-task-name">Building your actual idea...</span>
+              <span class="clock-task-time">now →</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SHIP TIME COMPARISON
+============================================================ -->
+<section class="ship-time" id="comparison">
+  <div class="container">
+
+    <div class="ship-time-header">
+      <div>
+        <div class="eyebrow reveal">Time-to-ship</div>
+        <h2 class="section-title reveal d1">How fast is Prodvo,<br>really?</h2>
+      </div>
+      <div>
+        <p class="section-sub reveal d1" style="margin-top:0.5rem;">Time from zero to a deployed, usable product — per persona, with and without Prodvo. Based on reported ship times from users across each segment.</p>
+        <div class="ship-legend reveal d2" style="margin-top:1rem;">
+          <div class="ship-legend-item">
+            <div class="ship-legend-dot" style="background:var(--fire-orange);"></div>
+            With Prodvo
+          </div>
+          <div class="ship-legend-item">
+            <div class="ship-legend-dot" style="background:var(--border);"></div>
+            Traditional stack
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ship-bars reveal">
+
+      <div class="ship-bar-row">
+        <div>
+          <div class="ship-bar-label">Solo Founders</div>
+          <span class="ship-bar-sub">MVP to first user</span>
+        </div>
+        <div>
+          <div class="ship-bar-track">
+            <div class="ship-bar-fill" style="width:12%;"></div>
+          </div>
+          <div class="ship-bar-track" style="margin-top:6px;">
+            <div class="ship-bar-fill without-fill" style="width:100%;background:var(--border);height:4px;border-radius:100px;"></div>
+          </div>
+        </div>
+        <div class="ship-bar-num">2 days <em>vs 3 wks</em></div>
+      </div>
+
+      <div class="ship-bar-row">
+        <div>
+          <div class="ship-bar-label">Agencies</div>
+          <span class="ship-bar-sub">First feature to client</span>
+        </div>
+        <div>
+          <div class="ship-bar-track">
+            <div class="ship-bar-fill" style="width:6%;"></div>
+          </div>
+          <div class="ship-bar-track" style="margin-top:6px;">
+            <div class="ship-bar-fill without-fill" style="width:85%;background:var(--border);height:4px;border-radius:100px;"></div>
+          </div>
+        </div>
+        <div class="ship-bar-num">2 hrs <em>vs 1 wk</em></div>
+      </div>
+
+      <div class="ship-bar-row">
+        <div>
+          <div class="ship-bar-label">Non-Technical</div>
+          <span class="ship-bar-sub">Idea to working product</span>
+        </div>
+        <div>
+          <div class="ship-bar-track">
+            <div class="ship-bar-fill" style="width:9%;"></div>
+          </div>
+          <div class="ship-bar-track" style="margin-top:6px;">
+            <div class="ship-bar-fill without-fill" style="width:100%;background:var(--border);height:4px;border-radius:100px;"></div>
+          </div>
+        </div>
+        <div class="ship-bar-num">1 day <em>vs ∞</em></div>
+      </div>
+
+      <div class="ship-bar-row">
+        <div>
+          <div class="ship-bar-label">Internal Tools</div>
+          <span class="ship-bar-sub">Request to live tool</span>
+        </div>
+        <div>
+          <div class="ship-bar-track">
+            <div class="ship-bar-fill" style="width:8%;"></div>
+          </div>
+          <div class="ship-bar-track" style="margin-top:6px;">
+            <div class="ship-bar-fill without-fill" style="width:90%;background:var(--border);height:4px;border-radius:100px;"></div>
+          </div>
+        </div>
+        <div class="ship-bar-num">3 days <em>vs 9 wks</em></div>
+      </div>
+
+      <div class="ship-bar-row">
+        <div>
+          <div class="ship-bar-label">Hackathon</div>
+          <span class="ship-bar-sub">Zero to working demo</span>
+        </div>
+        <div>
+          <div class="ship-bar-track">
+            <div class="ship-bar-fill" style="width:30%;"></div>
+          </div>
+          <div class="ship-bar-track" style="margin-top:6px;">
+            <div class="ship-bar-fill without-fill" style="width:100%;background:var(--border);height:4px;border-radius:100px;"></div>
+          </div>
+        </div>
+        <div class="ship-bar-num">30 min <em>vs 12 hrs</em></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CAPABILITY MATRIX
+============================================================ -->
+<section class="capability">
+  <div class="container">
+
+    <div class="cap-header">
+      <div class="eyebrow reveal">What you get</div>
+      <h2 class="section-title reveal d1" style="margin-bottom:0.75rem;">Every capability,<br>mapped to your role.</h2>
+      <p class="section-sub reveal d2" style="max-width:540px;">Prodvo is one platform. But how you use it depends on who you are. Here's what each persona actually leans on.</p>
+    </div>
+
+    <div class="cap-table-wrap reveal">
+      <table class="cap-table">
+        <thead>
+          <tr>
+            <th>Capability</th>
+            <th>Solo Founders</th>
+            <th class="highlight-col">Agencies</th>
+            <th>Non-Technical</th>
+            <th>Internal Tools</th>
+            <th>Hackathon</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>AI code generation</td>
+            <td><div class="cap-check">✓</div></td>
+            <td class="highlight-col"><div class="cap-check">✓</div></td>
+            <td><div class="cap-check">✓</div></td>
+            <td><div class="cap-check">✓</div></td>
+            <td><div class="cap-check">✓</div></td>
+          </tr>
+          <tr>
+            <td>Zero-config auth</td>
+            <td><div class="cap-check">✓</div></td>
+            <td class="highlight-col"><div class="cap-check">✓</div></td>
+            <td><div class="cap-check">✓</div></td>
+            <td><div class="cap-check">✓</div></td>
+            <td><div class="cap-check">✓</div></td>
+          </tr>
+          <tr>
+            <td>Postgres database</td>
+            <td><div class="cap-check">✓</div></td>
+            <td class="highlight-col"><div class="cap-check">✓</div></td>
+            <td><div class="cap-check">✓</div></td>
+            <td><div class="cap-check">✓</div></td>
+            <td><div class="cap-check">✓</div></td>
+          </tr>
+          <tr>
+            <td>1-click deploy</td>
+            <td><div class="cap-check">✓</div></td>
+            <td class="highlight-col"><div class="cap-check">✓</div></td>
+            <td><div class="cap-check">✓</div></td>
+            <td><div class="cap-check">✓</div></td>
+            <td><div class="cap-check">✓</div></td>
+          </tr>
+          <tr>
+            <td>Client preview environments</td>
+            <td><div class="cap-dot"></div></td>
+            <td class="highlight-col"><div class="cap-check">✓</div></td>
+            <td><div class="cap-dot"></div></td>
+            <td><div class="cap-check">✓</div></td>
+            <td><div class="cap-dot"></div></td>
+          </tr>
+          <tr>
+            <td>RBAC / role permissions</td>
+            <td><div class="cap-dot"></div></td>
+            <td class="highlight-col"><div class="cap-check">✓</div></td>
+            <td><div class="cap-dot"></div></td>
+            <td><div class="cap-check">✓</div></td>
+            <td><div class="cap-dot"></div></td>
+          </tr>
+          <tr>
+            <td>Natural language editing</td>
+            <td><div class="cap-check">✓</div></td>
+            <td class="highlight-col"><div class="cap-check">✓</div></td>
+            <td><div class="cap-check">✓</div></td>
+            <td><div class="cap-check">✓</div></td>
+            <td><div class="cap-check">✓</div></td>
+          </tr>
+          <tr>
+            <td>Team collaboration</td>
+            <td><div class="cap-dot"></div></td>
+            <td class="highlight-col"><div class="cap-check">✓</div></td>
+            <td><div class="cap-dot"></div></td>
+            <td><div class="cap-check">✓</div></td>
+            <td><div class="cap-check">✓</div></td>
+          </tr>
+          <tr>
+            <td>Rapid iteration mode</td>
+            <td><div class="cap-check">✓</div></td>
+            <td class="highlight-col"><div class="cap-dot"></div></td>
+            <td><div class="cap-check">✓</div></td>
+            <td><div class="cap-dot"></div></td>
+            <td><div class="cap-check">✓</div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     CTA FINAL
+============================================================ -->
+<section class="cta-final">
+  <div class="container">
+    <div class="cta-inner">
+      <div class="cta-left">
+        <div class="cta-eyebrow">Start today</div>
+        <h2 class="cta-title">Whoever you are,<br>Prodvo ships it.</h2>
+        <p class="cta-sub">No setup. No configuration. No waiting on infrastructure. Describe your product and start building in the next 2 minutes.</p>
+      </div>
+      <div class="cta-right">
+        <a href="#" class="btn-cta-w">Start building free →</a>
+        <a href="#" class="btn-cta-ghost">Talk to the team</a>
+        <p class="cta-trust">Free tier available · No credit card required · Cancel anytime</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">Prodvo<em>.</em></div>
+        <p class="footer-tagline">The AI coding agent for builders who want to ship — not configure.</p>
+        <div class="footer-social">
+          <a href="#" class="fsoc" aria-label="Twitter">𝕏</a>
+          <a href="#" class="fsoc" aria-label="GitHub">GH</a>
+          <a href="#" class="fsoc" aria-label="Discord">DC</a>
+        </div>
+      </div>
+      <div>
+        <div class="f-col-title">Product</div>
+        <ul class="f-links">
+          <li><a href="#">Features</a></li>
+          <li><a href="#">Use Cases</a></li>
+          <li><a href="#">Pricing</a></li>
+          <li><a href="#">Changelog</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="f-col-title">Developers</div>
+        <ul class="f-links">
+          <li><a href="#">Docs</a></li>
+          <li><a href="#">API Reference</a></li>
+          <li><a href="#">Templates</a></li>
+          <li><a href="#">GitHub</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="f-col-title">Company</div>
+        <ul class="f-links">
+          <li><a href="#">About</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 Prodvo, Inc. · <a href="#">prodvo.studio</a></div>
+      <ul class="f-bottom-links">
+        <li><a href="#">Privacy</a></li>
+        <li><a href="#">Terms</a></li>
+        <li><a href="#">Cookies</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+</main>
+
+<script>
+// ---- Nav scroll ----
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 8);
+}, { passive: true });
+
+// ---- Reveal ----
+const revealEls = document.querySelectorAll('.reveal');
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); }
+  });
+}, { threshold: 0.07, rootMargin: '0px 0px -28px 0px' });
+revealEls.forEach(el => ro.observe(el));
+
+// ---- Hero persona switcher ----
+const tabs      = document.querySelectorAll('.persona-tab');
+const swapWrap  = document.querySelector('.swap-wrap');
+const heroSub   = document.getElementById('heroSub');
+const heroCta   = document.getElementById('heroCta');
+
+function switchPersona(tab) {
+  if (tab.classList.contains('active')) return;
+
+  // Deactivate all tabs
+  tabs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+  tab.classList.add('active');
+  tab.setAttribute('aria-selected', 'true');
+
+  const newWord = tab.dataset.word;
+  const newSub  = tab.dataset.sub;
+  const newCta  = tab.dataset.cta;
+
+  // Animate word swap
+  const currentWord = swapWrap.querySelector('.swap-word.active');
+  if (currentWord) {
+    currentWord.classList.remove('active');
+    currentWord.classList.add('exit');
+    setTimeout(() => currentWord.remove(), 400);
+  }
+
+  const nextWord = document.createElement('span');
+  nextWord.className = 'swap-word enter';
+  nextWord.textContent = newWord;
+  swapWrap.appendChild(nextWord);
+
+  // Measure and set width
+  const tempSpan = document.createElement('span');
+  tempSpan.style.cssText = 'visibility:hidden;position:absolute;white-space:nowrap;font-family:inherit;font-size:inherit;font-weight:inherit;letter-spacing:inherit;';
+  tempSpan.textContent = newWord;
+  swapWrap.appendChild(tempSpan);
+  swapWrap.style.width = tempSpan.offsetWidth + 'px';
+  tempSpan.remove();
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      nextWord.classList.remove('enter');
+      nextWord.classList.add('active');
+    });
+  });
+
+  // Update sub + CTA
+  heroSub.style.opacity = '0';
+  setTimeout(() => {
+    heroSub.textContent = newSub;
+    heroCta.textContent = newCta + ' →';
+    heroSub.style.opacity = '1';
+  }, 200);
+}
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => switchPersona(tab));
+});
+
+// Init swap-wrap width
+const initWord = swapWrap.querySelector('.swap-word.active');
+if (initWord) {
+  swapWrap.style.width = 'auto';
+}
+
+// ---- Hackathon clock — counts down from 47:32 ----
+let hackMins = 47, hackSecs = 32;
+const clockEl = document.getElementById('hackClock');
+if (clockEl) {
+  setInterval(() => {
+    hackSecs--;
+    if (hackSecs < 0) { hackSecs = 59; hackMins--; }
+    if (hackMins < 0) { hackMins = 47; hackSecs = 32; }
+    const m = String(hackMins).padStart(2, '0');
+    const s = String(hackSecs).padStart(2, '0');
+    clockEl.textContent = m + ':' + s;
+  }, 1000);
+}
+</script>
+
+</body>
+</html>

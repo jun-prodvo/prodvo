@@ -1,0 +1,1623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Prodvo — Build Everything. Ship Faster.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+
+/* ========================
+   RESET & ROOT
+======================== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --fire-orange: #f97316;
+  --fire-orange-dark: #ea580c;
+  --fire-orange-deep: #ff4d00;
+  --fire-orange-darker: #c2410c;
+  --fire-orange-light: #fff7ed;
+  --charcoal: #18181b;
+  --gray-900: #18181b;
+  --gray-700: #3f3f46;
+  --gray-500: #71717a;
+  --gray-300: #d4d4d8;
+  --gray-200: #e4e4e7;
+  --light-gray: #fafafa;
+  --cool-gray: #f4f4f5;
+  --success: #22c55e;
+  --white: #ffffff;
+  --font-brand: "Plus Jakarta Sans", "Inter", sans-serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--white);
+  color: var(--charcoal);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; font-family: inherit; border: none; background: none; }
+
+.container {
+  width: min(1120px, calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+/* ========================
+   SKIP LINK
+======================== */
+.skip-link {
+  position: absolute; top: -40px; left: 0;
+  background: var(--fire-orange); color: white;
+  padding: 8px 16px; z-index: 9999;
+  font-size: 0.875rem; font-weight: 600;
+  transition: top 0.2s;
+}
+.skip-link:focus { top: 0; }
+:focus-visible { outline: 2px solid var(--fire-orange); outline-offset: 3px; border-radius: 4px; }
+:focus:not(:focus-visible) { outline: none; }
+
+/* ========================
+   ANNOUNCE STRIP
+======================== */
+.announce {
+  background: var(--fire-orange-light);
+  border-bottom: 1px solid #fddcb5;
+  text-align: center;
+  padding: 0.6rem 1rem;
+  font-family: var(--font-brand);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--fire-orange-dark);
+}
+.announce a { text-decoration: underline; color: var(--fire-orange-darker); margin-left: 0.4rem; }
+
+/* ========================
+   NAV
+======================== */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,0.94);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s;
+}
+.nav.scrolled { border-color: var(--gray-200); }
+
+.nav-inner {
+  display: flex; align-items: center;
+  justify-content: space-between; height: 62px;
+}
+
+.nav-logo {
+  font-family: var(--font-brand); font-weight: 900;
+  font-size: 1.3rem; letter-spacing: -0.04em; color: var(--charcoal);
+}
+.nav-logo em { color: var(--fire-orange); font-style: normal; }
+
+.nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+.nav-links a {
+  font-size: 0.875rem; font-weight: 500; color: var(--gray-700);
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--charcoal); }
+
+.nav-right { display: flex; align-items: center; gap: 0.75rem; }
+
+.btn-ghost {
+  font-size: 0.875rem; font-weight: 600;
+  color: var(--gray-700); padding: 0.45rem 1rem;
+  border-radius: 8px; transition: background 0.2s;
+}
+.btn-ghost:hover { background: var(--cool-gray); }
+
+.btn-nav {
+  font-family: var(--font-brand); font-size: 0.875rem; font-weight: 700;
+  color: var(--white); background: var(--fire-orange);
+  padding: 0.5rem 1.1rem; border-radius: 8px;
+  transition: background 0.2s, transform 0.15s;
+}
+.btn-nav:hover { background: var(--fire-orange-dark); transform: translateY(-1px); }
+
+.nav-burger { display: none; flex-direction: column; gap: 4px; padding: 6px; }
+.nav-burger span { display: block; width: 22px; height: 2px; background: var(--charcoal); border-radius: 2px; }
+
+/* ========================
+   HERO
+======================== */
+.hero {
+  padding: clamp(5rem, 9vw, 8rem) 0 clamp(4rem, 7vw, 6rem);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(var(--gray-200) 1.2px, transparent 1.2px);
+  background-size: 30px 30px;
+  opacity: 0.6;
+  pointer-events: none; z-index: 0;
+}
+
+.hero-inner {
+  position: relative; z-index: 1;
+  display: grid;
+  grid-template-columns: 55fr 45fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.hero-kicker {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--fire-orange);
+  border: 1px solid #fddcb5;
+  background: var(--fire-orange-light);
+  padding: 0.3rem 0.8rem; border-radius: 100px;
+  margin-bottom: 1.6rem;
+}
+.hero-kicker::before {
+  content: '';
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--fire-orange);
+  animation: blink-dot 1.6s ease-in-out infinite;
+}
+@keyframes blink-dot {
+  0%,100% { opacity:1; } 50% { opacity:0.3; }
+}
+
+.hero-h1 {
+  font-family: var(--font-brand);
+  font-size: clamp(2.8rem, 5.5vw, 5.2rem);
+  font-weight: 900;
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+  color: var(--charcoal);
+  margin-bottom: 1.5rem;
+}
+
+.hero-h1 .word-orange { color: var(--fire-orange); }
+
+.hero-h1 .word-cross {
+  position: relative;
+  color: var(--gray-300);
+  display: inline-block;
+}
+.hero-h1 .word-cross::after {
+  content: '';
+  position: absolute;
+  left: -2px; right: -2px; top: 50%;
+  height: 4px; background: var(--fire-orange-deep);
+  border-radius: 2px; transform: rotate(-1.5deg);
+}
+
+.hero-sub {
+  font-size: 1.05rem; color: var(--gray-500);
+  line-height: 1.7; max-width: 430px;
+  margin-bottom: 2.2rem;
+}
+
+.hero-ctas {
+  display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.btn-hero-primary {
+  font-family: var(--font-brand); font-size: 1rem; font-weight: 800;
+  color: var(--white); background: var(--fire-orange-deep);
+  padding: 0.85rem 2rem; border-radius: 10px;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 4px 16px rgba(255,77,0,0.22);
+}
+.btn-hero-primary:hover {
+  background: var(--fire-orange-darker);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(255,77,0,0.3);
+}
+
+.btn-hero-secondary {
+  font-family: var(--font-brand); font-size: 0.95rem; font-weight: 600;
+  color: var(--charcoal); background: transparent;
+  padding: 0.8rem 1.6rem; border-radius: 10px;
+  border: 1.5px solid var(--gray-300);
+  transition: border-color 0.2s, background 0.2s;
+}
+.btn-hero-secondary:hover { border-color: var(--charcoal); background: var(--cool-gray); }
+
+.hero-proof {
+  display: flex; align-items: center; gap: 1rem;
+  font-size: 0.8rem; color: var(--gray-500); font-weight: 500;
+  flex-wrap: wrap;
+}
+.hero-proof-item { display: flex; align-items: center; gap: 0.3rem; }
+.hero-proof-item::before {
+  content: '✓'; color: var(--success); font-weight: 800; font-size: 0.75rem;
+}
+.hero-proof-sep { color: var(--gray-300); }
+
+.hero-visual { position: relative; }
+
+.terminal {
+  background: var(--light-gray);
+  border: 1px solid var(--gray-200);
+  border-radius: 16px; overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.04);
+  animation: hero-float 4.5s ease-in-out infinite;
+}
+@keyframes hero-float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+
+.terminal-bar {
+  background: var(--cool-gray); border-bottom: 1px solid var(--gray-200);
+  padding: 0.65rem 1rem; display: flex; align-items: center; gap: 0.45rem;
+}
+.t-dot { width: 10px; height: 10px; border-radius: 50%; }
+.t-dot.r { background: #ff5f57; } .t-dot.y { background: #febc2e; } .t-dot.g { background: #28c840; }
+.t-file {
+  margin-left: 0.6rem; font-family: var(--font-mono); font-size: 0.7rem;
+  color: var(--gray-500); font-weight: 500;
+}
+
+.terminal-body { padding: 1.4rem 1.5rem; font-family: var(--font-mono); font-size: 0.78rem; line-height: 2; }
+.tl { display: flex; gap: 0.5rem; }
+.tp { color: var(--fire-orange); font-weight: 600; flex-shrink: 0; }
+.tc { color: var(--charcoal); }
+.to { color: var(--gray-500); padding-left: 1.2rem; }
+.ts { color: var(--success); padding-left: 1.2rem; font-weight: 600; }
+.td { height: 0.25rem; }
+.t-cursor {
+  display: inline-block; width: 7px; height: 13px;
+  background: var(--fire-orange); border-radius: 1px;
+  animation: cursor-blink 1s step-end infinite;
+  vertical-align: middle;
+}
+@keyframes cursor-blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
+
+.hero-float-tag {
+  position: absolute; bottom: -1.2rem; left: -1.5rem;
+  background: var(--white); border: 1px solid var(--gray-200);
+  border-radius: 12px; padding: 0.75rem 1.1rem;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.09);
+  display: flex; align-items: center; gap: 0.75rem;
+}
+.hft-num {
+  font-family: var(--font-brand); font-size: 1.5rem; font-weight: 900;
+  letter-spacing: -0.04em; color: var(--charcoal); line-height: 1;
+}
+.hft-num em { color: var(--fire-orange); font-style: normal; }
+.hft-label { font-size: 0.72rem; color: var(--gray-500); font-weight: 500; line-height: 1.35; max-width: 72px; }
+
+.hero-float-badge {
+  position: absolute; top: -1rem; right: -1.2rem;
+  background: var(--fire-orange); color: var(--white);
+  font-family: var(--font-brand); font-size: 0.72rem; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 0.45rem 0.9rem; border-radius: 100px;
+  box-shadow: 0 4px 14px rgba(249,115,22,0.35);
+}
+
+/* ========================
+   CONTRAST STRIP
+======================== */
+.contrast {
+  background: var(--cool-gray);
+  border-top: 1px solid var(--gray-200);
+  border-bottom: 1px solid var(--gray-200);
+  padding: clamp(3.5rem, 6vw, 5rem) 0;
+}
+
+.contrast-inner {
+  display: grid;
+  grid-template-columns: 1fr 80px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.contrast-col-head {
+  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  margin-bottom: 1.2rem;
+}
+.contrast-col-head.bad { color: var(--gray-500); }
+.contrast-col-head.good { color: var(--fire-orange); }
+
+.contrast-list { display: flex; flex-direction: column; gap: 0.6rem; }
+
+.contrast-item {
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--gray-200);
+  background: var(--white);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 0.5rem;
+}
+.ci-name {
+  font-family: var(--font-brand); font-size: 0.85rem; font-weight: 600;
+  color: var(--gray-700);
+}
+.ci-tag {
+  font-family: var(--font-mono); font-size: 0.65rem; font-weight: 500;
+  color: var(--gray-500); background: var(--cool-gray);
+  border: 1px solid var(--gray-200); padding: 0.15rem 0.5rem; border-radius: 4px;
+  white-space: nowrap;
+}
+
+.contrast-list.prodvo .contrast-item {
+  background: var(--fire-orange-light);
+  border-color: #fddcb5;
+}
+.contrast-list.prodvo .ci-name { color: var(--charcoal); }
+.contrast-list.prodvo .ci-tag { color: var(--fire-orange-dark); background: rgba(249,115,22,0.1); border-color: #fddcb5; }
+
+.contrast-mid {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding-top: 2rem; gap: 0.5rem;
+}
+.contrast-vs {
+  font-family: var(--font-brand); font-size: 1.6rem; font-weight: 900;
+  color: var(--gray-300); letter-spacing: -0.03em; line-height: 1;
+}
+.contrast-line {
+  width: 1px; height: 80px;
+  background: var(--gray-200);
+}
+
+/* ========================
+   FEATURES BENTO
+======================== */
+.features {
+  padding: clamp(4.5rem, 8vw, 7rem) 0;
+  background: var(--white);
+}
+
+.sec-eyebrow {
+  font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--fire-orange); margin-bottom: 0.75rem;
+}
+.sec-title {
+  font-family: var(--font-brand);
+  font-size: clamp(1.85rem, 4vw, 3rem);
+  font-weight: 800; line-height: 1.08;
+  letter-spacing: -0.035em; color: var(--charcoal);
+}
+.sec-sub {
+  font-size: 1rem; color: var(--gray-500);
+  line-height: 1.65; max-width: 520px;
+}
+
+.features-head { margin-bottom: 3.5rem; }
+
+.bento {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1rem;
+}
+
+.bc {
+  border: 1px solid var(--gray-200);
+  border-radius: 20px;
+  padding: 2rem;
+  overflow: hidden;
+  position: relative;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+  background: var(--white);
+}
+.bc:hover {
+  border-color: var(--gray-300);
+  box-shadow: 0 10px 32px rgba(0,0,0,0.07);
+  transform: translateY(-2px);
+}
+
+.bc.s5 { grid-column: span 5; }
+.bc.s7 { grid-column: span 7; }
+.bc.s4 { grid-column: span 4; }
+.bc.s8 { grid-column: span 8; }
+.bc.s6 { grid-column: span 6; }
+.bc.s12 { grid-column: span 12; }
+
+.bc.surf-warm {
+  background: var(--fire-orange-light);
+  border-color: #fddcb5;
+}
+.bc.surf-cool {
+  background: var(--cool-gray);
+  border-color: var(--gray-200);
+}
+
+.bc-tag {
+  display: inline-block;
+  font-family: var(--font-mono); font-size: 0.67rem; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--fire-orange); background: var(--fire-orange-light);
+  border: 1px solid #fddcb5;
+  padding: 0.2rem 0.55rem; border-radius: 100px;
+  margin-bottom: 1.1rem;
+}
+.surf-warm .bc-tag { background: rgba(249,115,22,0.12); }
+.surf-cool .bc-tag { background: var(--white); border-color: var(--gray-200); }
+
+.bc-title {
+  font-family: var(--font-brand); font-size: 1.1rem; font-weight: 800;
+  letter-spacing: -0.025em; line-height: 1.2;
+  color: var(--charcoal); margin-bottom: 0.55rem;
+}
+.bc-title-xl {
+  font-family: var(--font-brand);
+  font-size: clamp(2.8rem, 5vw, 4.5rem);
+  font-weight: 900; letter-spacing: -0.05em;
+  line-height: 1; color: var(--fire-orange);
+  margin-bottom: 0.4rem;
+}
+
+.bc-desc {
+  font-size: 0.875rem; color: var(--gray-500); line-height: 1.6;
+}
+
+.bc-code {
+  margin-top: 1.4rem;
+  background: var(--cool-gray);
+  border: 1px solid var(--gray-200);
+  border-radius: 10px; padding: 1.1rem 1.3rem;
+  font-family: var(--font-mono); font-size: 0.75rem;
+  line-height: 1.9; overflow: hidden;
+}
+.surf-warm .bc-code { background: rgba(249,115,22,0.06); border-color: #fddcb5; }
+.ck  { color: #7c3aed; }
+.cf  { color: var(--fire-orange-dark); }
+.cs  { color: var(--fire-orange); }
+.cc  { color: var(--gray-300); }
+.cd  { color: var(--gray-700); }
+
+.bc-check { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem; }
+.bc-check li {
+  display: flex; align-items: flex-start; gap: 0.45rem;
+  font-size: 0.845rem; color: var(--gray-700); font-weight: 500; line-height: 1.45;
+}
+.bc-check li::before { content: '✓'; color: var(--success); font-weight: 800; font-size: 0.78rem; flex-shrink: 0; margin-top: 0.1rem; }
+
+.bc-pills { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.1rem; }
+.bc-pill {
+  font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500;
+  color: var(--gray-700); background: var(--cool-gray);
+  border: 1px solid var(--gray-200); padding: 0.3rem 0.7rem; border-radius: 6px;
+}
+.surf-warm .bc-pill { background: rgba(255,255,255,0.7); border-color: #fddcb5; color: var(--fire-orange-dark); }
+
+.bc-hstrip { display: flex; gap: 0; }
+.bc-hcol {
+  flex: 1; min-width: 0;
+  padding: 0 1.5rem;
+  border-right: 1px solid var(--gray-200);
+}
+.bc-hcol:first-child { padding-left: 0; }
+.bc-hcol:last-child { padding-right: 0; border-right: none; }
+
+.bc-hcol-num {
+  font-family: var(--font-brand); font-size: 1.4rem; font-weight: 900;
+  letter-spacing: -0.04em; color: var(--fire-orange); line-height: 1;
+  margin-bottom: 0.25rem;
+}
+.bc-hcol-label {
+  font-family: var(--font-brand); font-size: 0.85rem; font-weight: 700;
+  color: var(--charcoal); margin-bottom: 0.3rem;
+}
+.bc-hcol-desc { font-size: 0.8rem; color: var(--gray-500); line-height: 1.5; }
+
+/* ========================
+   HOW IT WORKS
+======================== */
+.how {
+  padding: clamp(4.5rem, 8vw, 7rem) 0;
+  background: var(--cool-gray);
+  border-top: 1px solid var(--gray-200);
+}
+
+.how-inner {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 6rem;
+  align-items: start;
+}
+
+.how-sticky { position: sticky; top: 90px; }
+.how-sticky .sec-sub { margin-top: 1rem; }
+
+.timeline { display: flex; flex-direction: column; }
+
+.tl-item {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 1.2rem;
+  position: relative;
+}
+
+.tl-left { display: flex; flex-direction: column; align-items: center; }
+
+.tl-num {
+  width: 48px; height: 48px; border-radius: 50%;
+  border: 2px solid var(--gray-200);
+  background: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-brand); font-size: 0.9rem; font-weight: 800;
+  color: var(--gray-300);
+  flex-shrink: 0; transition: all 0.4s; z-index: 1;
+}
+.tl-item.active .tl-num {
+  border-color: var(--fire-orange);
+  background: var(--fire-orange);
+  color: var(--white);
+}
+
+.tl-connector {
+  width: 2px; flex: 1; min-height: 48px;
+  background: var(--gray-200);
+  margin: 4px 0;
+}
+.tl-item.active .tl-connector { background: var(--fire-orange); }
+.tl-item:last-child .tl-connector { display: none; }
+
+.tl-body { padding: 0.6rem 0 3rem; }
+.tl-title {
+  font-family: var(--font-brand); font-size: 1.05rem; font-weight: 800;
+  letter-spacing: -0.02em; color: var(--gray-300);
+  margin-bottom: 0.4rem; transition: color 0.4s;
+  line-height: 1.2;
+}
+.tl-item.active .tl-title { color: var(--charcoal); }
+.tl-desc { font-size: 0.875rem; color: var(--gray-500); line-height: 1.65; max-width: 380px; }
+.tl-item:not(.active) .tl-desc { opacity: 0.5; }
+
+/* ========================
+   STACK
+======================== */
+.stack {
+  padding: clamp(4.5rem, 8vw, 7rem) 0;
+  background: var(--white);
+  border-top: 1px solid var(--gray-200);
+}
+
+.stack-inner {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 5rem;
+  align-items: center;
+}
+
+.stack-cats { display: flex; flex-direction: column; gap: 1rem; }
+
+.stack-cat {
+  padding: 1.3rem 1.4rem;
+  border: 1px solid var(--gray-200); border-radius: 14px;
+  background: var(--light-gray);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  cursor: default;
+}
+.stack-cat:hover {
+  border-color: var(--fire-orange);
+  box-shadow: 0 0 0 3px rgba(249,115,22,0.07);
+}
+.stack-cat-head {
+  font-family: var(--font-mono); font-size: 0.67rem; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--fire-orange); margin-bottom: 0.7rem;
+}
+.stack-cat-pills { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.scp {
+  font-family: var(--font-mono); font-size: 0.73rem; font-weight: 500;
+  color: var(--gray-700); background: var(--white);
+  border: 1px solid var(--gray-200);
+  padding: 0.28rem 0.65rem; border-radius: 6px;
+}
+
+/* ========================
+   TESTIMONIALS — HORIZONTAL SCROLL
+======================== */
+.testi {
+  padding: clamp(4.5rem, 8vw, 7rem) 0;
+  background: var(--cool-gray);
+  border-top: 1px solid var(--gray-200);
+  overflow: hidden;
+}
+
+.testi-head { margin-bottom: 2.5rem; }
+
+.testi-track-wrap {
+  position: relative;
+  margin: 0 calc(-1 * (100vw - min(1120px, calc(100% - 2rem))) / 2);
+  overflow: hidden;
+}
+.testi-track-wrap::before,
+.testi-track-wrap::after {
+  content: ''; position: absolute; top: 0; bottom: 0; width: 80px; z-index: 2;
+  pointer-events: none;
+}
+.testi-track-wrap::before { left: 0; background: linear-gradient(to right, var(--cool-gray), transparent); }
+.testi-track-wrap::after  { right: 0; background: linear-gradient(to left, var(--cool-gray), transparent); }
+
+.testi-track {
+  display: flex;
+  gap: 1.2rem;
+  padding: 0.5rem calc((100vw - min(1120px, calc(100% - 2rem))) / 2 + 1rem);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  cursor: grab;
+  user-select: none;
+  scrollbar-width: none;
+}
+.testi-track::-webkit-scrollbar { display: none; }
+.testi-track.grabbing { cursor: grabbing; }
+
+.testi-card {
+  flex-shrink: 0;
+  width: 360px;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 18px;
+  padding: 1.8rem;
+  scroll-snap-align: start;
+  display: flex; flex-direction: column; gap: 1.2rem;
+  position: relative;
+}
+
+/* Orange accent top bar */
+.testi-card::before {
+  content: '';
+  display: block; height: 3px; border-radius: 2px;
+  background: var(--fire-orange); width: 32px;
+  flex-shrink: 0;
+}
+
+.testi-card-text {
+  font-family: var(--font-brand);
+  font-size: 0.95rem; font-weight: 600;
+  color: var(--charcoal); line-height: 1.6;
+  flex: 1;
+}
+
+.testi-footer { display: flex; align-items: center; gap: 0.75rem; }
+.testi-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--fire-orange-light); border: 1.5px solid #fddcb5;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-brand); font-size: 0.8rem; font-weight: 800;
+  color: var(--fire-orange-dark); flex-shrink: 0;
+}
+.testi-name {
+  font-family: var(--font-brand); font-size: 0.85rem; font-weight: 700;
+  color: var(--charcoal); line-height: 1.2;
+}
+.testi-role { font-size: 0.75rem; color: var(--gray-500); font-weight: 500; }
+
+.testi-nav {
+  display: flex; align-items: center; gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+.testi-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gray-300); border: none; padding: 0;
+  transition: background 0.2s, transform 0.2s;
+}
+.testi-dot.active { background: var(--fire-orange); transform: scale(1.3); }
+
+/* ========================
+   PRICING
+======================== */
+.pricing {
+  padding: clamp(4.5rem, 8vw, 7rem) 0;
+  background: var(--white);
+  border-top: 1px solid var(--gray-200);
+}
+
+.pricing-head { margin-bottom: 3rem; }
+.pricing-head .sec-sub { margin-top: 0.75rem; }
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+  align-items: end;
+}
+
+.pc {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 20px;
+  padding: 2rem;
+  position: relative;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.pc:hover { box-shadow: 0 12px 40px rgba(0,0,0,0.07); transform: translateY(-2px); }
+
+.pc.pop {
+  border: 2px solid var(--fire-orange);
+  box-shadow: 0 0 0 4px rgba(249,115,22,0.08);
+  transform: scale(1.03);
+  background: var(--fire-orange-light);
+}
+.pc.pop:hover { transform: scale(1.03) translateY(-2px); }
+
+.pop-badge {
+  position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+  background: var(--fire-orange); color: var(--white);
+  font-family: var(--font-brand); font-size: 0.7rem; font-weight: 800;
+  padding: 0.28rem 0.9rem; border-radius: 100px;
+  text-transform: uppercase; letter-spacing: 0.07em; white-space: nowrap;
+}
+
+.pc-plan {
+  font-family: var(--font-brand); font-size: 0.78rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--gray-500); margin-bottom: 1rem;
+}
+.pop .pc-plan { color: var(--fire-orange-dark); }
+
+.pc-price {
+  font-family: var(--font-brand); font-size: 2.8rem; font-weight: 900;
+  letter-spacing: -0.05em; line-height: 1; color: var(--charcoal); margin-bottom: 0.2rem;
+}
+.pc-price sup { font-size: 1.1rem; font-weight: 700; vertical-align: top; margin-top: 0.5rem; display: inline-block; }
+
+.pc-period { font-size: 0.8rem; color: var(--gray-500); font-weight: 500; margin-bottom: 1.3rem; }
+
+.pc-context {
+  font-family: var(--font-brand); font-size: 0.83rem; font-weight: 600;
+  font-style: italic; color: var(--gray-700);
+  padding: 0.7rem 1rem; border-radius: 8px;
+  background: var(--cool-gray); border-left: 3px solid var(--fire-orange);
+  line-height: 1.45; margin-bottom: 1.3rem;
+}
+.pop .pc-context { background: rgba(249,115,22,0.08); border-left-color: var(--fire-orange-deep); }
+
+.pc-div { height: 1px; background: var(--gray-200); margin: 1.1rem 0; }
+.pop .pc-div { background: #fddcb5; }
+
+.pc-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.6rem; }
+.pc-list li {
+  display: flex; align-items: flex-start; gap: 0.45rem;
+  font-size: 0.845rem; color: var(--gray-700); font-weight: 500; line-height: 1.45;
+}
+.pc-list li::before { content: '✓'; color: var(--success); font-weight: 800; font-size: 0.77rem; flex-shrink: 0; margin-top: 0.12rem; }
+.pc-list li.off { color: var(--gray-300); }
+.pc-list li.off::before { content: '—'; color: var(--gray-300); }
+
+.btn-pc {
+  display: block; width: 100%; text-align: center;
+  font-family: var(--font-brand); font-size: 0.9rem; font-weight: 700;
+  padding: 0.8rem; border-radius: 10px; transition: all 0.2s;
+}
+.btn-pc.outline {
+  border: 1.5px solid var(--gray-300); color: var(--charcoal);
+}
+.btn-pc.outline:hover { border-color: var(--charcoal); background: var(--cool-gray); }
+.btn-pc.fill {
+  background: var(--fire-orange); color: var(--white);
+  box-shadow: 0 4px 14px rgba(249,115,22,0.3);
+}
+.btn-pc.fill:hover { background: var(--fire-orange-dark); box-shadow: 0 6px 20px rgba(249,115,22,0.4); transform: translateY(-1px); }
+
+.pricing-note {
+  margin-top: 2rem; text-align: center;
+  font-size: 0.82rem; color: var(--gray-500); font-weight: 500;
+}
+.pricing-note a { color: var(--fire-orange); text-decoration: underline; }
+
+/* ========================
+   CTA FINAL
+======================== */
+.cta-final {
+  background: var(--fire-orange-deep);
+  padding: clamp(5rem, 9vw, 8rem) 0;
+  position: relative; overflow: hidden;
+}
+.cta-final::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 44px 44px;
+  pointer-events: none;
+}
+
+.cta-inner { position: relative; max-width: 680px; margin: 0 auto; text-align: center; }
+
+.cta-label {
+  font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.55); margin-bottom: 1rem;
+}
+.cta-h {
+  font-family: var(--font-brand);
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 900; letter-spacing: -0.045em; line-height: 1.04;
+  color: var(--white); margin-bottom: 1rem;
+}
+.cta-p {
+  font-size: 1rem; color: rgba(255,255,255,0.68);
+  line-height: 1.65; margin-bottom: 2.2rem;
+}
+.cta-btns { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+
+.btn-cta-w {
+  font-family: var(--font-brand); font-size: 1rem; font-weight: 800;
+  color: var(--fire-orange-deep); background: var(--white);
+  padding: 0.85rem 2rem; border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.14);
+  transition: transform 0.15s, box-shadow 0.2s;
+}
+.btn-cta-w:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+
+.btn-cta-o {
+  font-family: var(--font-brand); font-size: 0.95rem; font-weight: 600;
+  color: var(--white); background: transparent;
+  padding: 0.8rem 1.8rem; border-radius: 10px;
+  border: 1.5px solid rgba(255,255,255,0.3);
+  transition: border-color 0.2s, background 0.2s;
+}
+.btn-cta-o:hover { border-color: rgba(255,255,255,0.65); background: rgba(255,255,255,0.07); }
+
+.cta-trust-line {
+  margin-top: 1.5rem; font-size: 0.8rem;
+  color: rgba(255,255,255,0.42); font-weight: 500;
+}
+
+/* ========================
+   FOOTER
+======================== */
+.footer {
+  background: var(--white);
+  border-top: 1px solid var(--gray-200);
+  padding: 4rem 0 2rem;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr;
+  gap: 3rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.footer-logo {
+  font-family: var(--font-brand); font-weight: 900;
+  font-size: 1.3rem; letter-spacing: -0.04em; color: var(--charcoal); margin-bottom: 0.7rem;
+}
+.footer-logo em { color: var(--fire-orange); font-style: normal; }
+.footer-tagline { font-size: 0.84rem; color: var(--gray-500); line-height: 1.65; max-width: 220px; margin-bottom: 1.4rem; }
+.footer-social { display: flex; gap: 0.5rem; }
+.fsoc {
+  width: 34px; height: 34px; border-radius: 8px;
+  background: var(--cool-gray); border: 1px solid var(--gray-200);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.78rem; color: var(--gray-500);
+  font-family: var(--font-brand); font-weight: 700;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.fsoc:hover { background: var(--fire-orange-light); border-color: #fddcb5; color: var(--fire-orange-dark); }
+
+.f-col-title {
+  font-family: var(--font-brand); font-size: 0.78rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--charcoal); margin-bottom: 1rem;
+}
+.f-links { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+.f-links a { font-size: 0.84rem; color: var(--gray-500); font-weight: 500; transition: color 0.2s; }
+.f-links a:hover { color: var(--charcoal); }
+
+.footer-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 2rem; gap: 1rem; flex-wrap: wrap;
+}
+.footer-copy { font-size: 0.8rem; color: var(--gray-500); font-weight: 500; }
+.footer-copy a { color: var(--gray-700); }
+.footer-copy a:hover { color: var(--charcoal); }
+.f-bottom-links { display: flex; gap: 1.5rem; list-style: none; }
+.f-bottom-links a { font-size: 0.78rem; color: var(--gray-500); font-weight: 500; transition: color 0.2s; }
+.f-bottom-links a:hover { color: var(--charcoal); }
+
+/* ========================
+   REVEAL
+======================== */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+.d1 { transition-delay: 0.08s; }
+.d2 { transition-delay: 0.16s; }
+.d3 { transition-delay: 0.24s; }
+.d4 { transition-delay: 0.32s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity:1; transform:none; transition:none; }
+  .terminal { animation: none; }
+  .t-cursor { animation: none; }
+  .hero-kicker::before { animation: none; }
+}
+
+/* ========================
+   RESPONSIVE
+======================== */
+@media (max-width: 980px) {
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-visual { order: -1; }
+  .hero-float-tag { left: 0; }
+  .hero-float-badge { right: 0; }
+
+  .contrast-inner { grid-template-columns: 1fr; gap: 2rem; }
+  .contrast-mid { flex-direction: row; justify-content: center; padding: 0; }
+  .contrast-line { width: 60px; height: 1px; }
+
+  .bento { grid-template-columns: 1fr; }
+  .bc.s5, .bc.s7, .bc.s4, .bc.s8, .bc.s6 { grid-column: span 12; }
+
+  .how-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+  .how-sticky { position: static; }
+
+  .stack-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+
+  .pricing-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  .pc.pop { transform: scale(1); }
+  .pc.pop:hover { transform: translateY(-2px); }
+
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .nav-links, .nav-right { display: none; }
+  .nav-burger { display: flex; }
+
+  .testi-track-wrap { margin: 0 -1rem; }
+  .testi-track { padding: 0.5rem 1rem; }
+}
+
+@media (max-width: 700px) {
+  .bc-hstrip { flex-direction: column; }
+  .bc-hcol { border-right: none; border-bottom: 1px solid var(--gray-200); padding: 0 0 1rem; }
+  .bc-hcol:last-child { border-bottom: none; padding-bottom: 0; }
+
+  .hero-ctas { flex-direction: column; align-items: flex-start; }
+  .cta-btns { flex-direction: column; }
+
+  .footer-top { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; text-align: center; }
+  .f-bottom-links { justify-content: center; }
+
+  .testi-card { width: 300px; }
+}
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<div class="announce">
+  Early access is open — limited seats available. <a href="#">Claim yours →</a>
+</div>
+
+<nav class="nav" id="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">Prodvo<em>.</em></a>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#stack">Stack</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#">Docs</a></li>
+      </ul>
+      <div class="nav-right">
+        <a href="#" class="btn-ghost">Sign in</a>
+        <a href="#" class="btn-nav">Start building →</a>
+      </div>
+      <button class="nav-burger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-kicker">Now in Early Access</div>
+        <h1 class="hero-h1">
+          Stop <span class="word-cross">stitching</span><br>
+          tools together.<br>
+          <span class="word-orange">Just build.</span>
+        </h1>
+        <p class="hero-sub">
+          Prodvo is the AI coding agent with everything built-in — code editor, database, auth, storage, and deployment. Describe what you want. Ship it today.
+        </p>
+        <div class="hero-ctas">
+          <a href="#" class="btn-hero-primary">Start building free →</a>
+          <a href="#how" class="btn-hero-secondary">See how it works</a>
+        </div>
+        <div class="hero-proof">
+          <span class="hero-proof-item">No credit card</span>
+          <span class="hero-proof-sep">·</span>
+          <span class="hero-proof-item">Deploy in under 2 min</span>
+          <span class="hero-proof-sep">·</span>
+          <span class="hero-proof-item">Free tier included</span>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="terminal">
+          <div class="terminal-bar">
+            <div class="t-dot r"></div>
+            <div class="t-dot y"></div>
+            <div class="t-dot g"></div>
+            <span class="t-file">prodvo — ai agent · workspace</span>
+          </div>
+          <div class="terminal-body">
+            <div class="tl"><span class="tp">you →</span><span class="tc">build a SaaS with auth, Postgres, and a dashboard</span></div>
+            <div class="td"></div>
+            <div class="tl"><span class="to">✦ Analyzing requirements...</span></div>
+            <div class="tl"><span class="ts">✓ Auth configured <span style="color:var(--gray-300);font-weight:400;">(email + OAuth)</span></span></div>
+            <div class="tl"><span class="ts">✓ Postgres database ready</span></div>
+            <div class="tl"><span class="ts">✓ Dashboard UI generated</span></div>
+            <div class="tl"><span class="ts">✓ API routes wired</span></div>
+            <div class="td"></div>
+            <div class="tl"><span class="to">🚀 Live at&nbsp;</span><span style="color:var(--fire-orange);font-weight:600;">prodvo.app/your-project</span></div>
+            <div class="td"></div>
+            <div class="tl"><span class="tp">you →</span><span class="t-cursor"></span></div>
+          </div>
+        </div>
+        <div class="hero-float-tag">
+          <div>
+            <div class="hft-num">37<em>s</em></div>
+            <div class="hft-label">avg. time to first deploy</div>
+          </div>
+        </div>
+        <div class="hero-float-badge">AI-Powered</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTRAST -->
+<section class="contrast">
+  <div class="container">
+    <div class="contrast-inner">
+      <div>
+        <div class="contrast-col-head bad">The old way — 6 tools</div>
+        <div class="contrast-list">
+          <div class="contrast-item"><span class="ci-name">VS Code + plugins</span><span class="ci-tag">editor</span></div>
+          <div class="contrast-item"><span class="ci-name">Auth0 / Clerk</span><span class="ci-tag">auth</span></div>
+          <div class="contrast-item"><span class="ci-name">Supabase / Neon</span><span class="ci-tag">database</span></div>
+          <div class="contrast-item"><span class="ci-name">Vercel / Railway</span><span class="ci-tag">deploy</span></div>
+          <div class="contrast-item"><span class="ci-name">Resend / Postmark</span><span class="ci-tag">email</span></div>
+          <div class="contrast-item"><span class="ci-name">GitHub + CI/CD</span><span class="ci-tag">version control</span></div>
+        </div>
+      </div>
+
+      <div class="contrast-mid">
+        <div class="contrast-line"></div>
+        <div class="contrast-vs">vs</div>
+        <div class="contrast-line"></div>
+      </div>
+
+      <div>
+        <div class="contrast-col-head good">With Prodvo — 1 tool</div>
+        <div class="contrast-list prodvo">
+          <div class="contrast-item"><span class="ci-name">AI Code Editor</span><span class="ci-tag">built-in</span></div>
+          <div class="contrast-item"><span class="ci-name">Auth — zero config</span><span class="ci-tag">built-in</span></div>
+          <div class="contrast-item"><span class="ci-name">Postgres Database</span><span class="ci-tag">built-in</span></div>
+          <div class="contrast-item"><span class="ci-name">Instant Deploy</span><span class="ci-tag">built-in</span></div>
+          <div class="contrast-item"><span class="ci-name">Transactional Email</span><span class="ci-tag">built-in</span></div>
+          <div class="contrast-item"><span class="ci-name">Git + Version Control</span><span class="ci-tag">built-in</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES BENTO -->
+<section class="features" id="features">
+  <div class="container">
+    <div class="features-head reveal">
+      <div class="sec-eyebrow">What you get</div>
+      <h2 class="sec-title" style="margin-bottom:1rem;">Every tool you need.<br>Zero setup required.</h2>
+      <p class="sec-sub">From first prompt to live product. Prodvo handles the infra so you focus entirely on your idea.</p>
+    </div>
+
+    <div class="bento">
+
+      <div class="bc s7 surf-warm reveal d1">
+        <div class="bc-tag">Core</div>
+        <div class="bc-title">AI that writes, fixes,<br>and ships — on its own</div>
+        <p class="bc-desc">Prodvo's agent understands your intent, not just your syntax. It builds full features, catches its own bugs, and iterates until it's done right.</p>
+        <div class="bc-code">
+          <div><span class="cc">// just describe what you want</span></div>
+          <div><span class="ck">const</span><span class="cd"> feature = </span><span class="ck">await</span> prodvo.<span class="cf">build</span>(<span class="cs">"add Stripe billing"</span>)</div>
+          <div><span class="cc">// agent writes, tests, deploys</span></div>
+          <div><span class="ck">await</span> feature.<span class="cf">deploy</span>()</div>
+        </div>
+      </div>
+
+      <div class="bc s5 reveal d2">
+        <div class="bc-tag">Database</div>
+        <div class="bc-title-xl">∞ DB</div>
+        <div class="bc-title">Postgres. Instant.</div>
+        <p class="bc-desc">Full Postgres provisioned in seconds. Schema migrations, query editor, backups — zero configuration.</p>
+        <ul class="bc-check">
+          <li>Auto-generated schema from your data model</li>
+          <li>Visual query browser included</li>
+          <li>Daily backups + point-in-time restore</li>
+        </ul>
+      </div>
+
+      <div class="bc s8 surf-cool reveal d1">
+        <div class="bc-tag">Deploy</div>
+        <div class="bc-title-xl">1<span style="font-size:1.8rem;color:var(--gray-500);">-click</span></div>
+        <div class="bc-title" style="margin-top:0.2rem;">To production. Right now.</div>
+        <p class="bc-desc">Your project goes live the moment it's ready. Custom domain, SSL, CDN — all handled automatically.</p>
+        <ul class="bc-check">
+          <li>Custom domain with automatic SSL</li>
+          <li>Global CDN, edge-optimized delivery</li>
+          <li>Preview environments per branch</li>
+        </ul>
+      </div>
+
+      <div class="bc s4 reveal d2">
+        <div class="bc-tag">Auth</div>
+        <div class="bc-title">Auth that just works</div>
+        <p class="bc-desc">Email, magic links, Google, GitHub OAuth — wired up automatically. Sessions, roles, middleware — all handled.</p>
+        <div class="bc-pills">
+          <span class="bc-pill">Email</span>
+          <span class="bc-pill">Magic Link</span>
+          <span class="bc-pill">Google</span>
+          <span class="bc-pill">GitHub</span>
+          <span class="bc-pill">SSO</span>
+          <span class="bc-pill">RBAC</span>
+        </div>
+      </div>
+
+      <div class="bc s12 surf-cool reveal">
+        <div class="bc-tag">Everything else</div>
+        <div class="bc-hstrip">
+          <div class="bc-hcol">
+            <div class="bc-hcol-num">S3</div>
+            <div class="bc-hcol-label">File Storage</div>
+            <div class="bc-hcol-desc">S3-compatible, with image transforms and CDN delivery. Upload and serve anything.</div>
+          </div>
+          <div class="bc-hcol">
+            <div class="bc-hcol-num">WS</div>
+            <div class="bc-hcol-label">Real-time APIs</div>
+            <div class="bc-hcol-desc">WebSocket subscriptions and REST auto-generated from your schema. No boilerplate.</div>
+          </div>
+          <div class="bc-hcol">
+            <div class="bc-hcol-num">TX</div>
+            <div class="bc-hcol-label">Transactional Email</div>
+            <div class="bc-hcol-desc">Send from your app in minutes. Templates, logs, delivery tracking — built-in.</div>
+          </div>
+          <div class="bc-hcol">
+            <div class="bc-hcol-num">AN</div>
+            <div class="bc-hcol-label">Analytics</div>
+            <div class="bc-hcol-desc">Track users and events without a third-party script. Privacy-first, no cookies.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="container">
+    <div class="how-inner">
+      <div class="how-sticky">
+        <div class="sec-eyebrow reveal">The process</div>
+        <h2 class="sec-title reveal d1">From idea to live product<br>in minutes</h2>
+        <p class="sec-sub reveal d2">No configuration. No DevOps rabbit holes. Describe what you're building — Prodvo handles everything else.</p>
+      </div>
+
+      <div class="timeline">
+        <div class="tl-item active reveal">
+          <div class="tl-left">
+            <div class="tl-num">01</div>
+            <div class="tl-connector"></div>
+          </div>
+          <div class="tl-body">
+            <div class="tl-title">Describe your product</div>
+            <p class="tl-desc">Type what you want to build in plain language. "A task manager with team invites and Stripe billing." That's enough. Prodvo gets it.</p>
+          </div>
+        </div>
+
+        <div class="tl-item reveal d1">
+          <div class="tl-left">
+            <div class="tl-num">02</div>
+            <div class="tl-connector"></div>
+          </div>
+          <div class="tl-body">
+            <div class="tl-title">Watch it build</div>
+            <p class="tl-desc">The AI agent scaffolds the codebase, wires auth, creates your database schema, and builds the UI — live in your browser. You watch every step.</p>
+          </div>
+        </div>
+
+        <div class="tl-item reveal d2">
+          <div class="tl-left">
+            <div class="tl-num">03</div>
+            <div class="tl-connector"></div>
+          </div>
+          <div class="tl-body">
+            <div class="tl-title">Iterate by talking</div>
+            <p class="tl-desc">"Change the dashboard layout." "Add CSV export." "Make it mobile-friendly." The agent understands context — it evolves what's there, not restart.</p>
+          </div>
+        </div>
+
+        <div class="tl-item reveal d3">
+          <div class="tl-left">
+            <div class="tl-num">04</div>
+            <div class="tl-connector"></div>
+          </div>
+          <div class="tl-body">
+            <div class="tl-title">Ship with one click</div>
+            <p class="tl-desc">Hit deploy. Your app goes live on a custom domain with SSL, CDN, and zero configuration. It really is just one click.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section class="stack" id="stack">
+  <div class="container">
+    <div class="stack-inner">
+      <div>
+        <div class="sec-eyebrow reveal">Under the hood</div>
+        <h2 class="sec-title reveal d1" style="margin-bottom:1rem;">Built on tech<br>you already trust</h2>
+        <p class="sec-sub reveal d2" style="margin-bottom:1.8rem;">Prodvo doesn't lock you into obscure infra. It uses battle-tested open-source tools and industry-standard platforms. You can always export, migrate, or self-host.</p>
+        <a href="#" class="btn-hero-secondary reveal d3" style="display:inline-block;">Read the architecture docs →</a>
+      </div>
+
+      <div class="stack-cats">
+        <div class="stack-cat reveal d1">
+          <div class="stack-cat-head">Language &amp; Frameworks</div>
+          <div class="stack-cat-pills">
+            <span class="scp">TypeScript</span><span class="scp">Next.js</span><span class="scp">React</span><span class="scp">Node.js</span><span class="scp">Python</span>
+          </div>
+        </div>
+        <div class="stack-cat reveal d2">
+          <div class="stack-cat-head">Database &amp; Storage</div>
+          <div class="stack-cat-pills">
+            <span class="scp">PostgreSQL</span><span class="scp">Prisma ORM</span><span class="scp">Redis</span><span class="scp">S3-compatible</span>
+          </div>
+        </div>
+        <div class="stack-cat reveal d3">
+          <div class="stack-cat-head">Auth &amp; Security</div>
+          <div class="stack-cat-pills">
+            <span class="scp">JWT / Sessions</span><span class="scp">OAuth 2.0</span><span class="scp">RBAC</span><span class="scp">Row-level Security</span>
+          </div>
+        </div>
+        <div class="stack-cat reveal d4">
+          <div class="stack-cat-head">Infrastructure</div>
+          <div class="stack-cat-pills">
+            <span class="scp">Docker</span><span class="scp">Kubernetes</span><span class="scp">Cloudflare CDN</span><span class="scp">Auto-scaling</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testi">
+  <div class="container">
+    <div class="testi-head reveal">
+      <div class="sec-eyebrow">What builders say</div>
+      <h2 class="sec-title" style="margin-bottom:0.5rem;">They shipped. Fast.</h2>
+    </div>
+  </div>
+
+  <div class="testi-track-wrap">
+    <div class="testi-track" id="testiTrack">
+
+      <div class="testi-card">
+        <p class="testi-card-text">"I launched my SaaS in a weekend. Not a prototype — an actual product, with auth, billing, and a dashboard. I kept refreshing the URL to make sure it was real."</p>
+        <div class="testi-footer">
+          <div class="testi-avatar">AR</div>
+          <div>
+            <div class="testi-name">Arif Rahman</div>
+            <div class="testi-role">Founder, Trackly · Jakarta</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <p class="testi-card-text">"The AI actually understands what I'm building. It's not just autocomplete — it makes real decisions. And most of the time, good ones."</p>
+        <div class="testi-footer">
+          <div class="testi-avatar">MS</div>
+          <div>
+            <div class="testi-name">Maya S.</div>
+            <div class="testi-role">Indie developer · Singapore</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <p class="testi-card-text">"Replaced my entire stack — Vercel, Supabase, Auth0, Resend — with Prodvo. Way cheaper. Way less config. Way more speed."</p>
+        <div class="testi-footer">
+          <div class="testi-avatar">KT</div>
+          <div>
+            <div class="testi-name">Kevin T.</div>
+            <div class="testi-role">Full-stack engineer · Bangkok</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <p class="testi-card-text">"My co-founder isn't technical. Now she can make small product changes herself. That alone is worth the subscription."</p>
+        <div class="testi-footer">
+          <div class="testi-avatar">DP</div>
+          <div>
+            <div class="testi-name">Dian P.</div>
+            <div class="testi-role">CTO, Kopilot.ai</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <p class="testi-card-text">"I've tried Replit, Bolt, Lovable. Prodvo is the first one that actually understood the complexity of what I was building. Not just the surface level."</p>
+        <div class="testi-footer">
+          <div class="testi-avatar">JL</div>
+          <div>
+            <div class="testi-name">James L.</div>
+            <div class="testi-role">Solo founder · Kuala Lumpur</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <p class="testi-card-text">"Shipped v1 of our internal tool in 3 days. Normally that's a 3-week project. The team couldn't believe I did it alone."</p>
+        <div class="testi-footer">
+          <div class="testi-avatar">RK</div>
+          <div>
+            <div class="testi-name">Riza K.</div>
+            <div class="testi-role">Product engineer · Jakarta</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="testi-nav" id="testiNav">
+      <button class="testi-dot active" data-index="0"></button>
+      <button class="testi-dot" data-index="1"></button>
+      <button class="testi-dot" data-index="2"></button>
+      <button class="testi-dot" data-index="3"></button>
+      <button class="testi-dot" data-index="4"></button>
+      <button class="testi-dot" data-index="5"></button>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="container">
+    <div class="pricing-head reveal">
+      <div class="sec-eyebrow">Pricing</div>
+      <h2 class="sec-title">Pay for what you use.<br>Nothing else.</h2>
+      <p class="sec-sub">Start free. Scale as you grow. No surprise invoices.</p>
+    </div>
+
+    <div class="pricing-grid">
+      <div class="pc reveal d1">
+        <div class="pc-plan">Starter</div>
+        <div class="pc-price"><sup>$</sup>0</div>
+        <div class="pc-period">Free forever · no credit card needed</div>
+        <div class="pc-context">"I want to try this and build something small."</div>
+        <div class="pc-div"></div>
+        <ul class="pc-list">
+          <li>3 projects</li>
+          <li>Shared compute</li>
+          <li>500MB database storage</li>
+          <li>Community support</li>
+          <li class="off">Custom domains</li>
+          <li class="off">Team members</li>
+        </ul>
+        <a href="#" class="btn-pc outline">Start for free</a>
+      </div>
+
+      <div class="pc pop reveal d2">
+        <div class="pop-badge">Most Popular</div>
+        <div class="pc-plan">Pro</div>
+        <div class="pc-price"><sup>$</sup>29</div>
+        <div class="pc-period">per month · billed monthly</div>
+        <div class="pc-context">"I'm building something real and need speed and reliability."</div>
+        <div class="pc-div"></div>
+        <ul class="pc-list">
+          <li>Unlimited projects</li>
+          <li>Dedicated compute</li>
+          <li>10GB database storage</li>
+          <li>Custom domains + SSL</li>
+          <li>Priority AI agent access</li>
+          <li>Email support (24h SLA)</li>
+        </ul>
+        <a href="#" class="btn-pc fill">Start building →</a>
+      </div>
+
+      <div class="pc reveal d3">
+        <div class="pc-plan">Team</div>
+        <div class="pc-price"><sup>$</sup>99</div>
+        <div class="pc-period">per month · up to 5 members</div>
+        <div class="pc-context">"We're shipping together and need collaboration at scale."</div>
+        <div class="pc-div"></div>
+        <ul class="pc-list">
+          <li>Everything in Pro</li>
+          <li>Up to 5 team members</li>
+          <li>50GB database storage</li>
+          <li>SSO &amp; RBAC controls</li>
+          <li>Preview environments</li>
+          <li>Dedicated Slack channel</li>
+        </ul>
+        <a href="#" class="btn-pc outline">Start team trial</a>
+      </div>
+    </div>
+
+    <p class="pricing-note reveal">Need more? <a href="#">Talk to us about Enterprise</a> — custom compute, SLA guarantees, and white-glove onboarding.</p>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-final">
+  <div class="container">
+    <div class="cta-inner">
+      <div class="cta-label">Ready to ship?</div>
+      <h2 class="cta-h">Your next product<br>starts right now.</h2>
+      <p class="cta-p">Stop planning your stack. Stop configuring tools. Describe what you want to build and ship it today — for free.</p>
+      <div class="cta-btns">
+        <a href="#" class="btn-cta-w">Start building — it's free →</a>
+        <a href="#" class="btn-cta-o">Book a demo</a>
+      </div>
+      <div class="cta-trust-line">No credit card required · Deploy in under 2 minutes · Cancel anytime</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">Prodvo<em>.</em></div>
+        <p class="footer-tagline">The AI coding agent for builders who want to ship — not configure.</p>
+        <div class="footer-social">
+          <a href="#" class="fsoc" aria-label="Twitter">𝕏</a>
+          <a href="#" class="fsoc" aria-label="GitHub">GH</a>
+          <a href="#" class="fsoc" aria-label="Discord">DC</a>
+        </div>
+      </div>
+      <div>
+        <div class="f-col-title">Product</div>
+        <ul class="f-links">
+          <li><a href="#">Features</a></li>
+          <li><a href="#">How it works</a></li>
+          <li><a href="#">Pricing</a></li>
+          <li><a href="#">Changelog</a></li>
+          <li><a href="#">Roadmap</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="f-col-title">Developers</div>
+        <ul class="f-links">
+          <li><a href="#">Documentation</a></li>
+          <li><a href="#">API Reference</a></li>
+          <li><a href="#">Templates</a></li>
+          <li><a href="#">CLI</a></li>
+          <li><a href="#">GitHub</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="f-col-title">Company</div>
+        <ul class="f-links">
+          <li><a href="#">About</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Status</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 Prodvo, Inc. · <a href="#">prodvo.studio</a></div>
+      <ul class="f-bottom-links">
+        <li><a href="#">Privacy</a></li>
+        <li><a href="#">Terms</a></li>
+        <li><a href="#">Cookies</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+</main>
+
+<script>
+// Nav scroll
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 8);
+}, { passive: true });
+
+// Reveal
+const revealEls = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); revealObserver.unobserve(e.target); }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
+revealEls.forEach(el => revealObserver.observe(el));
+
+// Timeline active
+const tlItems = document.querySelectorAll('.tl-item');
+const tlObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      tlItems.forEach(i => i.classList.remove('active'));
+      e.target.classList.add('active');
+    }
+  });
+}, { threshold: 0.6 });
+tlItems.forEach(el => tlObserver.observe(el));
+
+// Testimonials drag scroll + dots
+const track = document.getElementById('testiTrack');
+const dots = document.querySelectorAll('.testi-dot');
+let isDown = false, startX, scrollLeft;
+
+track.addEventListener('mousedown', e => {
+  isDown = true; track.classList.add('grabbing');
+  startX = e.pageX - track.offsetLeft; scrollLeft = track.scrollLeft;
+});
+track.addEventListener('mouseleave', () => { isDown = false; track.classList.remove('grabbing'); });
+track.addEventListener('mouseup', () => { isDown = false; track.classList.remove('grabbing'); });
+track.addEventListener('mousemove', e => {
+  if (!isDown) return; e.preventDefault();
+  const x = e.pageX - track.offsetLeft;
+  track.scrollLeft = scrollLeft - (x - startX) * 1.4;
+});
+
+track.addEventListener('scroll', () => {
+  const cards = track.querySelectorAll('.testi-card');
+  const trackLeft = track.scrollLeft;
+  let closest = 0, minDist = Infinity;
+  cards.forEach((c, i) => {
+    const dist = Math.abs(c.offsetLeft - trackLeft - track.offsetLeft);
+    if (dist < minDist) { minDist = dist; closest = i; }
+  });
+  dots.forEach((d, i) => d.classList.toggle('active', i === closest));
+}, { passive: true });
+
+dots.forEach(dot => {
+  dot.addEventListener('click', () => {
+    const idx = +dot.dataset.index;
+    const cards = track.querySelectorAll('.testi-card');
+    if (cards[idx]) track.scrollTo({ left: cards[idx].offsetLeft - track.offsetLeft, behavior: 'smooth' });
+  });
+});
+
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  document.querySelector('.terminal').style.animation = 'none';
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,589 @@
+.hero {
+  padding: clamp(5rem, 10vw, 8rem) 0 clamp(3rem, 6vw, 5rem);
+  text-align: center;
+}
+
+.heroInner {
+  width: min(800px, calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fire-orange-deep);
+  background: var(--fire-orange-soft);
+  padding: 0.35rem 0.9rem;
+  border-radius: 100px;
+  margin-bottom: 1.25rem;
+}
+
+.heroTitle {
+  font-family: var(--font-brand);
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  margin-bottom: 1rem;
+}
+
+.heroSub {
+  font-size: 1.1rem;
+  line-height: 1.65;
+  color: var(--ink-2);
+  max-width: 620px;
+  margin: 0 auto 2rem;
+}
+
+.heroCtas {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Depth visual */
+.depthVisual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 3rem;
+  gap: 1rem;
+}
+
+.depthStack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.depthLayer {
+  width: calc(180px + var(--delay) * 40px);
+  padding: 0.6rem 1rem;
+  background: var(--fire-orange);
+  opacity: calc(0.4 + var(--delay) * 0.2);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.depthLayer:hover {
+  transform: translateX(8px);
+  opacity: 1;
+}
+
+.depthArrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.depthArrow::before {
+  content: "↓";
+  font-size: 1rem;
+}
+
+/* Section styles */
+.section {
+  padding: clamp(3rem, 6vw, 5rem) 0;
+}
+
+.container {
+  width: min(1120px, calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.sectionLabel {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--fire-orange-deep);
+  margin-bottom: 0.75rem;
+}
+
+.sectionTitle {
+  font-family: var(--font-brand);
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--ink);
+  margin-bottom: 0.75rem;
+}
+
+.sectionSub {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--ink-2);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Beyond grid */
+.beyondGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+}
+
+.beyondCard {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.beyondCard:hover {
+  border-color: var(--fire-orange-soft);
+  transform: translateY(-4px);
+}
+
+.beyondTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 0.5rem;
+}
+
+.beyondDesc {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+  margin: 0;
+}
+
+/* Intelligence comparison */
+.intelligenceGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.intelligenceCard {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  position: relative;
+}
+
+.intelligenceCard.prodvoWins {
+  border-color: var(--fire-orange-soft);
+  background: #fffcfa;
+}
+
+.intelligenceCard.boltWins {
+  border-color: var(--gray-300);
+}
+
+.intelligenceCapability {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 1rem;
+}
+
+.intelligenceComparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.intelligenceItem {
+  background: var(--gray-50);
+  border-radius: 10px;
+  padding: 0.85rem;
+}
+
+.intelligenceBrand {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-3);
+  margin-bottom: 0.35rem;
+}
+
+.intelligenceItem p {
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--ink-2);
+  margin: 0;
+}
+
+.advantageBadge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--fire-orange-deep);
+  background: var(--fire-orange-soft);
+  padding: 0.25rem 0.6rem;
+  border-radius: 100px;
+}
+
+.advantageBadgeBolt {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-2);
+  background: var(--gray-200);
+  padding: 0.25rem 0.6rem;
+  border-radius: 100px;
+}
+
+/* Infrastructure matrix */
+.matrixWrap {
+  overflow-x: auto;
+}
+
+.matrix {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.matrix th,
+.matrix td {
+  padding: 1rem 1.25rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.matrix th {
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--gray-50);
+}
+
+.matrix th:first-child {
+  border-radius: 12px 0 0 0;
+}
+
+.matrix th:last-child {
+  border-radius: 0 12px 0 0;
+}
+
+.matrix td:first-child {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.matrix td {
+  color: var(--ink-2);
+}
+
+/* Pricing comparison */
+.pricingGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.pricingRow {
+  display: grid;
+  grid-template-columns: 120px 1fr 1fr;
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.pricingTier {
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--ink);
+}
+
+.pricingCard {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+}
+
+.pricingBrand {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-3);
+  margin-bottom: 0.35rem;
+}
+
+.pricingPrice {
+  display: block;
+  font-family: var(--font-brand);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--ink);
+  margin-bottom: 0.25rem;
+}
+
+.pricingAllocation {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--fire-orange);
+  margin-bottom: 0.5rem;
+}
+
+.pricingNotes {
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--ink-2);
+  margin: 0;
+}
+
+/* Team economics */
+.economicsWrap {
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+}
+
+.economicsTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.economicsTable th,
+.economicsTable td {
+  padding: 1rem 1.25rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.economicsTable th {
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--gray-50);
+}
+
+.economicsTable th:first-child {
+  border-radius: 12px 0 0 0;
+}
+
+.economicsTable th:last-child {
+  border-radius: 0 12px 0 0;
+}
+
+.economicsTable td:first-child {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.savingsProdvo {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--fire-orange-deep);
+  background: var(--fire-orange-soft);
+  padding: 0.2rem 0.6rem;
+  border-radius: 100px;
+}
+
+.savingsBolt {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--ink-2);
+  background: var(--gray-200);
+  padding: 0.2rem 0.6rem;
+  border-radius: 100px;
+}
+
+.economicsNote {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--ink-2);
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto;
+  background: var(--gray-50);
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+}
+
+/* Bottom line */
+.bottomLine {
+  text-align: center;
+}
+
+.bottomTitle {
+  font-family: var(--font-brand);
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  font-weight: 800;
+  color: var(--ink);
+  margin-bottom: 0.75rem;
+}
+
+.bottomSub {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--ink-2);
+  max-width: 600px;
+  margin: 0 auto 2.5rem;
+}
+
+.bottomGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto 2rem;
+}
+
+.bottomCard {
+  background: var(--gray-50);
+  border-radius: 16px;
+  padding: 1.75rem;
+  text-align: left;
+}
+
+.bottomCardHighlight {
+  background: var(--fire-orange-soft);
+  border: 2px solid var(--fire-orange);
+}
+
+.bottomCardHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.bottomBrand {
+  font-family: var(--font-brand);
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.bottomTag {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-2);
+  background: var(--gray-200);
+  padding: 0.3rem 0.6rem;
+  border-radius: 100px;
+}
+
+.bottomTagHighlight {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #fff;
+  background: var(--fire-orange);
+  padding: 0.3rem 0.6rem;
+  border-radius: 100px;
+}
+
+.bottomList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.bottomList li {
+  position: relative;
+  padding-left: 1.25rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--ink-2);
+  margin-bottom: 0.5rem;
+}
+
+.bottomList li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--fire-orange);
+  font-weight: 600;
+}
+
+.bottomCardHighlight .bottomList li::before {
+  color: var(--fire-orange-deep);
+}
+
+.bottomVerdict {
+  font-size: 0.95rem;
+  color: var(--ink-2);
+  max-width: 500px;
+  margin: 0 auto;
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .beyondGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .intelligenceGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .pricingRow {
+    grid-template-columns: 1fr;
+  }
+
+  .pricingTier {
+    background: var(--fire-orange);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+  }
+
+  .bottomGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .beyondGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .intelligenceComparison {
+    grid-template-columns: 1fr;
+  }
+
+  .depthLayer {
+    width: calc(140px + var(--delay) * 30px);
+    font-size: 0.7rem;
+  }
+}
