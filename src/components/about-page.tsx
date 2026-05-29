@@ -1,8 +1,7 @@
 ﻿import Link from "next/link";
-import { APP_DOMAIN, TEAM_MEMBERS } from "@/lib/config";
+import { APP_DOMAIN } from "@/lib/config";
 import { SiteShell } from "@/components/site-shell";
 import { AboutRevealEffect } from "@/components/about-reveal-effect";
-import { TeamSlider } from "@/components/team-slider";
 
 const TIMELINE = [
   { date: "Apr 2024", event: "Prodvo founded", detail: "Started building the planning-first AI workspace to solve the coordination gap in AI-assisted development." },
@@ -176,7 +175,6 @@ export function AboutPage() {
             A small, focused team with deep experience in distributed systems, developer tooling, and AI - building the future of software delivery.
           </p>
 
-        <TeamSlider members={TEAM_MEMBERS} />
         </div>
 
         <div className="container">
