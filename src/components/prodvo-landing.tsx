@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { SiteShell } from "@/components/site-shell";
+import { APP_NAME } from "@/lib/config";
 import { useEffect, useMemo, useState } from "react";
 
 // Small to medium companies with their domains for logo.dev API
@@ -112,7 +113,7 @@ const WORKFLOW_STEPS = [
   {
     title: "Scope in plan mode",
     description:
-      "Prompt Prodvo with goals, constraints, and acceptance criteria. Review the implementation plan before build starts.",
+      "Prompt " + APP_NAME + " with goals, constraints, and acceptance criteria. Review the implementation plan before build starts.",
     deliverable: "Deliverable: ordered task plan + effort estimate",
   },
   {
@@ -196,7 +197,7 @@ const TEAM_TESTIMONIALS = [
     role: "VP Product",
     company: "Helio Labs",
     quote:
-      "We used to spend hours syncing between PM, engineering, and QA before each release. With Prodvo, everyone sees one execution timeline and we ship with fewer surprises.",
+      `We used to spend hours syncing between PM, engineering, and QA before each release. With ${APP_NAME}, everyone sees one execution timeline and we ship with fewer surprises.`,
     proof:
       "After onboarding two squads, release planning moved from fragmented docs into one decision flow with clear ownership.",
     metric: "-52% handoff delay",
@@ -208,7 +209,7 @@ const TEAM_TESTIMONIALS = [
     quote:
       "The biggest shift was confidence. Engineers are no longer guessing what changed in upstream scope because the run history is always visible.",
     proof:
-      "Prodvo replaced status chasing with checkpointed execution, so cross-functional teams spend more time shipping than coordinating.",
+      `${APP_NAME} replaced status chasing with checkpointed execution, so cross-functional teams spend more time shipping than coordinating.`,
     metric: "-37% coordination overhead",
   },
   {
@@ -254,9 +255,9 @@ const FAQ_ITEMS: readonly FaqItem[] = [
   },
   {
     topic: "Stack fit",
-    question: "How does Prodvo fit with GitHub and CI/CD pipelines?",
+    question: `How does ${APP_NAME} fit with GitHub and CI/CD pipelines?`,
     answer:
-      "Prodvo works with branch-based Git workflows, pull requests, and existing CI gates. You adopt it as an execution layer, not a replacement for your stack.",
+      `${APP_NAME} works with branch-based Git workflows, pull requests, and existing CI gates. You adopt it as an execution layer, not a replacement for your stack.`,
   },
   {
     topic: "Reliability",
@@ -272,7 +273,7 @@ const FAQ_ITEMS: readonly FaqItem[] = [
   },
   {
     topic: "Security",
-    question: "Can Prodvo support security and compliance reviews?",
+    question: `Can ${APP_NAME} support security and compliance reviews?`,
     answer:
       "Yes. Teams can enforce review checkpoints, retain audit trails, and export execution artifacts for internal security and compliance workflows.",
   },
@@ -376,7 +377,7 @@ export function ProdvoLanding() {
             </h1>
 
             <p className="animate-fade-up-2">
-              Prodvo combines planning, coding, preview, deployment, and team
+              {APP_NAME} combines planning, coding, preview, deployment, and team
               coordination in one environment. Turn ideas into production-ready
               outcomes without context switching between fragmented tools.
             </p>
@@ -437,7 +438,7 @@ export function ProdvoLanding() {
                   <span>Platform</span>
                 </div>
                 <h2 className="section-title">
-                  What Prodvo gives your team, out of the box
+                  What {APP_NAME} gives your team, out of the box
                 </h2>
                 <p className="section-subtitle">
                   A complete delivery loop designed for production teams. Every
@@ -486,7 +487,7 @@ export function ProdvoLanding() {
               <div className="platform-insight-head">
                 <h3>Execution confidence across the full delivery lifecycle</h3>
                 <p>
-                  Prodvo keeps each stage measurable, so teams can move faster
+                  {APP_NAME} keeps each stage measurable, so teams can move faster
                   without losing review quality or release control.
                 </p>
               </div>
@@ -517,7 +518,7 @@ export function ProdvoLanding() {
                   Built for teams that need to ship, not just demo
                 </h2>
                 <p className="section-subtitle">
-                  From internal tooling to customer-facing features, Prodvo keeps
+                  From internal tooling to customer-facing features, {APP_NAME} keeps
                   your team moving with clear ownership and execution clarity.
                 </p>
               </div>
@@ -554,7 +555,7 @@ export function ProdvoLanding() {
               <code>[ 03 / 06 ]</code>
               <span>Workflow</span>
             </div>
-            <h2 className="section-title">How teams ship with Prodvo</h2>
+            <h2 className="section-title">How teams ship with {APP_NAME}</h2>
             <p className="section-subtitle">
               Structured execution from scope to deploy, with every step visible
               and recoverable.
@@ -690,7 +691,7 @@ export function ProdvoLanding() {
               <code>[ 06 / 06 ]</code>
               <span>FAQ</span>
             </div>
-            <h2 className="section-title">Answers for teams evaluating Prodvo</h2>
+            <h2 className="section-title">Answers for teams evaluating {APP_NAME}</h2>
             <p className="section-subtitle">
               The practical details that matter before rollout: onboarding,
               quality controls, governance, and stack compatibility.
@@ -735,7 +736,7 @@ export function ProdvoLanding() {
               <div className="cta-copy">
                 <h2>Ready to build with an all-in-one code agent?</h2>
                 <p>
-                  Start your first Prodvo workspace and go from prompt to
+                  Start your first {APP_NAME} workspace and go from prompt to
                   deployed product with planning, execution, and rollback in one
                   flow.
                 </p>

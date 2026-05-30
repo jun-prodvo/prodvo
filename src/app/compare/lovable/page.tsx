@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { APP_NAME } from "@/lib/config";
 import { SiteShell } from "@/components/site-shell";
 import styles from "./lovable.module.css";
 
@@ -152,7 +153,7 @@ export default function CompareLovablePage() {
         <div className={styles.heroContent}>
           <span className={styles.badge}>Comparison</span>
           <h1 className={styles.heroTitle}>
-            Prodvo <span className={styles.vs}>vs</span> Lovable
+            {APP_NAME} <span className={styles.vs}>vs</span> Lovable
           </h1>
           <p className={styles.heroSub}>
             Both promise production-ready output. The difference is what happens 
@@ -160,7 +161,7 @@ export default function CompareLovablePage() {
           </p>
           <div className={styles.heroCtas}>
             <Link href="/pricing" className="btn btn-primary btn-lg">
-              Try Prodvo free
+              Try {APP_NAME} free
             </Link>
             <Link href="#workflow" className="btn btn-secondary">
               See the difference
@@ -198,7 +199,7 @@ export default function CompareLovablePage() {
             <span className={styles.label}>Workflow</span>
             <h2 className={styles.sectionTitle}>From idea to production</h2>
             <p className={styles.sectionSub}>
-              Lovable generates apps. Prodvo manages the journey from planning through safe deployment.
+              Lovable generates apps. {APP_NAME} manages the journey from planning through safe deployment.
             </p>
           </div>
 
@@ -213,7 +214,7 @@ export default function CompareLovablePage() {
                   <h3 className={styles.timelineTitle}>{item.title}</h3>
                   <div className={styles.timelineCompare}>
                     <div className={styles.timelineBox}>
-                      <span className={styles.timelineBrand}>Prodvo</span>
+                      <span className={styles.timelineBrand}>{APP_NAME}</span>
                       <strong>{item.prodvo.headline}</strong>
                       <p>{item.prodvo.detail}</p>
                     </div>
@@ -239,7 +240,7 @@ export default function CompareLovablePage() {
             <span className={styles.label}>Safety</span>
             <h2 className={styles.sectionTitle}>Production-grade means rollback-ready</h2>
             <p className={styles.sectionSub}>
-              Lovable emphasizes certifications. Prodvo adds the operational safety 
+              Lovable emphasizes certifications. {APP_NAME} adds the operational safety 
               that prevents bad deploys from becoming incidents.
             </p>
           </div>
@@ -252,12 +253,12 @@ export default function CompareLovablePage() {
               >
                 <div className={styles.safetyHeader}>
                   <h3>{item.title}</h3>
-                  {item.prodvoWins && <span className={styles.winTag}>Prodvo</span>}
+                  {item.prodvoWins && <span className={styles.winTag}>{APP_NAME}</span>}
                   {!item.prodvoWins && <span className={styles.winTagAlt}>Lovable</span>}
                 </div>
                 <div className={styles.safetyBody}>
                   <div className={styles.safetyRow}>
-                    <span className={styles.rowLabel}>Prodvo</span>
+                    <span className={styles.rowLabel}>{APP_NAME}</span>
                     <span>{item.prodvo}</span>
                   </div>
                   <div className={styles.safetyRow}>
@@ -288,7 +289,7 @@ export default function CompareLovablePage() {
           <div className={styles.featureList}>
             <div className={styles.featureHeader}>
               <span>Feature</span>
-              <span>Prodvo</span>
+              <span>{APP_NAME}</span>
               <span>Lovable</span>
             </div>
             {TEAM_FEATURES.map((item) => (
@@ -318,7 +319,7 @@ export default function CompareLovablePage() {
             <span className={styles.label}>Enterprise</span>
             <h2 className={styles.sectionTitle}>Enterprise readiness</h2>
             <p className={styles.sectionSub}>
-              Lovable leads on certifications. Prodvo leads on operational controls.
+              Lovable leads on certifications. {APP_NAME} leads on operational controls.
             </p>
           </div>
 
@@ -331,7 +332,7 @@ export default function CompareLovablePage() {
                 <h4>{item.feature}</h4>
                 <div className={styles.enterpriseCompare}>
                   <div>
-                    <span className={styles.brandSmall}>Prodvo</span>
+                    <span className={styles.brandSmall}>{APP_NAME}</span>
                     <span className={styles.enterpriseValue}>{item.prodvo}</span>
                   </div>
                   <div>
@@ -362,7 +363,7 @@ export default function CompareLovablePage() {
                 </ul>
               </div>
               <div className={`${styles.bottomCard} ${styles.bottomCardHighlight}`}>
-                <h3>Choose Prodvo if...</h3>
+                <h3>Choose {APP_NAME} if...</h3>
                 <ul>
                   <li>You need planning → execution → review → ship in one place</li>
                   <li>Rollback safety and approval gates matter for your team</li>
@@ -384,7 +385,7 @@ export default function CompareLovablePage() {
             <div className="cta-copy">
               <h2>Production-grade means rollback-ready</h2>
               <p>
-                Start your first Prodvo workspace and see why teams choose 
+                Start your first {APP_NAME} workspace and see why teams choose 
                 safety rails over certifications alone.
               </p>
               <Link className="btn" href="/pricing">

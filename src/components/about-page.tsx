@@ -1,10 +1,10 @@
 ﻿import Link from "next/link";
-import { APP_DOMAIN } from "@/lib/config";
+import { APP_DOMAIN, APP_NAME } from "@/lib/config";
 import { SiteShell } from "@/components/site-shell";
 import { AboutRevealEffect } from "@/components/about-reveal-effect";
 
 const TIMELINE = [
-  { date: "Apr 2024", event: "Prodvo founded", detail: "Started building the planning-first AI workspace to solve the coordination gap in AI-assisted development." },
+  { date: "Apr 2024", event: `${APP_NAME} founded`, detail: "Started building the planning-first AI workspace to solve the coordination gap in AI-assisted development." },
   { date: "Late 2024", event: "Seed round closed", detail: "Raised seed funding to build the core engineering team and platform architecture." },
   { date: "Early 2025", event: "Beta launch", detail: "Early adopter agencies and solo founders began using parallel execution and checkpoint rollback." },
   { date: "Q3 2025", event: "Public launch", detail: "Publicly launched with thousands of active users building real production software." },
@@ -32,13 +32,13 @@ export function AboutPage() {
 
       <section className="page-hero">
         <div className="container">
-          <span className="about-eyebrow animate-fade-up">About Prodvo</span>
+          <span className="about-eyebrow animate-fade-up">About {APP_NAME}</span>
           <h1 className="section-title animate-fade-up-1" style={{ maxWidth: "820px" }}>
             The AI workspace that <span style={{ color: "var(--fire-orange)" }}>plans before it builds.</span>
           </h1>
           <p className="section-subtitle animate-fade-up-2" style={{ maxWidth: "54rem" }}>
             Founded in April 2024 to solve the coordination gap in AI-assisted development.
-            Prodvo is publicly launched, post-revenue, and growing fast.
+            {APP_NAME} is publicly launched, post-revenue, and growing fast.
           </p>
           <ul className="page-hero-meta animate-fade-up-3">
             <li>Founded April 2024</li>
@@ -79,7 +79,7 @@ export function AboutPage() {
             <article className="about-origin-card">
               <div className="about-origin-label">Our answer</div>
               <h3>Build the workspace that thinks before it codes</h3>
-              <p>Prodvo introduces a planning layer before any code is generated. Requirements are decomposed into dependency-mapped task graphs, executed by specialized agents in parallel, gated at checkpoints, and deployed with rollback confidence.</p>
+              <p>{APP_NAME} introduces a planning layer before any code is generated. Requirements are decomposed into dependency-mapped task graphs, executed by specialized agents in parallel, gated at checkpoints, and deployed with rollback confidence.</p>
             </article>
           </div>
         </div>
@@ -93,7 +93,7 @@ export function AboutPage() {
           </div>
           <h2 className="section-title">From founding to public launch and beyond</h2>
           <p className="section-subtitle">
-            Key milestones in Prodvo&rsquo;s development journey.
+            Key milestones in {APP_NAME}&rsquo;s development journey.
           </p>
 
           <div className="about-timeline reveal">
@@ -170,7 +170,7 @@ export function AboutPage() {
             <code>[ 05 / 05 ]</code>
             <span>Team</span>
           </div>
-          <h2 className="section-title">The people behind Prodvo</h2>
+          <h2 className="section-title">The people behind {APP_NAME}</h2>
           <p className="section-subtitle">
             A small, focused team with deep experience in distributed systems, developer tooling, and AI - building the future of software delivery.
           </p>
@@ -196,7 +196,7 @@ export function AboutPage() {
           <div className="about-cta-frame reveal">
             <div>
               <h2>Ready to build with structure?</h2>
-              <p>Start your first project with Prodvo and experience planning-first AI development.</p>
+              <p>Start your first project with {APP_NAME} and experience planning-first AI development.</p>
             </div>
             <div className="about-cta-actions">
               <Link className="btn btn-primary" href="/pricing">Start building</Link>

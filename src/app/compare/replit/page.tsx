@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { APP_NAME } from "@/lib/config";
 import { SiteShell } from "@/components/site-shell";
 import styles from "./replit.module.css";
 
@@ -102,7 +103,7 @@ export default function CompareReplitPage() {
         <div className={styles.heroInner}>
           <span className={styles.badge}>Comparison</span>
           <h1 className={styles.heroTitle}>
-            Prodvo vs Replit
+            {APP_NAME} vs Replit
           </h1>
           <p className={styles.heroSub}>
             Both platforms turn prompts into apps. The difference is what happens 
@@ -111,7 +112,7 @@ export default function CompareReplitPage() {
           </p>
           <div className={styles.heroCtas}>
             <Link href="/pricing" className="btn btn-primary btn-lg">
-              Try Prodvo free
+              Try {APP_NAME} free
             </Link>
             <Link href="#comparison" className="btn btn-secondary">
               See the comparison
@@ -133,7 +134,7 @@ export default function CompareReplitPage() {
           </div>
           <div className={styles.splitDivider} />
           <div className={styles.splitRight}>
-            <span className={styles.splitLabel}>With Prodvo</span>
+            <span className={styles.splitLabel}>With {APP_NAME}</span>
             <div className={styles.unifiedBlocks}>
               <span className={styles.uniBlock} />
               <span className={styles.uniBlock} />
@@ -152,7 +153,7 @@ export default function CompareReplitPage() {
             <span className={styles.sectionLabel}>Workflow</span>
             <h2 className={styles.sectionTitle}>The real difference is in the workflow</h2>
             <p className={styles.sectionSub}>
-              Replit gets you from prompt to app. Prodvo gets you from idea to 
+              Replit gets you from prompt to app. {APP_NAME} gets you from idea to 
               production-ready product with the planning and safety layers teams need.
             </p>
           </div>
@@ -162,7 +163,7 @@ export default function CompareReplitPage() {
               <div key={row.stage} className={styles.workflowRow}>
                 <div className={styles.workflowStage}>{row.stage}</div>
                 <div className={`${styles.workflowCell} ${row.winner === "prodvo" ? styles.winner : ""}`}>
-                  <span className={styles.platformTag}>Prodvo</span>
+                  <span className={styles.platformTag}>{APP_NAME}</span>
                   <p>{row.prodvo}</p>
                 </div>
                 <div className={`${styles.workflowCell} ${row.winner === "replit" ? styles.winner : ""}`}>
@@ -184,7 +185,7 @@ export default function CompareReplitPage() {
             <span className={styles.sectionLabel}>Features</span>
             <h2 className={styles.sectionTitle}>Feature-by-feature breakdown</h2>
             <p className={styles.sectionSub}>
-              Where each platform excels - and where Prodvo fills the gaps that 
+              Where each platform excels - and where {APP_NAME} fills the gaps that 
               matter for production teams.
             </p>
           </div>
@@ -194,7 +195,7 @@ export default function CompareReplitPage() {
               <thead>
                 <tr>
                   <th>Feature</th>
-                  <th>Prodvo</th>
+                  <th>{APP_NAME}</th>
                   <th>Replit</th>
                 </tr>
               </thead>
@@ -233,7 +234,7 @@ export default function CompareReplitPage() {
             <span className={styles.sectionLabel}>Pricing</span>
             <h2 className={styles.sectionTitle}>Transparent pricing, no credit math</h2>
             <p className={styles.sectionSub}>
-              Replit uses a credit system that can get confusing. Prodvo has 
+              Replit uses a credit system that can get confusing. {APP_NAME} has 
               predictable plans with everything included.
             </p>
           </div>
@@ -243,7 +244,7 @@ export default function CompareReplitPage() {
               <div key={tier.tier} className={styles.pricingRow}>
                 <div className={styles.pricingTier}>{tier.tier}</div>
                 <div className={styles.pricingCard}>
-                  <span className={styles.pricingBrand}>Prodvo</span>
+                  <span className={styles.pricingBrand}>{APP_NAME}</span>
                   <span className={styles.pricingPrice}>{tier.prodvo.price}</span>
                   <p className={styles.pricingFeatures}>{tier.prodvo.features}</p>
                 </div>
@@ -277,7 +278,7 @@ export default function CompareReplitPage() {
                 <h3 className={styles.scenarioTitle}>{item.scenario}</h3>
                 <div className={styles.scenarioTimes}>
                   <div className={styles.scenarioTime}>
-                    <span className={styles.timeLabel}>Prodvo</span>
+                    <span className={styles.timeLabel}>{APP_NAME}</span>
                     <span className={styles.timeValue}>{item.prodvo}</span>
                   </div>
                   <div className={styles.scenarioTime}>
@@ -302,7 +303,7 @@ export default function CompareReplitPage() {
             <p className={styles.bottomBody}>
               Replit is great for exploration and learning - it has a mobile app, 
               generates videos, and has a large community. But when you need to 
-              ship production software with a team, Prodvo's planning workflow, 
+              ship production software with a team, {APP_NAME}&apos;s planning workflow, 
               parallel execution, and safety rails make the difference between 
               "it works on my machine" and "it's live and rollback-ready."
             </p>
@@ -333,7 +334,7 @@ export default function CompareReplitPage() {
             <div className="cta-copy">
               <h2>Ready to ship with confidence?</h2>
               <p>
-                Start your first Prodvo workspace and see why teams choose 
+                Start your first {APP_NAME} workspace and see why teams choose 
                 planning + execution over prompt-and-pray.
               </p>
               <Link className="btn" href="/pricing">

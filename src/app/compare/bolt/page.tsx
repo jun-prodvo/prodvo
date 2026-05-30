@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { APP_NAME } from "@/lib/config";
 import { SiteShell } from "@/components/site-shell";
 import styles from "./bolt.module.css";
 
@@ -100,9 +101,9 @@ const PRICING_TIERS = [
 const TEAM_ECONOMICS = [
   { teamSize: "Solo", prodvoMonthly: "$99", boltMonthly: "$25", savings: "Bolt" },
   { teamSize: "3-person team", prodvoMonthly: "$249", boltMonthly: "$90", savings: "Bolt" },
-  { teamSize: "5-person team", prodvoMonthly: "$249", boltMonthly: "$150", savings: "Prodvo" },
-  { teamSize: "10-person team", prodvoMonthly: "$249", boltMonthly: "$300", savings: "Prodvo" },
-  { teamSize: "20-person team", prodvoMonthly: "$249", boltMonthly: "$600", savings: "Prodvo" },
+  { teamSize: "5-person team", prodvoMonthly: "$249", boltMonthly: "$150", savings: APP_NAME },
+  { teamSize: "10-person team", prodvoMonthly: "$249", boltMonthly: "$300", savings: APP_NAME },
+  { teamSize: "20-person team", prodvoMonthly: "$249", boltMonthly: "$600", savings: APP_NAME },
 ];
 
 const BEYOND_PROMPTS = [
@@ -134,16 +135,16 @@ export default function CompareBoltPage() {
         <div className={styles.heroInner}>
           <span className={styles.badge}>Comparison</span>
           <h1 className={styles.heroTitle}>
-            Prodvo vs Bolt
+            {APP_NAME} vs Bolt
           </h1>
           <p className={styles.heroSub}>
-            Bolt calls itself the "#1 professional vibe coding tool." Prodvo goes beyond 
+            Bolt calls itself the "#1 professional vibe coding tool." {APP_NAME} goes beyond 
             vibe coding - with planning workflows, parallel execution, and safety rails 
             that turn prompts into production-ready products.
           </p>
           <div className={styles.heroCtas}>
             <Link href="/pricing" className="btn btn-primary btn-lg">
-              Try Prodvo free
+              Try {APP_NAME} free
             </Link>
             <Link href="#intelligence" className="btn btn-secondary">
               Compare agent intelligence
@@ -168,7 +169,7 @@ export default function CompareBoltPage() {
             </div>
           </div>
           <div className={styles.depthArrow}>
-            <span>Prodvo goes deeper</span>
+            <span>{APP_NAME} goes deeper</span>
           </div>
         </div>
       </section>
@@ -182,7 +183,7 @@ export default function CompareBoltPage() {
             <span className={styles.sectionLabel}>Philosophy</span>
             <h2 className={styles.sectionTitle}>Beyond vibe coding</h2>
             <p className={styles.sectionSub}>
-              Bolt optimizes prompt-to-app speed. Prodvo optimizes idea-to-production 
+              Bolt optimizes prompt-to-app speed. {APP_NAME} optimizes idea-to-production 
               quality with the structure teams need.
             </p>
           </div>
@@ -221,7 +222,7 @@ export default function CompareBoltPage() {
                 <h3 className={styles.intelligenceCapability}>{item.capability}</h3>
                 <div className={styles.intelligenceComparison}>
                   <div className={styles.intelligenceItem}>
-                    <span className={styles.intelligenceBrand}>Prodvo</span>
+                    <span className={styles.intelligenceBrand}>{APP_NAME}</span>
                     <p>{item.prodvo}</p>
                   </div>
                   <div className={styles.intelligenceItem}>
@@ -230,7 +231,7 @@ export default function CompareBoltPage() {
                   </div>
                 </div>
                 {item.prodvoAdvantage && (
-                  <span className={styles.advantageBadge}>Prodvo advantage</span>
+                  <span className={styles.advantageBadge}>{APP_NAME} advantage</span>
                 )}
                 {!item.prodvoAdvantage && (
                   <span className={styles.advantageBadgeBolt}>Bolt advantage</span>
@@ -260,7 +261,7 @@ export default function CompareBoltPage() {
               <thead>
                 <tr>
                   <th>Feature</th>
-                  <th>Prodvo</th>
+                  <th>{APP_NAME}</th>
                   <th>Bolt</th>
                 </tr>
               </thead>
@@ -287,7 +288,7 @@ export default function CompareBoltPage() {
             <span className={styles.sectionLabel}>Pricing</span>
             <h2 className={styles.sectionTitle}>Pricing model comparison</h2>
             <p className={styles.sectionSub}>
-              Bolt uses tokens. Prodvo uses flat tiers. Here's how they compare.
+              Bolt uses tokens. {APP_NAME} uses flat tiers. Here's how they compare.
             </p>
           </div>
 
@@ -296,7 +297,7 @@ export default function CompareBoltPage() {
               <div key={tier.tier} className={styles.pricingRow}>
                 <div className={styles.pricingTier}>{tier.tier}</div>
                 <div className={styles.pricingCard}>
-                  <span className={styles.pricingBrand}>Prodvo</span>
+                  <span className={styles.pricingBrand}>{APP_NAME}</span>
                   <span className={styles.pricingPrice}>{tier.prodvo.price}</span>
                   <span className={styles.pricingAllocation}>{tier.prodvo.allocation}</span>
                   <p className={styles.pricingNotes}>{tier.prodvo.notes}</p>
@@ -322,7 +323,7 @@ export default function CompareBoltPage() {
             <span className={styles.sectionLabel}>Team economics</span>
             <h2 className={styles.sectionTitle}>How pricing scales with team size</h2>
             <p className={styles.sectionSub}>
-              Bolt charges per-member. Prodvo's Scale tier covers your whole team. 
+              Bolt charges per-member. {APP_NAME}&apos;s Scale tier covers your whole team. 
               Here's the math.
             </p>
           </div>
@@ -332,7 +333,7 @@ export default function CompareBoltPage() {
               <thead>
                 <tr>
                   <th>Team size</th>
-                  <th>Prodvo</th>
+                  <th>{APP_NAME}</th>
                   <th>Bolt Teams</th>
                   <th>Better value</th>
                 </tr>
@@ -344,7 +345,7 @@ export default function CompareBoltPage() {
                     <td>{row.prodvoMonthly}/mo</td>
                     <td>{row.boltMonthly}/mo</td>
                     <td>
-                      <span className={row.savings === "Prodvo" ? styles.savingsProdvo : styles.savingsBolt}>
+                      <span className={row.savings === APP_NAME ? styles.savingsProdvo : styles.savingsBolt}>
                         {row.savings}
                       </span>
                     </td>
@@ -355,7 +356,7 @@ export default function CompareBoltPage() {
           </div>
 
           <p className={styles.economicsNote}>
-            At 5+ team members, Prodvo's flat pricing becomes more economical than 
+              At 5+ team members, {APP_NAME}&apos;s flat pricing becomes more economical than
             Bolt's per-member model - and you get planning workflows, checkpoints, 
             and rollback included.
           </p>
@@ -370,7 +371,7 @@ export default function CompareBoltPage() {
           <div className={styles.bottomLine}>
             <h2 className={styles.bottomTitle}>The bottom line</h2>
             <p className={styles.bottomSub}>
-              Bolt excels at rapid prototyping with generous free tokens. Prodvo excels at 
+              Bolt excels at rapid prototyping with generous free tokens. {APP_NAME} excels at 
               turning those prototypes into production-ready products with team workflows.
             </p>
             <div className={styles.bottomGrid}>
@@ -388,7 +389,7 @@ export default function CompareBoltPage() {
               </div>
               <div className={`${styles.bottomCard} ${styles.bottomCardHighlight}`}>
                 <div className={styles.bottomCardHeader}>
-                  <span className={styles.bottomBrand}>Prodvo</span>
+                  <span className={styles.bottomBrand}>{APP_NAME}</span>
                   <span className={styles.bottomTagHighlight}>Best for production</span>
                 </div>
                 <ul className={styles.bottomList}>
@@ -401,7 +402,7 @@ export default function CompareBoltPage() {
               </div>
             </div>
             <p className={styles.bottomVerdict}>
-              Start with Bolt for quick experiments. Switch to Prodvo when 
+              Start with Bolt for quick experiments. Switch to {APP_NAME} when 
               you need to ship reliably with a team.
             </p>
           </div>
@@ -417,7 +418,7 @@ export default function CompareBoltPage() {
             <div className="cta-copy">
               <h2>Ready to go beyond vibe coding?</h2>
               <p>
-                Start your first Prodvo workspace and see why teams choose 
+                Start your first {APP_NAME} workspace and see why teams choose 
                 planning + safety over prompts alone.
               </p>
               <Link className="btn" href="/pricing">

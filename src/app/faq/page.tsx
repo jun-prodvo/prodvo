@@ -1,5 +1,5 @@
 "use client";
-import { APP_DOMAIN } from "@/lib/config";
+import { APP_DOMAIN, APP_NAME } from "@/lib/config";
 
 import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
@@ -47,8 +47,8 @@ export default function FaqPage() {
     // Getting Started
     {
       category: "getting-started",
-      question: "How do I get started with Prodvo?",
-      answer: `Start by creating a free account-no credit card required. Once you're in, create your first workspace and connect your Git repository. From there, describe what you want to build in plain language, and Prodvo will generate a structured plan. Review and approve the plan, then watch agents execute while you maintain oversight at checkpoints.`,
+      question: `How do I get started with ${APP_NAME}?`,
+      answer: `Start by creating a free account-no credit card required. Once you're in, create your first workspace and connect your Git repository. From there, describe what you want to build in plain language, and ${APP_NAME} will generate a structured plan. Review and approve the plan, then watch agents execute while you maintain oversight at checkpoints.`,
     },
     {
       category: "getting-started",
@@ -58,22 +58,22 @@ export default function FaqPage() {
     {
       category: "getting-started",
       question: "Do I need to change my existing workflow?",
-      answer: `No. Prodvo layers on top of your existing Git-based workflow. Your repositories, branches, and CI/CD pipelines stay the same. Prodvo adds visibility, coordination, and checkpoint controls without replacing what works.`,
+      answer: `No. ${APP_NAME} layers on top of your existing Git-based workflow. Your repositories, branches, and CI/CD pipelines stay the same. ${APP_NAME} adds visibility, coordination, and checkpoint controls without replacing what works.`,
     },
     {
       category: "getting-started",
-      question: "What permissions does Prodvo need to access my repository?",
-      answer: `Prodvo requires read/write access to the repositories you want to use. For GitHub, we use GitHub Apps with granular permissions. You can limit access to specific repositories rather than your entire organization.`,
+      question: `What permissions does ${APP_NAME} need to access my repository?`,
+      answer: `${APP_NAME} requires read/write access to the repositories you want to use. For GitHub, we use GitHub Apps with granular permissions. You can limit access to specific repositories rather than your entire organization.`,
     },
     {
       category: "getting-started",
-      question: "Can I use Prodvo with private repositories?",
-      answer: `Absolutely. Prodvo works with both public and private repositories. Your code remains private and secure-we never share or expose your source code to other users or third parties.`,
+      question: `Can I use ${APP_NAME} with private repositories?`,
+      answer: `Absolutely. ${APP_NAME} works with both public and private repositories. Your code remains private and secure-we never share or expose your source code to other users or third parties.`,
     },
     {
       category: "getting-started",
       question: "Is there a learning curve?",
-      answer: `Minimal. If you're familiar with Git and pull requests, you already understand the core concepts. Most users are productive within their first session. We also provide interactive tutorials and documentation to help you get the most out of Prodvo.`,
+      answer: `Minimal. If you're familiar with Git and pull requests, you already understand the core concepts. Most users are productive within their first session. We also provide interactive tutorials and documentation to help you get the most out of ${APP_NAME}.`,
     },
     {
       category: "getting-started",
@@ -100,7 +100,7 @@ export default function FaqPage() {
     {
       category: "features",
       question: "What languages and frameworks are supported?",
-      answer: `Prodvo supports TypeScript, JavaScript, Python, Go, Rust, Ruby, and Java. For frameworks, we work well with React, Next.js, Vue, Svelte, Django, FastAPI, Rails, and most modern web stacks. We're constantly expanding coverage based on user needs.`,
+      answer: `${APP_NAME} supports TypeScript, JavaScript, Python, Go, Rust, Ruby, and Java. For frameworks, we work well with React, Next.js, Vue, Svelte, Django, FastAPI, Rails, and most modern web stacks. We're constantly expanding coverage based on user needs.`,
     },
     {
       category: "features",
@@ -110,16 +110,16 @@ export default function FaqPage() {
     {
       category: "features",
       question: "How does the intent lock prevent conflicts?",
-      answer: `The intent lock ensures only one workflow modifies a given scope at a time. When you start a workflow, Prodvo locks the relevant files and paths. Other workflows can read but not write until the lock is released-preventing merge conflicts and coordination chaos.`,
+      answer: `The intent lock ensures only one workflow modifies a given scope at a time. When you start a workflow, ${APP_NAME} locks the relevant files and paths. Other workflows can read but not write until the lock is released-preventing merge conflicts and coordination chaos.`,
     },
     {
       category: "features",
       question: "Can I run multiple workflows simultaneously?",
-      answer: `Yes, as long as they don't overlap in scope. You can have one agent working on the authentication module while another handles the payment integration. If there's potential overlap, Prodvo warns you before starting and suggests sequencing.`,
+      answer: `Yes, as long as they don't overlap in scope. You can have one agent working on the authentication module while another handles the payment integration. If there's potential overlap, ${APP_NAME} warns you before starting and suggests sequencing.`,
     },
     {
       category: "features",
-      question: "Does Prodvo write tests automatically?",
+      question: `Does ${APP_NAME} write tests automatically?`,
       answer: `Yes. Agents can generate unit tests, integration tests, and end-to-end tests based on your codebase patterns. You can configure test coverage requirements as checkpoint conditions-workflows won't proceed until tests pass.`,
     },
     {
@@ -166,8 +166,8 @@ export default function FaqPage() {
     },
     {
       category: "pricing",
-      question: "Can I get a refund if Prodvo isn't right for me?",
-      answer: `We offer a 30-day money-back guarantee for new customers. If Prodvo doesn't meet your needs within the first 30 days of a paid subscription, contact support for a full refund.`,
+      question: `Can I get a refund if ${APP_NAME} isn't right for me?`,
+      answer: `We offer a 30-day money-back guarantee for new customers. If ${APP_NAME} doesn't meet your needs within the first 30 days of a paid subscription, contact support for a full refund.`,
     },
     {
       category: "pricing",
@@ -179,11 +179,11 @@ export default function FaqPage() {
     {
       category: "security",
       question: "Where is my code stored?",
-      answer: `Your code stays in your Git repository. Prodvo reads from and writes to your repos during execution but doesn't permanently store your source code. Execution logs and checkpoint metadata are stored securely in our SOC 2 compliant infrastructure.`,
+      answer: `Your code stays in your Git repository. ${APP_NAME} reads from and writes to your repos during execution but doesn't permanently store your source code. Execution logs and checkpoint metadata are stored securely in our SOC 2 compliant infrastructure.`,
     },
     {
       category: "security",
-      question: "Is Prodvo SOC 2 compliant?",
+      question: `Is ${APP_NAME} SOC 2 compliant?`,
       answer: `Yes. We maintain SOC 2 Type II certification. Enterprise customers on the Scale plan also get access to detailed audit logs, SAML SSO, and can request our full security documentation.`,
     },
     {
@@ -203,7 +203,7 @@ export default function FaqPage() {
     },
     {
       category: "security",
-      question: "Can I use Prodvo in a regulated industry (healthcare, finance)?",
+      question: `Can I use ${APP_NAME} in a regulated industry (healthcare, finance)?`,
       answer: `Yes. Our Scale plan includes features required for regulated industries: audit logs, access controls, data residency options, and BAA agreements for HIPAA compliance. Contact our enterprise team for specific compliance requirements.`,
     },
     {
@@ -220,12 +220,12 @@ export default function FaqPage() {
     // Technical
     {
       category: "technical",
-      question: "How does Prodvo integrate with my CI/CD pipeline?",
-      answer: `Prodvo works alongside your existing CI/CD. When agents complete work and you approve at a checkpoint, the changes are committed to your branch and trigger your normal CI pipeline. We don't replace your pipeline-we orchestrate what feeds into it.`,
+      question: `How does ${APP_NAME} integrate with my CI/CD pipeline?`,
+      answer: `${APP_NAME} works alongside your existing CI/CD. When agents complete work and you approve at a checkpoint, the changes are committed to your branch and trigger your normal CI pipeline. We don't replace your pipeline-we orchestrate what feeds into it.`,
     },
     {
       category: "technical",
-      question: "Can I self-host Prodvo?",
+      question: `Can I self-host ${APP_NAME}?`,
       answer: `Enterprise customers on Scale plans can discuss self-hosted deployment options. Most teams use our cloud-hosted version, which offers the best balance of performance, security, and maintenance simplicity.`,
     },
     {
@@ -241,12 +241,12 @@ export default function FaqPage() {
     {
       category: "technical",
       question: "Can I trigger workflows from GitHub Actions or other CI tools?",
-      answer: `Yes. We provide GitHub Actions, GitLab CI templates, and webhook endpoints for triggering Prodvo workflows from your existing automation. This enables patterns like "run Prodvo on every PR" or "auto-fix failing tests."`,
+      answer: `Yes. We provide GitHub Actions, GitLab CI templates, and webhook endpoints for triggering ${APP_NAME} workflows from your existing automation. This enables patterns like "run ${APP_NAME} on every PR" or "auto-fix failing tests."`,
     },
     {
       category: "technical",
-      question: "How does Prodvo handle merge conflicts?",
-      answer: `The intent lock system prevents most conflicts by serializing overlapping changes. When conflicts do occur (e.g., external commits), Prodvo detects them early and pauses for human resolution rather than attempting automatic merges that might lose work.`,
+      question: `How does ${APP_NAME} handle merge conflicts?`,
+      answer: `The intent lock system prevents most conflicts by serializing overlapping changes. When conflicts do occur (e.g., external commits), ${APP_NAME} detects them early and pauses for human resolution rather than attempting automatic merges that might lose work.`,
     },
     {
       category: "technical",
@@ -255,13 +255,13 @@ export default function FaqPage() {
     },
     {
       category: "technical",
-      question: "Does Prodvo support monorepos?",
-      answer: `Yes. Prodvo handles monorepos well, including proper scoping of intent locks to specific packages or directories. We support common monorepo tools like Nx, Turborepo, and Lerna out of the box.`,
+      question: `Does ${APP_NAME} support monorepos?`,
+      answer: `Yes. ${APP_NAME} handles monorepos well, including proper scoping of intent locks to specific packages or directories. We support common monorepo tools like Nx, Turborepo, and Lerna out of the box.`,
     },
     {
       category: "technical",
-      question: "Can I use Prodvo with GitLab or Bitbucket?",
-      answer: `Yes. While GitHub has the deepest integration, we also support GitLab and Bitbucket. Connect your repositories through OAuth, and Prodvo handles the rest. Feature parity is maintained across all supported platforms.`,
+      question: `Can I use ${APP_NAME} with GitLab or Bitbucket?`,
+      answer: `Yes. While GitHub has the deepest integration, we also support GitLab and Bitbucket. Connect your repositories through OAuth, and ${APP_NAME} handles the rest. Feature parity is maintained across all supported platforms.`,
     },
     {
       category: "technical",
@@ -292,7 +292,7 @@ export default function FaqPage() {
             <em>We&apos;ve got answers.</em>
           </h1>
           <p className={styles.heroSubtitle}>
-            Everything you need to know about Prodvo, from getting started 
+            Everything you need to know about {APP_NAME}, from getting started 
             to enterprise security. Can&apos;t find what you&apos;re looking for? Reach out.
           </p>
           
@@ -416,7 +416,7 @@ export default function FaqPage() {
         <div className="container">
           <div className="cta-banner">
             <div className="cta-copy">
-              <h2>Ready to try Prodvo?</h2>
+              <h2>Ready to try {APP_NAME}?</h2>
               <p>
                 Start your free trial and see the answers in action.
               </p>

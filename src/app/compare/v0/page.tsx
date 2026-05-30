@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { APP_NAME } from "@/lib/config";
 import { SiteShell } from "@/components/site-shell";
 import styles from "./v0.module.css";
 
@@ -67,31 +68,31 @@ const STRENGTH_AREAS = [
   },
   {
     area: "Planning & structure",
-    winner: "Prodvo",
+    winner: APP_NAME,
     v0: "Jump straight to prompting",
     prodvo: "Task plans with dependencies, effort estimates, team coordination",
-    detail: "Prodvo prevents false starts with upfront structure",
+    detail: `${APP_NAME} prevents false starts with upfront structure`,
   },
   {
     area: "Execution speed",
-    winner: "Prodvo",
+    winner: APP_NAME,
     v0: "Sequential chat-based generation",
     prodvo: "Parallel agents - 3.1× faster than sequential",
-    detail: "Prodvo runs frontend, backend, QA simultaneously",
+    detail: `${APP_NAME} runs frontend, backend, QA simultaneously`,
   },
   {
     area: "Safety & rollback",
-    winner: "Prodvo",
+    winner: APP_NAME,
     v0: "Git history only - no built-in rollback UI",
     prodvo: "Checkpoint snapshots with one-click rollback",
-    detail: "Prodvo lets you undo bad deploys instantly",
+    detail: `${APP_NAME} lets you undo bad deploys instantly`,
   },
   {
     area: "Deployment flexibility",
-    winner: "Prodvo",
+    winner: APP_NAME,
     v0: "Vercel-only deployment",
     prodvo: "Deploy anywhere with rollback-ready states",
-    detail: "Prodvo doesn't lock you into one platform",
+    detail: `${APP_NAME} doesn't lock you into one platform`,
   },
   {
     area: "Mobile building",
@@ -106,9 +107,9 @@ const TEAM_SCALING = [
   { size: "Solo", prodvo: 99, v0: 30, note: "v0 is 3× cheaper for individuals" },
   { size: "3 users", prodvo: 249, v0: 90, note: "v0 still 2.7× cheaper" },
   { size: "5 users", prodvo: 249, v0: 150, note: "Gap narrows to 1.6×" },
-  { size: "8 users", prodvo: 249, v0: 240, note: "Nearly equal - Prodvo adds safety" },
-  { size: "10 users", prodvo: 249, v0: 300, note: "Prodvo wins by $51/mo" },
-  { size: "20 users", prodvo: 249, v0: 600, note: "Prodvo saves $351/mo" },
+  { size: "8 users", prodvo: 249, v0: 240, note: `Nearly equal - ${APP_NAME} adds safety` },
+  { size: "10 users", prodvo: 249, v0: 300, note: `${APP_NAME} wins by $51/mo` },
+  { size: "20 users", prodvo: 249, v0: 600, note: `${APP_NAME} saves $351/mo` },
 ];
 
 const SCENARIOS = [
@@ -147,15 +148,15 @@ export default function CompareV0Page() {
       <section className={styles.hero}>
         <div className={styles.heroInner}>
           <span className={styles.badge}>Comparison</span>
-          <h1 className={styles.heroTitle}>Prodvo vs v0</h1>
+          <h1 className={styles.heroTitle}>{APP_NAME} vs v0</h1>
           <p className={styles.heroSub}>
-            v0 turns Figma into code in seconds. Prodvo turns ideas into 
+            v0 turns Figma into code in seconds. {APP_NAME} turns ideas into 
             production-ready products with planning, parallel execution, and 
             rollback safety. Different tools for different stages.
           </p>
           <div className={styles.heroCtas}>
             <Link href="/pricing" className="btn btn-primary btn-lg">
-              Try Prodvo free
+              Try {APP_NAME} free
             </Link>
             <Link href="#workflow" className="btn btn-secondary">
               See the difference
@@ -183,7 +184,7 @@ export default function CompareV0Page() {
           </div>
           <div className={`${styles.pathCard} ${styles.pathCardHighlight}`}>
             <div className={styles.pathHeader}>
-              <span className={styles.pathLabel}>Prodvo path</span>
+              <span className={styles.pathLabel}>{APP_NAME} path</span>
             </div>
             <div className={styles.pathSteps}>
               <span className={styles.pathStep}>Plan</span>
@@ -208,7 +209,7 @@ export default function CompareV0Page() {
             <span className={styles.label}>Workflow</span>
             <h2 className={styles.sectionTitle}>Different strengths at each phase</h2>
             <p className={styles.sectionSub}>
-              v0 excels at the design-to-code transition. Prodvo excels at 
+              v0 excels at the design-to-code transition. {APP_NAME} excels at 
               the planning-to-production journey.
             </p>
           </div>
@@ -230,10 +231,10 @@ export default function CompareV0Page() {
                       {item.v0Leads && <span className={styles.leadsBadge}>v0 leads</span>}
                     </div>
                     <div className={`${styles.workflowBox} ${!item.v0Leads ? styles.leads : ""}`}>
-                      <span className={styles.workflowBrand}>Prodvo</span>
+                      <span className={styles.workflowBrand}>{APP_NAME}</span>
                       <strong>{item.prodvo.headline}</strong>
                       <p>{item.prodvo.detail}</p>
-                      {!item.v0Leads && <span className={styles.leadsBadgeProdvo}>Prodvo leads</span>}
+                      {!item.v0Leads && <span className={styles.leadsBadgeProdvo}>{APP_NAME} leads</span>}
                     </div>
                   </div>
                 </div>
@@ -252,7 +253,7 @@ export default function CompareV0Page() {
             <span className={styles.label}>Capabilities</span>
             <h2 className={styles.sectionTitle}>Where each platform excels</h2>
             <p className={styles.sectionSub}>
-              An honest breakdown - v0 wins on design tooling, Prodvo wins on 
+              An honest breakdown - v0 wins on design tooling, {APP_NAME} wins on 
               workflow and safety.
             </p>
           </div>
@@ -261,11 +262,11 @@ export default function CompareV0Page() {
             {STRENGTH_AREAS.map((item) => (
               <div
                 key={item.area}
-                className={`${styles.strengthCard} ${item.winner === "Prodvo" ? styles.prodvoWins : styles.v0Wins}`}
+                className={`${styles.strengthCard} ${item.winner === APP_NAME ? styles.prodvoWins : styles.v0Wins}`}
               >
                 <div className={styles.strengthHeader}>
                   <h3>{item.area}</h3>
-                  <span className={item.winner === "Prodvo" ? styles.winnerTagProdvo : styles.winnerTagV0}>
+                  <span className={item.winner === APP_NAME ? styles.winnerTagProdvo : styles.winnerTagV0}>
                     {item.winner}
                   </span>
                 </div>
@@ -275,7 +276,7 @@ export default function CompareV0Page() {
                     <span>{item.v0}</span>
                   </div>
                   <div className={styles.strengthRow}>
-                    <span className={styles.strengthLabel}>Prodvo</span>
+                    <span className={styles.strengthLabel}>{APP_NAME}</span>
                     <span>{item.prodvo}</span>
                   </div>
                 </div>
@@ -303,7 +304,7 @@ export default function CompareV0Page() {
             {SCENARIOS.map((item) => (
               <div 
                 key={item.scenario} 
-                className={`${styles.scenarioCard} ${item.winner === "Prodvo" ? styles.scenarioProdvo : styles.scenarioV0}`}
+                className={`${styles.scenarioCard} ${item.winner === APP_NAME ? styles.scenarioProdvo : styles.scenarioV0}`}
               >
                 <h3 className={styles.scenarioTitle}>{item.scenario}</h3>
                 <div className={styles.scenarioTimes}>
@@ -312,12 +313,12 @@ export default function CompareV0Page() {
                     <span className={styles.timeValue}>{item.time.v0}</span>
                   </div>
                   <div className={styles.scenarioTime}>
-                    <span className={styles.timeLabel}>Prodvo</span>
+                    <span className={styles.timeLabel}>{APP_NAME}</span>
                     <span className={styles.timeValue}>{item.time.prodvo}</span>
                   </div>
                 </div>
                 <div className={styles.scenarioWinner}>
-                  <span className={item.winner === "Prodvo" ? styles.winnerProdvo : styles.winnerV0}>
+                  <span className={item.winner === APP_NAME ? styles.winnerProdvo : styles.winnerV0}>
                     {item.winner} wins
                   </span>
                 </div>
@@ -337,7 +338,7 @@ export default function CompareV0Page() {
             <span className={styles.label}>Team economics</span>
             <h2 className={styles.sectionTitle}>How pricing scales</h2>
             <p className={styles.sectionSub}>
-              v0 charges $30/user/month. Prodvo's Scale tier is $249/month flat. 
+              v0 charges $30/user/month. {APP_NAME}&apos;s Scale tier is $249/month flat. 
               The math crosses over at 8 users.
             </p>
           </div>
@@ -347,19 +348,19 @@ export default function CompareV0Page() {
               const maxCost = 600;
               const prodvoWidth = (row.prodvo / maxCost) * 100;
               const v0Width = (row.v0 / maxCost) * 100;
-              const winner = row.prodvo < row.v0 ? "Prodvo" : row.v0 < row.prodvo ? "v0" : "tie";
+              const winner = row.prodvo < row.v0 ? APP_NAME : row.v0 < row.prodvo ? "v0" : "tie";
               return (
                 <div key={row.size} className={styles.scalingRow}>
                   <div className={styles.scalingSize}>{row.size}</div>
                   <div className={styles.scalingBars}>
                     <div className={styles.barGroup}>
                       <div 
-                        className={`${styles.bar} ${styles.barProdvo} ${winner === "Prodvo" ? styles.barWinner : ""}`}
+                        className={`${styles.bar} ${styles.barProdvo} ${winner === APP_NAME ? styles.barWinner : ""}`}
                         style={{ width: `${prodvoWidth}%` }}
                       >
                         <span>${row.prodvo}</span>
                       </div>
-                      <span className={styles.barLabel}>Prodvo</span>
+                      <span className={styles.barLabel}>{APP_NAME}</span>
                     </div>
                     <div className={styles.barGroup}>
                       <div 
@@ -379,7 +380,7 @@ export default function CompareV0Page() {
 
           <p className={styles.scalingInsight}>
             For solo work and small teams, v0 is more economical. At 8+ users, 
-            Prodvo's flat pricing wins - and you get planning workflows, 
+            {APP_NAME}&apos;s flat pricing wins - and you get planning workflows, 
             checkpoints, and rollback included.
           </p>
         </div>
@@ -393,8 +394,8 @@ export default function CompareV0Page() {
           <div className={styles.bottomLine}>
             <h2 className={styles.bottomTitle}>The bottom line</h2>
             <p className={styles.bottomBody}>
-              v0 and Prodvo are complementary tools. Many teams use v0 for rapid 
-              prototypes and design exploration, then switch to Prodvo when they 
+              v0 and {APP_NAME} are complementary tools. Many teams use v0 for rapid
+              prototypes and design exploration, then switch to {APP_NAME} when they
               need team coordination, safety rails, and production confidence.
             </p>
             <div className={styles.bottomGrid}>
@@ -409,7 +410,7 @@ export default function CompareV0Page() {
                 </ul>
               </div>
               <div className={`${styles.bottomCard} ${styles.bottomCardHighlight}`}>
-                <h3>Choose Prodvo if...</h3>
+                <h3>Choose {APP_NAME} if...</h3>
                 <ul>
                   <li>You need planning before coding starts</li>
                   <li>You want 3.1× faster parallel execution</li>
@@ -446,7 +447,7 @@ export default function CompareV0Page() {
             <div className="cta-copy">
               <h2>Ready for production-grade workflows?</h2>
               <p>
-                Start your first Prodvo workspace and see why teams choose 
+                Start your first {APP_NAME} workspace and see why teams choose 
                 planning + safety over prompts alone.
               </p>
               <Link className="btn" href="/pricing">
