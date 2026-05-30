@@ -1,5 +1,5 @@
 import { SiteShell } from "@/components/site-shell";
-import { APP_DOMAIN } from "@/lib/config";
+import { APP_DOMAIN, APP_NAME } from "@/lib/config";
 import { LegalLinks } from "@/components/legal-links";
 import styles from "../legal.module.css";
 
@@ -12,7 +12,7 @@ export default function CommercialAgreementPage() {
           <h1 className={styles.heroTitle}>Commercial Agreement</h1>
           <p className={styles.heroSub}>
             This Commercial Agreement describes subscription purchase, service levels, and
-            commercial terms for customers buying Prodvo plans.
+            commercial terms for customers buying {APP_NAME} plans.
           </p>
           <p className={styles.effectiveDate}>
             <strong>Effective date:</strong> April 2, 2026
@@ -69,7 +69,7 @@ export default function CommercialAgreementPage() {
             <h2 className={styles.sectionTitle}>Contract Structure</h2>
             <div className={styles.sectionContent}>
               <p>
-                This Commercial Agreement governs paid use of Prodvo by customer organizations.
+                This Commercial Agreement governs paid use of {APP_NAME} by customer organizations.
                 It incorporates the Terms of Service and related legal policies unless explicitly
                 overridden by signed order forms or addenda.
               </p>
@@ -86,7 +86,7 @@ export default function CommercialAgreementPage() {
             <div className={styles.sectionContent}>
               <p>
                 Customer purchases a non-exclusive, non-transferable right for authorized users to
-                access Prodvo features included in the selected plan tier and order form.
+                access {APP_NAME} features included in the selected plan tier and order form.
               </p>
               <ul>
                 <li>Plan limits and feature entitlements follow the purchased package.</li>
@@ -171,7 +171,7 @@ export default function CommercialAgreementPage() {
             <h2 className={styles.sectionTitle}>Security and Compliance</h2>
             <div className={styles.sectionContent}>
               <p>
-                Prodvo maintains security controls represented in customer-facing documentation,
+                {APP_NAME} maintains security controls represented in customer-facing documentation,
                 including encryption safeguards and auditable workflow metadata protections.
               </p>
               <p>
@@ -205,7 +205,7 @@ export default function CommercialAgreementPage() {
             <h2 className={styles.sectionTitle}>Suspension and Remedies</h2>
             <div className={styles.sectionContent}>
               <p>
-                Prodvo may suspend access for non-payment, material breach, or credible security
+                {APP_NAME} may suspend access for non-payment, material breach, or credible security
                 threat. Where feasible, we provide prior notice and a remediation period.
               </p>
               <p>

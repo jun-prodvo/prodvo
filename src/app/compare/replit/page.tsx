@@ -77,7 +77,7 @@ const MVP_SCENARIOS = [
     scenario: "Solo founder building MVP",
     prodvo: "2 days",
     replit: "1–2 weeks",
-    notes: "Prodvo's planning + parallel execution compresses timeline",
+    notes: `${APP_NAME}'s planning + parallel execution compresses timeline`,
   },
   {
     scenario: "Agency delivering client feature",

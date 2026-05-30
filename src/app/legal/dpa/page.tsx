@@ -1,5 +1,5 @@
 import { SiteShell } from "@/components/site-shell";
-import { APP_DOMAIN } from "@/lib/config";
+import { APP_DOMAIN, APP_NAME } from "@/lib/config";
 import { LegalLinks } from "@/components/legal-links";
 import styles from "../legal.module.css";
 
@@ -11,7 +11,7 @@ export default function DpaPage() {
           <span className={styles.badge}>Legal</span>
           <h1 className={styles.heroTitle}>Data Processing Agreement (DPA)</h1>
           <p className={styles.heroSub}>
-            This DPA governs processing of personal data by Prodvo when acting as processor on
+            This DPA governs processing of personal data by {APP_NAME} when acting as processor on
             behalf of customers using the platform.
           </p>
           <p className={styles.effectiveDate}>
@@ -69,7 +69,7 @@ export default function DpaPage() {
             <h2 className={styles.sectionTitle}>Roles and Scope</h2>
             <div className={styles.sectionContent}>
               <p>
-                Customer is the controller (or business) and Prodvo is the processor (or service
+                Customer is the controller (or business) and {APP_NAME} is the processor (or service
                 provider) for personal data submitted to the platform under the main service
                 agreement.
               </p>
@@ -85,12 +85,12 @@ export default function DpaPage() {
             <h2 className={styles.sectionTitle}>Processing Instructions</h2>
             <div className={styles.sectionContent}>
               <p>
-                Prodvo processes personal data only on documented instructions from customer,
+                {APP_NAME} processes personal data only on documented instructions from customer,
                 including instructions communicated through product configuration, API requests, and
                 support tickets.
               </p>
               <p>
-                If Prodvo believes an instruction violates applicable data protection law, Prodvo
+                If {APP_NAME} believes an instruction violates applicable data protection law, {APP_NAME}
                 will notify customer unless prohibited by law.
               </p>
             </div>
@@ -101,7 +101,7 @@ export default function DpaPage() {
             <h2 className={styles.sectionTitle}>Security Measures</h2>
             <div className={styles.sectionContent}>
               <p>
-                Prodvo implements technical and organizational safeguards appropriate to risk,
+                {APP_NAME} implements technical and organizational safeguards appropriate to risk,
                 including access controls, encryption safeguards, environment segregation, and
                 incident response procedures.
               </p>
@@ -116,12 +116,12 @@ export default function DpaPage() {
             <h2 className={styles.sectionTitle}>Subprocessors</h2>
             <div className={styles.sectionContent}>
               <p>
-                Customer authorizes Prodvo to use subprocessors for infrastructure, support, and
+                Customer authorizes {APP_NAME} to use subprocessors for infrastructure, support, and
                 operational delivery, subject to written agreements imposing data protection
                 obligations materially equivalent to this DPA.
               </p>
               <p>
-                Prodvo remains responsible for subprocessors&apos; performance of data protection
+                {APP_NAME} remains responsible for subprocessors&apos; performance of data protection
                 obligations.
               </p>
             </div>
@@ -133,7 +133,7 @@ export default function DpaPage() {
             <div className={styles.sectionContent}>
               <p>
                 Customer is responsible for determining a lawful basis for processing and for
-                ensuring that instructions provided to Prodvo are lawful, documented, and aligned
+                ensuring that instructions provided to {APP_NAME} are lawful, documented, and aligned
                 with applicable data protection law.
               </p>
               <ul>
@@ -156,7 +156,7 @@ export default function DpaPage() {
             <h2 className={styles.sectionTitle}>International Transfers</h2>
             <div className={styles.sectionContent}>
               <p>
-                Where personal data is transferred internationally, Prodvo will use recognized legal
+                Where personal data is transferred internationally, {APP_NAME} will use recognized legal
                 transfer mechanisms required by applicable law.
               </p>
             </div>
@@ -167,7 +167,7 @@ export default function DpaPage() {
             <h2 className={styles.sectionTitle}>Data Subject Assistance</h2>
             <div className={styles.sectionContent}>
               <p>
-                Taking into account the nature of processing, Prodvo will provide reasonable
+                Taking into account the nature of processing, {APP_NAME} will provide reasonable
                 assistance to customer for handling data subject rights requests and regulatory
                 obligations.
               </p>
@@ -186,7 +186,7 @@ export default function DpaPage() {
             <h2 className={styles.sectionTitle}>Security Incident Notice</h2>
             <div className={styles.sectionContent}>
               <p>
-                Prodvo will notify customer without undue delay after confirming a security incident
+                {APP_NAME} will notify customer without undue delay after confirming a security incident
                 affecting customer personal data and provide available details necessary for
                 customer legal compliance.
               </p>
@@ -202,7 +202,7 @@ export default function DpaPage() {
             <h2 className={styles.sectionTitle}>Return and Deletion</h2>
             <div className={styles.sectionContent}>
               <p>
-                Upon termination of services, Prodvo will return or delete customer personal data
+                Upon termination of services, {APP_NAME} will return or delete customer personal data
                 according to contractual terms and lawful retention obligations.
               </p>
               <p>
@@ -217,7 +217,7 @@ export default function DpaPage() {
             <h2 className={styles.sectionTitle}>Audit and Information Rights</h2>
             <div className={styles.sectionContent}>
               <p>
-                Prodvo will make available information reasonably necessary to demonstrate
+                {APP_NAME} will make available information reasonably necessary to demonstrate
                 compliance with this DPA, including security documentation appropriate to the
                 customer plan and legal requirements.
               </p>
@@ -233,11 +233,11 @@ export default function DpaPage() {
             <h2 className={styles.sectionTitle}>Records and Cooperation</h2>
             <div className={styles.sectionContent}>
               <p>
-                Prodvo maintains processor records required by applicable law and cooperates with
+                {APP_NAME} maintains processor records required by applicable law and cooperates with
                 supervisory authority inquiries to the extent legally required.
               </p>
               <p>
-                Customer and Prodvo will coordinate in good faith where regulatory communications,
+                Customer and {APP_NAME} will coordinate in good faith where regulatory communications,
                 complaints, or investigations involve customer personal data processed under this DPA.
               </p>
             </div>

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { APP_DOMAIN } from "@/lib/config";
+import { APP_DOMAIN, APP_NAME } from "@/lib/config";
 import { SiteShell } from "@/components/site-shell";
 import { LegalLinks } from "@/components/legal-links";
 import styles from "../legal.module.css";
@@ -12,7 +12,7 @@ export default function TermsPage() {
           <span className={styles.badge}>Legal</span>
           <h1 className={styles.heroTitle}>Terms of Service</h1>
           <p className={styles.heroSub}>
-            These Terms govern access to and use of the Prodvo platform, including workspaces,
+            These Terms govern access to and use of the {APP_NAME} platform, including workspaces,
             AI agent workflows, hosted services, and related support.
           </p>
           <p className={styles.effectiveDate}>
@@ -76,8 +76,8 @@ export default function TermsPage() {
             <h2 className={styles.sectionTitle}>Agreement and Acceptance</h2>
             <div className={styles.sectionContent}>
               <p>
-                By accessing or using Prodvo, you agree to these Terms of Service and the{" "}
-                <Link href="/legal/privacy">Privacy Policy</Link>. If you use Prodvo on behalf of an
+                By accessing or using {APP_NAME}, you agree to these Terms of Service and the{" "}
+                <Link href="/legal/privacy">Privacy Policy</Link>. If you use {APP_NAME} on behalf of an
                 organization, you confirm you have authority to bind that organization.
               </p>
               <p>
@@ -92,13 +92,13 @@ export default function TermsPage() {
             <h2 className={styles.sectionTitle}>Eligibility and Authority</h2>
             <div className={styles.sectionContent}>
               <p>
-                You must be legally capable of entering into a binding agreement to use Prodvo.
+                You must be legally capable of entering into a binding agreement to use {APP_NAME}.
                 If you accept these Terms for a company or organization, you represent that you
                 have authority to bind that entity.
               </p>
               <ul>
                 <li>
-                  You may not use Prodvo if access is prohibited under applicable trade, sanctions,
+                  You may not use {APP_NAME} if access is prohibited under applicable trade, sanctions,
                   or export laws.
                 </li>
                 <li>
@@ -113,7 +113,7 @@ export default function TermsPage() {
             <span className={styles.sectionNumber}>Section 3</span>
             <h2 className={styles.sectionTitle}>Accounts and Workspace Security</h2>
             <div className={styles.sectionContent}>
-              <p>To use Prodvo, you must create an account and keep information accurate.</p>
+              <p>To use {APP_NAME}, you must create an account and keep information accurate.</p>
               <ul>
                 <li>You are responsible for account credentials and all activity under your account.</li>
                 <li>You must promptly notify us of unauthorized access or security incidents.</li>
@@ -132,7 +132,7 @@ export default function TermsPage() {
             <h2 className={styles.sectionTitle}>Service Use and Prohibited Conduct</h2>
             <div className={styles.sectionContent}>
               <p>
-                Prodvo provides an AI coding workspace including planning, parallel agent
+                {APP_NAME} provides an AI coding workspace including planning, parallel agent
                 execution, checkpoints, rollback tooling, and deployment workflows.
               </p>
               <p>You may not use the Service to:</p>
@@ -188,13 +188,13 @@ export default function TermsPage() {
             <h2 className={styles.sectionTitle}>Customer Content, IP, and Feedback</h2>
             <div className={styles.sectionContent}>
               <p>
-                You retain ownership of your project content. Prodvo receives limited rights needed
+                You retain ownership of your project content. {APP_NAME} receives limited rights needed
                 to host, process, and operate the Service on your instructions.
               </p>
               <ul>
                 <li>Your code remains in your Git repository based on configured integrations.</li>
                 <li>
-                  Prodvo may process execution logs and checkpoint metadata to deliver the platform.
+                  {APP_NAME} may process execution logs and checkpoint metadata to deliver the platform.
                 </li>
                 <li>
                   As represented in product materials, project content is not used to train our
@@ -206,8 +206,8 @@ export default function TermsPage() {
                 compliance of all output you distribute.
               </p>
               <p>
-                Prodvo retains all rights in the platform, documentation, and service marks. If you
-                provide feedback or suggestions, you grant Prodvo a right to use that feedback for
+                {APP_NAME} retains all rights in the platform, documentation, and service marks. If you
+                provide feedback or suggestions, you grant {APP_NAME} a right to use that feedback for
                 service improvement without additional compensation.
               </p>
             </div>
@@ -218,12 +218,12 @@ export default function TermsPage() {
             <h2 className={styles.sectionTitle}>Integrations and Third Party Services</h2>
             <div className={styles.sectionContent}>
               <p>
-                Prodvo supports integrations with third party services selected by you or your
+                {APP_NAME} supports integrations with third party services selected by you or your
                 organization. Your use of third party products is governed by their own terms and
                 policies.
               </p>
               <ul>
-                <li>Prodvo is not responsible for third party service availability or changes.</li>
+                <li>{APP_NAME} is not responsible for third party service availability or changes.</li>
                 <li>
                   You are responsible for validating that integration scopes and credentials are
                   appropriate for your use case.
@@ -258,7 +258,7 @@ export default function TermsPage() {
             <h2 className={styles.sectionTitle}>Availability, Changes, and Beta Features</h2>
             <div className={styles.sectionContent}>
               <p>
-                We continually improve Prodvo and may modify features, APIs, integrations, limits,
+                We continually improve {APP_NAME} and may modify features, APIs, integrations, limits,
                 and plan packaging. We may also perform maintenance that temporarily impacts
                 availability.
               </p>
@@ -267,7 +267,7 @@ export default function TermsPage() {
                 terms are governed by your applicable order form or commercial agreement.
               </p>
               <p>
-                From time to time, Prodvo may provide preview or beta features. Beta features may be
+                From time to time, {APP_NAME} may provide preview or beta features. Beta features may be
                 changed, limited, or removed and may be subject to additional conditions.
               </p>
             </div>
@@ -298,7 +298,7 @@ export default function TermsPage() {
             <h2 className={styles.sectionTitle}>Warranties and Disclaimers</h2>
             <div className={styles.sectionContent}>
               <p>
-                Prodvo is provided on an &quot;as is&quot; and &quot;as available&quot; basis to the extent
+                {APP_NAME} is provided on an &quot;as is&quot; and &quot;as available&quot; basis to the extent
                 permitted by law. We do not guarantee uninterrupted operation, error-free output, or
                 fitness for a particular purpose except where explicitly agreed in writing.
               </p>
@@ -314,7 +314,7 @@ export default function TermsPage() {
             <h2 className={styles.sectionTitle}>Liability Limits</h2>
             <div className={styles.sectionContent}>
               <p>
-                To the maximum extent permitted by law, Prodvo is not liable for indirect,
+                To the maximum extent permitted by law, {APP_NAME} is not liable for indirect,
                 incidental, special, consequential, or punitive damages, including lost profits,
                 revenue, goodwill, or data.
               </p>
@@ -331,7 +331,7 @@ export default function TermsPage() {
             <h2 className={styles.sectionTitle}>Indemnification</h2>
             <div className={styles.sectionContent}>
               <p>
-                To the extent permitted by law, you agree to defend and indemnify Prodvo against
+                To the extent permitted by law, you agree to defend and indemnify {APP_NAME} against
                 third party claims resulting from your unlawful use of the Service, violation of
                 these Terms, or infringement of third party rights through customer-provided content.
               </p>

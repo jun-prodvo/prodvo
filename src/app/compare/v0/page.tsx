@@ -122,19 +122,19 @@ const SCENARIOS = [
   {
     scenario: "Full-stack MVP",
     time: { v0: "2–3 days", prodvo: "1 day" },
-    winner: "Prodvo",
+    winner: APP_NAME,
     why: "Parallel execution + planning prevents rework",
   },
   {
     scenario: "Team feature sprint",
     time: { v0: "1 week", prodvo: "2–3 days" },
-    winner: "Prodvo",
+    winner: APP_NAME,
     why: "Coordination timeline keeps PM, eng, QA aligned",
   },
   {
     scenario: "Emergency hotfix",
     time: { v0: "Risky", prodvo: "Safe" },
-    winner: "Prodvo",
+    winner: APP_NAME,
     why: "Checkpoint rollback if the fix breaks something else",
   },
 ];

@@ -1,5 +1,5 @@
 import { SiteShell } from "@/components/site-shell";
-import { APP_DOMAIN } from "@/lib/config";
+import { APP_DOMAIN, APP_NAME } from "@/lib/config";
 import { LegalLinks } from "@/components/legal-links";
 import styles from "../legal.module.css";
 
@@ -12,7 +12,7 @@ export default function ReportAbusePage() {
           <h1 className={styles.heroTitle}>Report Abuse</h1>
           <p className={styles.heroSub}>
             Use this page to report suspected abuse, security issues, policy violations, or misuse
-            of the Prodvo platform.
+            of the {APP_NAME} platform.
           </p>
           <p className={styles.effectiveDate}>
             <strong>Response target:</strong> Initial review within 24 hours for critical reports
@@ -52,7 +52,7 @@ export default function ReportAbusePage() {
             <div className={styles.sectionContent}>
               <p>
                 You may use this process to report content or behavior that appears unlawful,
-                harmful, abusive, or in breach of Prodvo policies.
+                harmful, abusive, or in breach of {APP_NAME} policies.
               </p>
               <ul>
                 <li>Security vulnerabilities, account compromise, or unauthorized access attempts.</li>
@@ -211,7 +211,7 @@ export default function ReportAbusePage() {
             <div className={styles.sectionContent}>
               <p>
                 Submitting intentionally false, malicious, or misleading reports may itself be
-                treated as abuse under Prodvo policies.
+                treated as abuse under {APP_NAME} policies.
               </p>
               <div className={`${styles.callout} ${styles.calloutImportant}`}>
                 <p>

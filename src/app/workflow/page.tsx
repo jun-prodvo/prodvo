@@ -705,7 +705,7 @@ export default function WorkflowPage() {
                     <span className={styles.composerDot} />
                     <span className={styles.composerDot} />
                     <span className={styles.composerDot} />
-                    <span className={styles.composerFile}>prodvo · new project</span>
+                    <span className={styles.composerFile}>{APP_NAME.toLowerCase()} · new project</span>
                   </div>
 
                   <div className={styles.composerBody}>

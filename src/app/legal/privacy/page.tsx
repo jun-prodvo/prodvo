@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { APP_DOMAIN } from "@/lib/config";
+import { APP_DOMAIN, APP_NAME } from "@/lib/config";
 import { SiteShell } from "@/components/site-shell";
 import { LegalLinks } from "@/components/legal-links";
 import styles from "../legal.module.css";
@@ -12,7 +12,7 @@ export default function PrivacyPage() {
           <span className={styles.badge}>Legal</span>
           <h1 className={styles.heroTitle}>Privacy Policy</h1>
           <p className={styles.heroSub}>
-            This Privacy Policy explains what data Prodvo processes, how and why it is
+            This Privacy Policy explains what data {APP_NAME} processes, how and why it is
             processed, and what rights users and customers have over their personal data.
           </p>
           <p className={styles.effectiveDate}>
@@ -82,7 +82,7 @@ export default function PrivacyPage() {
             <h2 className={styles.sectionTitle}>Scope and Relationship to Other Terms</h2>
             <div className={styles.sectionContent}>
               <p>
-                This policy applies to personal data processed by Prodvo across the public website,
+                This policy applies to personal data processed by {APP_NAME} across the public website,
                 legal pages, product experiences, APIs, customer support, and related operational
                 workflows.
               </p>
@@ -104,7 +104,7 @@ export default function PrivacyPage() {
             <h2 className={styles.sectionTitle}>Controller and Contact Details</h2>
             <div className={styles.sectionContent}>
               <p>
-                For the processing described in this policy, Prodvo acts as the data controller
+                For the processing described in this policy, {APP_NAME} acts as the data controller
                 for account, billing, support, security, and product operations data.
               </p>
               <div className={styles.contactBlock}>
@@ -129,7 +129,7 @@ export default function PrivacyPage() {
             <h2 className={styles.sectionTitle}>Data We Collect</h2>
             <div className={styles.sectionContent}>
               <p>
-                Depending on how you use Prodvo, we may process the following categories of
+                Depending on how you use {APP_NAME}, we may process the following categories of
                 personal data:
               </p>
               <ul>
@@ -166,7 +166,7 @@ export default function PrivacyPage() {
                 <p>
                   Consistent with statements on product pages, customer project content is not used
                   to train foundation models. Source code typically remains in connected customer
-                  repositories, while Prodvo processes operational metadata needed to deliver the
+                  repositories, while {APP_NAME} processes operational metadata needed to deliver the
                   service.
                 </p>
               </div>
@@ -208,7 +208,7 @@ export default function PrivacyPage() {
             <span className={styles.sectionNumber}>Section 5</span>
             <h2 className={styles.sectionTitle}>Purposes and Legal Bases</h2>
             <div className={styles.sectionContent}>
-              <p>Prodvo processes personal data for the following purposes:</p>
+              <p>{APP_NAME} processes personal data for the following purposes:</p>
               <ul>
                 <li>
                   <strong>Service delivery and account administration</strong> (contract
@@ -251,7 +251,7 @@ export default function PrivacyPage() {
             <h2 className={styles.sectionTitle}>Cookies and Similar Technologies</h2>
             <div className={styles.sectionContent}>
               <p>
-                Prodvo may use cookies, local storage, and similar technologies to support session
+                {APP_NAME} may use cookies, local storage, and similar technologies to support session
                 continuity, security, preferences, analytics, and service performance.
               </p>
               <ul>
@@ -277,7 +277,7 @@ export default function PrivacyPage() {
             <h2 className={styles.sectionTitle}>Recipients and Subprocessors</h2>
             <div className={styles.sectionContent}>
               <p>
-                We share data only where needed to operate Prodvo, meet contractual commitments, or
+                We share data only where needed to operate {APP_NAME}, meet contractual commitments, or
                 comply with legal obligations.
               </p>
               <ul>
@@ -318,7 +318,7 @@ export default function PrivacyPage() {
             <h2 className={styles.sectionTitle}>International Data Transfers</h2>
             <div className={styles.sectionContent}>
               <p>
-                Prodvo and its service providers may process data in jurisdictions outside your
+                {APP_NAME} and its service providers may process data in jurisdictions outside your
                 country. Where applicable law requires safeguards for international transfers, we
                 use recognized mechanisms such as contractual safeguards and supplementary controls.
               </p>
@@ -334,7 +334,7 @@ export default function PrivacyPage() {
             <h2 className={styles.sectionTitle}>Security Controls</h2>
             <div className={styles.sectionContent}>
               <p>
-                Prodvo applies layered administrative, technical, and organizational security
+                {APP_NAME} applies layered administrative, technical, and organizational security
                 controls designed to protect confidentiality, integrity, and availability.
               </p>
               <ul>
@@ -394,7 +394,7 @@ export default function PrivacyPage() {
             <h2 className={styles.sectionTitle}>Children and Minors</h2>
             <div className={styles.sectionContent}>
               <p>
-                Prodvo is designed for professional and organizational use. It is not intended for
+                {APP_NAME} is designed for professional and organizational use. It is not intended for
                 use by children under the age required by applicable data protection laws.
               </p>
               <p>
@@ -455,7 +455,7 @@ export default function PrivacyPage() {
             <h2 className={styles.sectionTitle}>Automated Processing and Profiling</h2>
             <div className={styles.sectionContent}>
               <p>
-                Prodvo uses automated systems to support run orchestration, product reliability,
+                {APP_NAME} uses automated systems to support run orchestration, product reliability,
                 abuse detection, and operational prioritization.
               </p>
               <p>

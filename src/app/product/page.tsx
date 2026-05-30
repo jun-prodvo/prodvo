@@ -320,7 +320,7 @@ export default function ProductPage() {
                   <div className={cn("t-dot", "r")} />
                   <div className={cn("t-dot", "y")} />
                   <div className={cn("t-dot", "g")} />
-                  <span className={styles["t-file"]}>prodvo - ai agent · workspace</span>
+                  <span className={styles["t-file"]}>{APP_NAME.toLowerCase()} - ai agent · workspace</span>
                 </div>
                 <div className={styles["terminal-body"]}>
                   <div className={styles.tl}>
