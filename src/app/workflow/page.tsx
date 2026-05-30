@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { SiteShell } from "@/components/site-shell";
+import { APP_NAME } from "@/lib/config";
 import styles from "./workflow.module.css";
 
 type PhaseKey = "start" | "build" | "iterate" | "deploy" | "maintain";
@@ -43,7 +44,7 @@ const LOOP_PHASES: ReadonlyArray<{
     number: "03",
     name: "Iterate - Talk to change it",
     description:
-      "Request changes in plain language. Prodvo applies them without breaking existing features.",
+      `Request changes in plain language. ${APP_NAME} applies them without breaking existing features.`,
   },
   {
     key: "deploy",
@@ -55,7 +56,7 @@ const LOOP_PHASES: ReadonlyArray<{
   {
     key: "maintain",
     number: "05",
-    name: "Maintain - Prodvo watches it",
+    name: `Maintain - ${APP_NAME} watches it`,
     description:
       "Logs, errors, and performance metrics stay visible in one operating view.",
   },
@@ -453,12 +454,12 @@ export default function WorkflowPage() {
               <h1 className={styles.heroTitle}>
                 Describe it.
                 <br />
-                Prodvo <span className={styles.accent}>builds it.</span>
+                {APP_NAME} <span className={styles.accent}>builds it.</span>
                 <br />
                 You ship it.
               </h1>
               <p className={styles.heroSub}>
-                Every product starts as a thought. Prodvo turns that thought into a
+                Every product starts as a thought. {APP_NAME} turns that thought into a
                 running application through one tight loop of prompts, builds, and
                 controlled iterations.
               </p>
@@ -485,7 +486,7 @@ export default function WorkflowPage() {
               </div>
 
               <div className={cx(styles.heroColumn, styles.responseColumn)}>
-                <div className={styles.heroLabel}>Prodvo does</div>
+                <div className={styles.heroLabel}>{APP_NAME} does</div>
                 {HERO_RESPONSES.map((item) => (
                   <div key={item.title} className={styles.responseItem}>
                     <span className={styles.responseMarker}>{item.marker}</span>
@@ -515,7 +516,7 @@ export default function WorkflowPage() {
                   Infinite iterations.
                 </h2>
                 <p className={cx(styles.loopSub, styles.reveal)}>
-                  Prodvo workflow is intentionally loop-first. You can re-enter any
+                  {APP_NAME} workflow is intentionally loop-first. You can re-enter any
                   phase at any time without losing what already works.
                 </p>
 
@@ -598,7 +599,7 @@ export default function WorkflowPage() {
                 </svg>
 
                 <div className={styles.orbitCore}>
-                  <div className={styles.orbitCoreLabel}>Prodvo Agent</div>
+                  <div className={styles.orbitCoreLabel}>{APP_NAME} Agent</div>
                 </div>
 
                 <button
@@ -729,7 +730,7 @@ export default function WorkflowPage() {
 
                 <div className={cx(styles.understandingCard, styles.reveal)}>
                   <div className={styles.understandingLabel}>
-                    What Prodvo understands
+                    What {APP_NAME} understands
                   </div>
                   <div className={styles.understandingList}>
                     <div className={styles.understandingItem}>
@@ -862,7 +863,7 @@ export default function WorkflowPage() {
               codes while you watch.
             </h2>
             <p className={cx(styles.sectionSub, styles.reveal)}>
-              You direct, Prodvo executes. Every message becomes a concrete
+              You direct, {APP_NAME} executes. Every message becomes a concrete
               implementation action with visible output.
             </p>
 
@@ -874,7 +875,7 @@ export default function WorkflowPage() {
                     <p className={styles.turnMessage}>{turn.fromUser}</p>
                   </div>
                   <div className={styles.turnProdvo}>
-                    <div className={styles.turnFrom}>Prodvo</div>
+                    <div className={styles.turnFrom}>{APP_NAME}</div>
                     <p className={styles.turnMessage}>{turn.fromProdvo}</p>
                     <div className={styles.turnActions}>
                       {turn.chips.map((chip) => (
@@ -902,7 +903,7 @@ export default function WorkflowPage() {
               Break nothing.
             </h2>
             <p className={cx(styles.sectionSub, styles.reveal)}>
-              Prodvo keeps full context and updates the right layers without
+              {APP_NAME} keeps full context and updates the right layers without
               collateral regressions.
             </p>
 
@@ -1032,7 +1033,7 @@ export default function WorkflowPage() {
               <div className={styles.phaseDividerLine} />
             </div>
             <h2 className={cx(styles.phaseTitle, styles.reveal)}>
-              Maintain - Prodvo watches
+              Maintain - {APP_NAME} watches
               <br />
               so you do not have to.
             </h2>
@@ -1131,7 +1132,7 @@ export default function WorkflowPage() {
                 </h2>
               </div>
               <p className={cx(styles.speedSub, styles.reveal)}>
-                Average times across Prodvo teams. Complexity changes the depth,
+                Average times across {APP_NAME} teams. Complexity changes the depth,
                 but the loop keeps the same predictable shape.
               </p>
             </div>

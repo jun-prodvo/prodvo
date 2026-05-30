@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { SiteShell } from "@/components/site-shell";
+import { APP_NAME } from "@/lib/config";
 import styles from "./use-cases.module.css";
 
 type Persona = {
@@ -38,31 +39,31 @@ const PERSONAS: readonly Persona[] = [
   {
     label: "Solo Founders",
     word: "founders",
-    sub: "You have one shot to validate fast. Prodvo gets you from idea to live product in a weekend - auth, database, and deploy included.",
+    sub: `You have one shot to validate fast. ${APP_NAME} gets you from idea to live product in a weekend - auth, database, and deploy included.`,
     cta: "Build your MVP today",
   },
   {
     label: "Agencies",
     word: "agencies",
-    sub: "Client deadlines don't care about your setup time. Prodvo means less config, faster handoffs, and more margin per project.",
+    sub: `Client deadlines don't care about your setup time. ${APP_NAME} means less config, faster handoffs, and more margin per project.`,
     cta: "See how agencies use it",
   },
   {
     label: "Non-Technical Founders",
     word: "non-devs",
-    sub: "You don't need to hire a developer. Describe what you want to build and Prodvo builds it - no technical background required.",
+    sub: `You don't need to hire a developer. Describe what you want to build and ${APP_NAME} builds it - no technical background required.`,
     cta: "Build without coding",
   },
   {
     label: "Internal Tools Teams",
     word: "teams",
-    sub: "Internal tools shouldn't take 3 sprints. Prodvo lets your team ship ops tooling fast, without blocking your core product roadmap.",
+    sub: `Internal tools shouldn't take 3 sprints. ${APP_NAME} lets your team ship ops tooling fast, without blocking your core product roadmap.`,
     cta: "See internal tool use cases",
   },
   {
     label: "Hackathon Builders",
     word: "hackers",
-    sub: "48 hours. One idea. Prodvo gets you to a working demo in hours, not days. Stop fighting infra. Start winning.",
+    sub: `48 hours. One idea. ${APP_NAME} gets you to a working demo in hours, not days. Stop fighting infra. Start winning.`,
     cta: "Hackathon mode",
   },
 ];
@@ -364,7 +365,7 @@ export default function UseCasesPage() {
                 <p className={cx("section-sub", "reveal", "d2", "solo-sub")}>
                   Every solo founder burns the same 2 weeks on setup: auth,
                   database, deployment pipelines. That is 2 weeks not talking to
-                  users. Prodvo removes the setup entirely so you can spend every
+                  users. {APP_NAME} removes the setup entirely so you can spend every
                   hour on what actually matters - finding product-market fit.
                 </p>
 
@@ -373,7 +374,7 @@ export default function UseCasesPage() {
                     <span className={cx("proof-num")}>01</span>
                     <span className={cx("proof-text")}>
                       <strong>Ship before you lose momentum</strong>
-                      Describe your product. Prodvo scaffolds the full codebase -
+                      Describe your product. {APP_NAME} scaffolds the full codebase -
                       backend, frontend, database schema - in under 5 minutes.
                     </span>
                   </li>
@@ -382,7 +383,7 @@ export default function UseCasesPage() {
                     <span className={cx("proof-text")}>
                       <strong>Iterate without a co-founder</strong>
                       Change the pricing model. Add a new feature. Pivot the core
-                      flow. Say it, and Prodvo builds it. No PR reviews needed.
+                      flow. Say it, and {APP_NAME} builds it. No PR reviews needed.
                     </span>
                   </li>
                   <li>
@@ -414,7 +415,7 @@ export default function UseCasesPage() {
               <div>
                 <p className={cx("section-sub", "reveal", "d2")}>
                   Every hour your developers spend on boilerplate is an hour you
-                  are not billing for. Prodvo compresses setup time to near-zero so
+                  are not billing for. {APP_NAME} compresses setup time to near-zero so
                   your team works on the parts clients actually pay for.
                 </p>
               </div>
@@ -422,7 +423,7 @@ export default function UseCasesPage() {
 
             <div className={cx("ba-track", "reveal")}>
               <div className={cx("ba-col", "before")}>
-                <div className={cx("ba-head")}>Before Prodvo</div>
+                <div className={cx("ba-head")}>Before {APP_NAME}</div>
                 <div className={cx("ba-items")}>
                   <div className={cx("ba-item")}>
                     <span className={cx("ba-item-marker")}>-</span>
@@ -470,7 +471,7 @@ export default function UseCasesPage() {
               </div>
 
               <div className={cx("ba-col", "after")}>
-                <div className={cx("ba-head")}>With Prodvo</div>
+                <div className={cx("ba-head")}>With {APP_NAME}</div>
                 <div className={cx("ba-items")}>
                   <div className={cx("ba-item")}>
                     <span className={cx("ba-item-marker")}>✓</span>
@@ -535,8 +536,8 @@ export default function UseCasesPage() {
                   <p className={cx("section-sub", "reveal", "nontechnical-sub")}>
                     Most AI tools for non-technical founders still require you to
                     understand deployment, environment variables, and database
-                    migrations. Prodvo abstracts all of it. You describe your
-                    product in plain language. Prodvo handles the technical execution
+                    migrations. {APP_NAME} abstracts all of it. You describe your
+                    product in plain language. {APP_NAME} handles the technical execution
                     end-to-end - including the parts you do not even know exist yet.
                   </p>
                   <Link
@@ -549,7 +550,7 @@ export default function UseCasesPage() {
                 <div>
                   <p className={cx("section-sub", "reveal", "d1", "nontechnical-sub")}>
                     You are not outsourcing the thinking. You are offloading the
-                    implementation. Prodvo lets you stay in the product decisions -
+                    implementation. {APP_NAME} lets you stay in the product decisions -
                     what it does, for whom, and how - while it handles the database
                     schemas, API routes, and deployment pipelines that would otherwise
                     require hiring a developer.
@@ -571,7 +572,7 @@ export default function UseCasesPage() {
                 </div>
                 <div className={cx("proof-cell-title")}>Time spent on setup</div>
                 <div className={cx("proof-cell-desc")}>
-                  Prodvo handles every technical configuration automatically. You
+                  {APP_NAME} handles every technical configuration automatically. You
                   never see an env file.
                 </div>
               </div>
@@ -583,7 +584,7 @@ export default function UseCasesPage() {
                   From idea to testable MVP
                 </div>
                 <div className={cx("proof-cell-desc")}>
-                  Describe your product. Prodvo builds it. Share the link with real
+                  Describe your product. {APP_NAME} builds it. Share the link with real
                   users before lunch.
                 </div>
               </div>
@@ -593,7 +594,7 @@ export default function UseCasesPage() {
                   Cheaper than hiring a dev
                 </div>
                 <div className={cx("proof-cell-desc")}>
-                  A freelance developer costs $3-8K to build what Prodvo ships in
+                  A freelance developer costs $3-8K to build what {APP_NAME} ships in
                   days, for the cost of a subscription.
                 </div>
               </div>
@@ -607,7 +608,7 @@ export default function UseCasesPage() {
               <div>
                 <div className={cx("day-timeline", "reveal")}>
                   <div className={cx("day-timeline-head")}>
-                    A typical internal tools request - without Prodvo
+                    A typical internal tools request - without {APP_NAME}
                   </div>
                   <div className={cx("day-row")}>
                     <div className={cx("day-time")}>Wk 1</div>
@@ -669,7 +670,7 @@ export default function UseCasesPage() {
                 </h2>
                 <p className={cx("section-sub", "reveal", "d2", "section-sub-zero")}>
                   Internal tools should not compete with your product roadmap for
-                  engineering time. Prodvo lets you build and ship ops dashboards,
+                  engineering time. {APP_NAME} lets you build and ship ops dashboards,
                   admin panels, and workflow automations independently - without
                   touching the core product codebase.
                 </p>
@@ -681,7 +682,7 @@ export default function UseCasesPage() {
                     </div>
                     <div className={cx("benefit-desc")}>
                       Describe the dashboard, the data model, the permissions.
-                      Prodvo builds it. Your engineers stay focused on core product.
+                      {APP_NAME} builds it. Your engineers stay focused on core product.
                     </div>
                     <span className={cx("metric-chip")}>3 days avg. vs 9 weeks</span>
                   </div>
@@ -691,7 +692,7 @@ export default function UseCasesPage() {
                     </div>
                     <div className={cx("benefit-desc")}>
                       When the ops team wants a new filter or an export button, they
-                      can ask Prodvo directly. No ticket required.
+                      can ask {APP_NAME} directly. No ticket required.
                     </div>
                     <span className={cx("metric-chip")}>
                       Zero engineering tickets for minor changes
@@ -724,7 +725,7 @@ export default function UseCasesPage() {
                   48 hours. The clock is running.
                 </h2>
                 <p className={cx("section-sub", "reveal", "d2", "section-sub-zero")}>
-                  Most hackathon teams waste the first 8-12 hours on setup. Prodvo
+                  Most hackathon teams waste the first 8-12 hours on setup. {APP_NAME}
                   compresses that to under 30 minutes so you spend 47.5 hours
                   building - and 30 minutes winning.
                 </p>
@@ -770,7 +771,7 @@ export default function UseCasesPage() {
               </div>
 
               <div className={cx("clock-block", "reveal", "d1")}>
-                <div className={cx("clock-head")}>Prodvo hackathon timeline</div>
+                <div className={cx("clock-head")}>{APP_NAME} hackathon timeline</div>
                 <div className={cx("clock-body")}>
                   <div className={cx("clock-display")}>{clockText}</div>
                   <div className={cx("clock-sub")}>hours left to build features</div>
@@ -810,7 +811,7 @@ export default function UseCasesPage() {
               <div>
                 <div className={cx("eyebrow", "reveal")}>Time-to-ship</div>
                 <h2 className={cx("section-title", "reveal", "d1")}>
-                  How fast is Prodvo,
+                  How fast is {APP_NAME},
                   <br />
                   really?
                 </h2>
@@ -818,13 +819,13 @@ export default function UseCasesPage() {
               <div>
                 <p className={cx("section-sub", "reveal", "d1", "ship-sub")}>
                   Time from zero to a deployed, usable product - per persona, with
-                  and without Prodvo. Based on reported ship times from users across
+                  and without {APP_NAME}. Based on reported ship times from users across
                   each segment.
                 </p>
                 <div className={cx("ship-legend", "reveal", "d2", "ship-legend-top")}>
                   <div className={cx("ship-legend-item")}>
                     <div className={cx("ship-legend-dot", "legend-with")}></div>
-                    With Prodvo
+                    With {APP_NAME}
                   </div>
                   <div className={cx("ship-legend-item")}>
                     <div className={cx("ship-legend-dot", "legend-without")}></div>
@@ -874,7 +875,7 @@ export default function UseCasesPage() {
                 mapped to your role.
               </h2>
               <p className={cx("section-sub", "reveal", "d2", "cap-sub")}>
-                Prodvo is one platform. But how you use it depends on who you are.
+                {APP_NAME} is one platform. But how you use it depends on who you are.
                 Here is what each persona actually leans on.
               </p>
             </div>
@@ -920,7 +921,7 @@ export default function UseCasesPage() {
         <div className="container">
           <div className="cta-banner">
             <div className="cta-copy">
-              <h2>Whoever you are, Prodvo ships it.</h2>
+              <h2>Whoever you are, {APP_NAME} ships it.</h2>
               <p>
                 No setup. No configuration. No waiting on infrastructure. Describe
                 your product and start building in the next 2 minutes.

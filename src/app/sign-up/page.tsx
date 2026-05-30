@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { type FormEvent, useState } from "react";
 import styles from "../auth-pages.module.css";
-import { APP_DOMAIN } from "@/lib/config";
+import { APP_NAME, APP_DOMAIN } from "@/lib/config";
 
 export default function SignUpPage() {
   const [requestSubmitted, setRequestSubmitted] = useState(false);
@@ -20,7 +20,7 @@ export default function SignUpPage() {
           <Link href="/" className="brand">
             <div className="prodvo-logo sz-nav expanded">
               <span className="logo-prefix">P/</span>
-              <div className="logo-word-wrap"><span className="logo-word">Prodvo</span></div>
+              <div className="logo-word-wrap"><span className="logo-word">{APP_NAME}</span></div>
               <span className="logo-dot">.</span>
             </div>
           </Link>
@@ -32,13 +32,13 @@ export default function SignUpPage() {
         <div className={styles.authGrid}>
           <section className={styles.infoPanel}>
             <span className={styles.eyebrow}>Invitation only</span>
-            <h1 className={styles.title}>Prodvo is in high demand right now</h1>
+            <h1 className={styles.title}>{APP_NAME} is in high demand right now</h1>
             <p className={styles.subtitle}>
               We are onboarding in controlled waves so every invited team receives a stable
               workspace, responsive support, and a smooth rollout experience.
             </p>
             <ul className={styles.featureList}>
-              <li>Invitations are issued by the Prodvo team.</li>
+              <li>Invitations are issued by the {APP_NAME} team.</li>
               <li>Priority is given to active shipping teams.</li>
               <li>Selected teams receive guided setup support.</li>
             </ul>

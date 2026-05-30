@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { SiteShell } from "@/components/site-shell";
+import { APP_NAME } from "@/lib/config";
 import styles from "./pricing.module.css";
 
 type BillingCycle = "monthly" | "annual";
@@ -212,9 +213,9 @@ const ENTERPRISE_SPEC_ROWS: readonly [readonly string[], readonly string[]] = [
 const FAQ_ITEMS: ReadonlyArray<{ question: string; answer: string }> = [
   {
     question:
-      "Can I replace Vercel, Supabase, and Auth0 with only Prodvo?",
+      `Can I replace Vercel, Supabase, and Auth0 with only ${APP_NAME}?`,
     answer:
-      "Yes. Prodvo includes auth, Postgres, deployment, and transactional email in one stack. Teams can remove multiple separate subscriptions and run from a single operational surface.",
+      `Yes. ${APP_NAME} includes auth, Postgres, deployment, and transactional email in one stack. Teams can remove multiple separate subscriptions and run from a single operational surface.`,
   },
   {
     question: "What happens when free-plan limits are reached?",
@@ -313,7 +314,7 @@ export default function PricingPage() {
                 </h1>
                 <p className={styles.heroSub}>
                   Add up monthly spend across deployment, database, auth,
-                  transactional email, and CI. Prodvo replaces that stack with one
+                  transactional email, and CI. {APP_NAME} replaces that stack with one
                   subscription.
                 </p>
                 <div className={styles.heroCtas}>
@@ -342,7 +343,7 @@ export default function PricingPage() {
                 </div>
                 <div className={styles.ccProdvoRow}>
                   <span className={styles.ccProdvoLabel}>
-                    Prodvo Pro - all of the above
+                    {APP_NAME} Pro - all of the above
                   </span>
                   <span className={styles.ccProdvoNum}>$29/mo</span>
                 </div>
@@ -571,7 +572,7 @@ export default function PricingPage() {
                   <span className={styles.accent}>not close.</span>
                 </h2>
                 <p className={cx(styles.roiSub, styles.reveal)}>
-                  Most builders pay for separate tools that Prodvo unifies. When you
+                  Most builders pay for separate tools that {APP_NAME} unifies. When you
                   compare complete monthly spend, the difference is immediate.
                 </p>
               </div>
@@ -593,13 +594,13 @@ export default function PricingPage() {
                   <span className={styles.roiRunningLabel}>5-tool total</span>
                   <div>
                     <div className={styles.roiRunningOld}>$130/mo</div>
-                    <div className={styles.roiRunningNew}>Prodvo Pro: $29/mo</div>
+                    <div className={styles.roiRunningNew}>{APP_NAME} Pro: $29/mo</div>
                   </div>
                 </div>
 
                 <div className={styles.roiSavingBlock}>
                   <div>
-                    <div className={styles.rsbText}>Annual savings switching to Prodvo</div>
+                    <div className={styles.rsbText}>Annual savings switching to {APP_NAME}</div>
                     <div className={styles.rsbSub}>vs. standard indie SaaS stack</div>
                   </div>
                   <div>

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { type FormEvent, useState } from "react";
 import styles from "../auth-pages.module.css";
+import { APP_NAME } from "@/lib/config";
 
 export default function SignInPage() {
   const [signInError, setSignInError] = useState<string | null>(null);
@@ -19,12 +20,12 @@ export default function SignInPage() {
           <Link href="/" className="brand">
             <div className="prodvo-logo sz-nav expanded">
               <span className="logo-prefix">P/</span>
-              <div className="logo-word-wrap"><span className="logo-word">Prodvo</span></div>
+              <div className="logo-word-wrap"><span className="logo-word">{APP_NAME}</span></div>
               <span className="logo-dot">.</span>
             </div>
           </Link>
           <p className={styles.topLink}>
-            New to Prodvo? <Link href="/sign-up">Request invitation access</Link>
+            New to {APP_NAME}? <Link href="/sign-up">Request invitation access</Link>
           </p>
         </div>
 

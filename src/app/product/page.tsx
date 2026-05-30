@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { SiteShell } from "@/components/site-shell";
+import { APP_NAME } from "@/lib/config";
 import styles from "./product-page.module.css";
 
 type TimelineStep = {
@@ -38,7 +39,7 @@ const TIMELINE_STEPS: readonly TimelineStep[] = [
   {
     title: "Describe your product",
     description:
-      "Type what you want to build in plain language. \"A task manager with team invites and Stripe billing.\" That's enough. Prodvo gets it.",
+      `Type what you want to build in plain language. "A task manager with team invites and Stripe billing." That's enough. ${APP_NAME} gets it.`,
   },
   {
     title: "Watch it build",
@@ -80,7 +81,7 @@ const TESTIMONIALS: readonly Testimonial[] = [
     name: "Kevin T.",
     role: "Full-stack engineer · Bangkok",
     quote:
-      '"Replaced my stack with Prodvo. Way cheaper. Way less config. Way more speed."',
+      `"Replaced my stack with ${APP_NAME}. Way cheaper. Way less config. Way more speed."`,
   },
   {
     initials: "DP",
@@ -94,7 +95,7 @@ const TESTIMONIALS: readonly Testimonial[] = [
     name: "James L.",
     role: "Solo founder · Kuala Lumpur",
     quote:
-      '"I\'ve tried other tools. Prodvo is the first one that understood the complexity of what I was building."',
+      `"I've tried other tools. ${APP_NAME} is the first one that understood the complexity of what I was building."`,
   },
   {
     initials: "RK",
@@ -292,7 +293,7 @@ export default function ProductPage() {
                 <span className={styles["word-orange"]}>Just build.</span>
               </h1>
               <p className={styles["hero-sub"]}>
-                Prodvo is the AI coding agent with everything built in: code editor,
+                {APP_NAME} is the AI coding agent with everything built in: code editor,
                 database, auth, storage, and deployment. Describe what you want and ship
                 it today.
               </p>
@@ -410,7 +411,7 @@ export default function ProductPage() {
             </div>
 
             <div>
-              <div className={cn("contrast-col-head", "good")}>With Prodvo - 1 tool</div>
+              <div className={cn("contrast-col-head", "good")}>With {APP_NAME} - 1 tool</div>
               <div className={cn("contrast-list", "prodvo")}>
                 <div className={styles["contrast-item"]}>
                   <span className={styles["ci-name"]}>AI Code Editor</span>
@@ -452,7 +453,7 @@ export default function ProductPage() {
               Zero setup required.
             </h2>
             <p className={styles["sec-sub"]}>
-              From first prompt to live product. Prodvo handles the infra so you
+              From first prompt to live product. {APP_NAME} handles the infra so you
               focus entirely on your idea.
             </p>
           </div>
@@ -466,7 +467,7 @@ export default function ProductPage() {
                 and ships - on its own
               </div>
               <p className={styles["bc-desc"]}>
-                Prodvo's agent understands your intent, not just your syntax. It
+                {APP_NAME}&apos;s agent understands your intent, not just your syntax. It
                 builds full features, catches its own bugs, and iterates until
                 it's done right.
               </p>
@@ -587,7 +588,7 @@ export default function ProductPage() {
               </h2>
               <p className={cn("sec-sub", "reveal", "d2")}>
                 No configuration. No DevOps rabbit holes. Describe what you're
-                building - Prodvo handles everything else.
+                building - {APP_NAME} handles everything else.
               </p>
             </div>
 
@@ -629,7 +630,7 @@ export default function ProductPage() {
                 you already trust
               </h2>
               <p className={cn("sec-sub", "reveal", "d2")}>
-                Prodvo uses battle-tested open-source tools and industry-standard
+                {APP_NAME} uses battle-tested open-source tools and industry-standard
                 platforms. You can always export, migrate, or self-host.
               </p>
               <Link href="/docs" className={cn("btn-hero-secondary", "reveal", "d3")}>
